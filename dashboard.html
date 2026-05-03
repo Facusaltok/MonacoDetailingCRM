@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Dashboard Monaco</title>
+<title>Monaco Detailing CRM</title>
 
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
@@ -11,38 +11,64 @@
 body{background:#020617;color:white;font-family:Inter;}
 .card{background:#0f172a;padding:20px;border-radius:20px;}
 .btn{background:#00c853;color:black;padding:10px 20px;border-radius:10px;}
+.input{background:#020617;border:1px solid #1e293b;color:white;padding:10px;border-radius:8px;width:100%;}
 </style>
 </head>
 
 <body>
 
-<div class="p-6 flex justify-between">
-<h1 class="text-xl font-bold">Monaco Detailing CRM</h1>
-<button id="logout" class="btn">Salir</button>
+<!-- HEADER -->
+<div class="flex justify-between p-6">
+  <h1 class="text-xl font-bold">Monaco Detailing CRM</h1>
+  <button id="logout" class="btn">Salir</button>
 </div>
 
-<div class="grid grid-cols-4 gap-4 p-6">
+<!-- FORMULARIO -->
+<div class="grid grid-cols-3 gap-4 p-6">
 
 <div class="card">
-<p>Autos en proceso</p>
-<h2 class="text-2xl">12</h2>
-</div>
-
-<div class="card">
-<p>Turnos hoy</p>
-<h2 class="text-2xl">5</h2>
-</div>
-
-<div class="card">
-<p>Facturación</p>
-<h2 class="text-2xl">$800.000</h2>
+  <h2 class="mb-3 font-bold">Nuevo Cliente</h2>
+  <input id="nombre" placeholder="Nombre" class="input mb-2">
+  <input id="telefono" placeholder="Teléfono" class="input mb-3">
+  <button onclick="crearCliente()" class="btn w-full">Guardar</button>
 </div>
 
 <div class="card">
-<p>Clientes</p>
-<h2 class="text-2xl">120</h2>
+  <h2 class="mb-3 font-bold">Vehículo</h2>
+  <input id="cliente_id" placeholder="ID Cliente" class="input mb-2">
+  <input id="marca" placeholder="Marca" class="input mb-2">
+  <input id="modelo" placeholder="Modelo" class="input mb-2">
+  <input id="dominio" placeholder="Patente" class="input mb-3">
+  <button onclick="crearVehiculo()" class="btn w-full">Guardar</button>
 </div>
 
+<div class="card">
+  <h2 class="mb-3 font-bold">Servicio</h2>
+  <input id="vehiculo_id" placeholder="ID Vehículo" class="input mb-2">
+  <input id="tipo" placeholder="Ej: PPF Completo" class="input mb-2">
+  <input id="precio" placeholder="Precio" class="input mb-3">
+  <button onclick="crearServicio()" class="btn w-full">Guardar</button>
+</div>
+
+</div>
+
+<!-- TABLA -->
+<div class="p-6">
+  <div class="card">
+    <h2 class="mb-4 font-bold">Servicios</h2>
+
+    <table class="w-full text-sm">
+      <thead class="text-gray-400">
+        <tr>
+          <th>Tipo</th>
+          <th>Precio</th>
+          <th>Estado</th>
+        </tr>
+      </thead>
+      <tbody id="tabla"></tbody>
+    </table>
+
+  </div>
 </div>
 
 <script>
@@ -50,10 +76,61 @@ const SUPABASE_URL = "https://TU_URL";
 const SUPABASE_KEY = "TU_KEY";
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
+// LOGOUT
 logout.onclick = async ()=>{
   await sb.auth.signOut();
   location.href="index.html";
 }
+
+// CREAR CLIENTE
+async function crearCliente(){
+  await sb.from("clientes").insert({
+    nombre: nombre.value,
+    telefono: telefono.value
+  });
+  alert("Cliente creado");
+}
+
+// CREAR VEHICULO
+async function crearVehiculo(){
+  await sb.from("vehiculos").insert({
+    cliente_id: cliente_id.value,
+    marca: marca.value,
+    modelo: modelo.value,
+    dominio: dominio.value
+  });
+  alert("Vehículo creado");
+}
+
+// CREAR SERVICIO
+async function crearServicio(){
+  await sb.from("servicios").insert({
+    vehiculo_id: vehiculo_id.value,
+    tipo: tipo.value,
+    precio: precio.value
+  });
+  alert("Servicio creado");
+  cargarServicios();
+}
+
+// CARGAR SERVICIOS
+async function cargarServicios(){
+  const {data} = await sb.from("servicios").select("*");
+
+  tabla.innerHTML = "";
+
+  data.forEach(s=>{
+    tabla.innerHTML += `
+      <tr>
+        <td>${s.tipo}</td>
+        <td>$${s.precio}</td>
+        <td>${s.estado}</td>
+      </tr>
+    `;
+  });
+}
+
+cargarServicios();
 </script>
 
 </body>
