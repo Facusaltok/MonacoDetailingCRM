@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Monaco Detailing CRM</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+
+<style>
+:root{
+  --green:#00c853;
+  --black:#020617;
+}
+
+body{
+  background:#020617;
+  color:white;
+  font-family:Inter,sans-serif;
+}
+
+/* Header */
+.header{
+  background:linear-gradient(135deg,#020617,#0f172a);
+  border-bottom:1px solid rgba(0,200,83,.2);
+}
+
+/* Tabs */
+.tab{
+  padding:10px 20px;
+  border-radius:12px;
+  background:#0f172a;
+}
+.tab.active{
+  background:var(--green);
+  color:black;
+}
+
+/* Cards */
+.card{
+  background:#0f172a;
+  border-radius:20px;
+  padding:20px;
+  border:1px solid rgba(0,200,83,.1);
+}
+
+/* Botón */
+.btn{
+  background:var(--green);
+  color:black;
+  padding:10px 20px;
+  border-radius:10px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<div class="header p-6 flex justify-between items-center">
+
+  <div class="flex items-center gap-4">
+    <img src="logo.png" class="w-12">
+    <h1 class="text-xl font-bold">Monaco Detailing</h1>
+  </div>
+
+  <button id="logout" class="btn">Salir</button>
+
+</div>
+
+<!-- NAV -->
+<div class="flex gap-3 p-6">
+
+  <button class="tab active">Vehículos</button>
+  <button class="tab">Servicios</button>
+  <button class="tab">Turnos</button>
+  <button class="tab">Caja</button>
+
+</div>
+
+<!-- KPIs -->
+<div class="grid grid-cols-4 gap-4 px-6">
+
+  <div class="card">
+    <p class="text-gray-400">Autos en proceso</p>
+    <h2 class="text-2xl font-bold">12</h2>
+  </div>
+
+  <div class="card">
+    <p class="text-gray-400">Turnos hoy</p>
+    <h2 class="text-2xl font-bold">8</h2>
+  </div>
+
+  <div class="card">
+    <p class="text-gray-400">Facturación</p>
+    <h2 class="text-2xl font-bold">$1.250.000</h2>
+  </div>
+
+  <div class="card">
+    <p class="text-gray-400">Clientes</p>
+    <h2 class="text-2xl font-bold">320</h2>
+  </div>
+
+</div>
+
+<!-- TABLA -->
+<div class="p-6">
+
+  <div class="card">
+
+    <div class="flex justify-between mb-4">
+      <h2 class="text-lg font-bold">Vehículos</h2>
+      <button class="btn">Nuevo</button>
+    </div>
+
+    <table class="w-full text-sm">
+      <thead>
+        <tr class="text-gray-400">
+          <th>Cliente</th>
+          <th>Auto</th>
+          <th>Patente</th>
+          <th>Servicio</th>
+          <th>Estado</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr>
+          <td>Juan Perez</td>
+          <td>Audi A4</td>
+          <td>AA123BB</td>
+          <td>PPF Completo</td>
+          <td class="text-green-400">En proceso</td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+
+</div>
+
+<script>
+const SUPABASE_URL = "https://ecmjxpnpdgmvnxmbciur.supabase.co";
+const SUPABASE_KEY = "TU_KEY";
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+logout.onclick = async ()=>{
+  await sb.auth.signOut();
+  location.href="index.html";
+}
+</script>
+
+</body>
+</html>
