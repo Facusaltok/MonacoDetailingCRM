@@ -8,3 +8,4 @@ Estructura:
 - index.html
 - dashboard.html
 - vercel.json
+- supabase password yMTZfc41JXlwVQxx
