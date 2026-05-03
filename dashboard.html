@@ -6,12 +6,9 @@
 
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 
 <style>
-
-/* ================= BASE ================= */
 body{
   margin:0;
   font-family:Inter;
@@ -19,7 +16,6 @@ body{
   color:white;
 }
 
-/* ================= SIDEBAR ================= */
 .sidebar{
   width:260px;
   height:100vh;
@@ -29,22 +25,6 @@ body{
   padding:20px;
 }
 
-/* LOGO */
-.logo-container{
-  width:42px;
-  height:42px;
-  border-radius:10px;
-  background:linear-gradient(135deg,#00c853,#009624);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
-.logo-container img{
-  width:26px;
-  filter:brightness(0) invert(1);
-}
-
-/* MENU */
 .menu-item{
   padding:12px;
   border-radius:10px;
@@ -52,47 +32,29 @@ body{
   margin-bottom:5px;
   transition:.2s;
 }
-.menu-item:hover{
-  background:#0f172a;
-}
-.active{
-  background:#00c853;
-  color:black;
-}
+.menu-item:hover{background:#0f172a;}
+.active{background:#00c853;color:black;}
 
-/* ================= CONTENT ================= */
 .content{
   margin-left:260px;
   padding:30px;
 }
 
-/* HEADER */
-.header{
-  display:flex;
-  justify-content:space-between;
-  margin-bottom:20px;
-}
-
-/* ================= CARDS ================= */
 .card{
   background:rgba(15,23,42,.7);
   border-radius:20px;
   padding:20px;
   border:1px solid rgba(0,255,100,.1);
-  backdrop-filter: blur(15px);
 }
 
-/* ================= BOTONES ================= */
 .btn{
   background:linear-gradient(135deg,#00c853,#009624);
   color:black;
   padding:10px;
   border-radius:10px;
   font-weight:600;
-  cursor:pointer;
 }
 
-/* ================= INPUT ================= */
 .input{
   background:#020617;
   border:1px solid #1e293b;
@@ -103,7 +65,20 @@ body{
   margin-bottom:10px;
 }
 
-/* ================= KANBAN ================= */
+.logo-container{
+  width:46px;
+  height:46px;
+  border-radius:12px;
+  background:linear-gradient(135deg,#00c853,#009624);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.logo-container img{
+  width:28px;
+  filter:brightness(0) invert(1);
+}
+
 .column{
   background:#020617;
   padding:15px;
@@ -118,13 +93,11 @@ body{
   margin-bottom:10px;
   cursor:grab;
 }
-
 </style>
 </head>
 
 <body>
 
-<!-- SIDEBAR -->
 <div class="sidebar">
 
 <div class="flex items-center gap-3 mb-8">
@@ -140,108 +113,107 @@ body{
 <div class="menu-item active" onclick="tab('dashboard',this)">Dashboard</div>
 <div class="menu-item" onclick="tab('kanban',this)">Operaciones</div>
 <div class="menu-item" onclick="tab('clientes',this)">Clientes</div>
+<div class="menu-item" onclick="tab('vehiculos',this)">Vehículos</div>
 <div class="menu-item" onclick="tab('turnos',this)">Turnos</div>
 <div class="menu-item" onclick="tab('caja',this)">Caja</div>
 
 </div>
 
-<!-- CONTENT -->
 <div class="content">
 
 <!-- DASHBOARD -->
 <div id="dashboard">
-
 <div class="grid grid-cols-4 gap-4">
 
-<div class="card">
-<p>Autos en proceso</p>
-<h2 id="kpi_proceso">0</h2>
-</div>
-
-<div class="card">
-<p>Terminados</p>
-<h2 id="kpi_terminado">0</h2>
-</div>
-
-<div class="card">
-<p>Facturación</p>
-<h2 id="kpi_facturacion">$0</h2>
-</div>
-
-<div class="card">
-<p>Clientes</p>
-<h2 id="kpi_clientes">0</h2>
-</div>
+<div class="card"><p>Proceso</p><h2 id="kpi_proceso">0</h2></div>
+<div class="card"><p>Terminados</p><h2 id="kpi_terminado">0</h2></div>
+<div class="card"><p>Facturación</p><h2 id="kpi_facturacion">$0</h2></div>
+<div class="card"><p>Clientes</p><h2 id="kpi_clientes">0</h2></div>
 
 </div>
-
 </div>
 
 <!-- KANBAN -->
 <div id="kanban" style="display:none">
-
 <div class="grid grid-cols-3 gap-4">
 
 <div class="column" ondrop="drop(event,'pendiente')" ondragover="allowDrop(event)">
-<h3>Pendiente</h3>
-<div id="pendiente"></div>
-</div>
+<h3>Pendiente</h3><div id="pendiente"></div></div>
 
 <div class="column" ondrop="drop(event,'proceso')" ondragover="allowDrop(event)">
-<h3>Proceso</h3>
-<div id="proceso"></div>
-</div>
+<h3>Proceso</h3><div id="proceso"></div></div>
 
 <div class="column" ondrop="drop(event,'terminado')" ondragover="allowDrop(event)">
-<h3>Terminado</h3>
-<div id="terminado"></div>
-</div>
+<h3>Terminado</h3><div id="terminado"></div></div>
 
 </div>
-
 </div>
 
 <!-- CLIENTES -->
 <div id="clientes" style="display:none">
 <div class="card">
-<h3>Clientes</h3>
-<ul id="listaClientes"></ul>
+
+<input id="cliente_nombre" placeholder="Nombre" class="input">
+<input id="cliente_tel" placeholder="Teléfono" class="input">
+<button onclick="guardarCliente()" class="btn w-full">Guardar</button>
+
+<table class="w-full mt-4"><tbody id="tablaClientes"></tbody></table>
+
+</div>
+</div>
+
+<!-- VEHICULOS -->
+<div id="vehiculos" style="display:none">
+<div class="card">
+
+<select id="vehiculo_cliente" class="input"></select>
+<input id="vehiculo_marca" placeholder="Marca" class="input">
+<input id="vehiculo_modelo" placeholder="Modelo" class="input">
+<button onclick="crearVehiculo()" class="btn w-full">Guardar</button>
+
+<ul id="listaVehiculos"></ul>
+
 </div>
 </div>
 
 <!-- TURNOS -->
 <div id="turnos" style="display:none">
 <div class="card">
+
 <input id="turno_cliente" placeholder="Cliente" class="input">
 <input id="turno_servicio" placeholder="Servicio" class="input">
-<input type="date" id="turno_fecha" class="input">
-<button onclick="crearTurno()" class="btn w-full">Crear turno</button>
+<input id="turno_fecha" type="date" class="input">
+<button onclick="crearTurno()" class="btn w-full">Guardar</button>
+
 <ul id="listaTurnos"></ul>
+
 </div>
 </div>
 
 <!-- CAJA -->
 <div id="caja" style="display:none">
 <div class="card">
+
 <input id="concepto" placeholder="Concepto" class="input">
 <input id="monto" placeholder="Monto" class="input">
-<button onclick="agregarCaja()" class="btn w-full">Agregar</button>
+<button onclick="agregarCaja()" class="btn w-full">Guardar</button>
+
 <ul id="listaCaja"></ul>
+
 </div>
 </div>
 
 </div>
 
 <script>
-
 const sb = supabase.createClient(
 "https://wuewcawbpajdehquorfq.supabase.co",
 "sb_publishable_nzzOvYY0RYXDUavs-pFH6Q_pqnLU2tb"
 );
 
-// TAB
+// TABS
 function tab(id,el){
-["dashboard","kanban","clientes","turnos","caja"].forEach(t=>{
+["dashboard","kanban","clientes","vehiculos","turnos","caja"].forEach(t=>{
 document.getElementById(t).style.display="none";
 });
 document.getElementById(id).style.display="block";
@@ -250,24 +222,110 @@ document.querySelectorAll(".menu-item").forEach(e=>e.classList.remove("active"))
 el.classList.add("active");
 }
 
-// KPI
-async function cargarKPIs(){
-const {data:servicios}=await sb.from("servicios").select("*");
-const {data:clientes}=await sb.from("clientes").select("*");
+// CLIENTES CRUD
+let editando=null;
 
-document.getElementById("kpi_proceso").innerText=
-servicios.filter(s=>s.estado==="proceso").length;
-
-document.getElementById("kpi_terminado").innerText=
-servicios.filter(s=>s.estado==="terminado").length;
-
-document.getElementById("kpi_facturacion").innerText=
-"$"+servicios.reduce((a,s)=>a+(s.precio||0),0);
-
-document.getElementById("kpi_clientes").innerText=clientes.length;
+async function cargarClientes(){
+const {data}=await sb.from("clientes").select("*");
+tablaClientes.innerHTML="";
+vehiculo_cliente.innerHTML="";
+data.forEach(c=>{
+tablaClientes.innerHTML+=`
+<tr>
+<td>${c.nombre}</td>
+<td>${c.telefono}</td>
+<td>
+<button onclick='editar(${JSON.stringify(c)})'>✏️</button>
+<button onclick="borrar('${c.id}')">❌</button>
+</td>
+</tr>`;
+vehiculo_cliente.innerHTML+=`<option value="${c.id}">${c.nombre}</option>`;
+});
 }
 
-// SERVICIOS
+function editar(c){
+cliente_nombre.value=c.nombre;
+cliente_tel.value=c.telefono;
+editando=c.id;
+}
+
+async function guardarCliente(){
+if(editando){
+await sb.from("clientes").update({
+nombre:cliente_nombre.value,
+telefono:cliente_tel.value
+}).eq("id",editando);
+editando=null;
+}else{
+await sb.from("clientes").insert({
+nombre:cliente_nombre.value,
+telefono:cliente_tel.value
+});
+}
+cliente_nombre.value="";
+cliente_tel.value="";
+cargarClientes();
+}
+
+async function borrar(id){
+await sb.from("clientes").delete().eq("id",id);
+cargarClientes();
+}
+
+// VEHICULOS
+async function crearVehiculo(){
+await sb.from("vehiculos").insert({
+cliente_id:vehiculo_cliente.value,
+marca:vehiculo_marca.value,
+modelo:vehiculo_modelo.value
+});
+cargarVehiculos();
+}
+
+async function cargarVehiculos(){
+const {data}=await sb.from("vehiculos").select("*");
+listaVehiculos.innerHTML="";
+data.forEach(v=>{
+listaVehiculos.innerHTML+=`<li>${v.marca} ${v.modelo}</li>`;
+});
+}
+
+// TURNOS
+async function crearTurno(){
+await sb.from("turnos").insert({
+cliente:turno_cliente.value,
+servicio:turno_servicio.value,
+fecha:turno_fecha.value
+});
+cargarTurnos();
+}
+
+async function cargarTurnos(){
+const {data}=await sb.from("turnos").select("*");
+listaTurnos.innerHTML="";
+data.forEach(t=>{
+listaTurnos.innerHTML+=`<li>${t.fecha} - ${t.cliente}</li>`;
+});
+}
+
+// CAJA
+async function agregarCaja(){
+await sb.from("caja").insert({
+concepto:concepto.value,
+monto:monto.value
+});
+cargarCaja();
+}
+
+async function cargarCaja(){
+const {data}=await sb.from("caja").select("*");
+listaCaja.innerHTML="";
+data.forEach(c=>{
+listaCaja.innerHTML+=`<li>$${c.monto} - ${c.concepto}</li>`;
+});
+}
+
+// KANBAN
 async function cargarServicios(){
 const {data}=await sb.from("servicios")
 .select(`id,tipo,estado,vehiculos(marca,clientes(nombre,telefono))`);
@@ -293,26 +351,38 @@ document.getElementById(s.estado).appendChild(el);
 });
 }
 
-// DRAG
 function allowDrop(ev){ev.preventDefault();}
 function drag(ev){ev.dataTransfer.setData("id",ev.target.id);}
+
 async function drop(ev,estado){
 ev.preventDefault();
 let id=ev.dataTransfer.getData("id");
-
 await sb.from("servicios").update({estado}).eq("id",id);
 cargarServicios();
-cargarKPIs();
 }
 
-// WHATSAPP
+// KPIs
+async function cargarKPIs(){
+const {data:servicios}=await sb.from("servicios").select("*");
+const {data:clientes}=await sb.from("clientes").select("*");
+
+kpi_proceso.innerText=servicios.filter(s=>s.estado==="proceso").length;
+kpi_terminado.innerText=servicios.filter(s=>s.estado==="terminado").length;
+kpi_facturacion.innerText="$"+servicios.reduce((a,s)=>a+(s.precio||0),0);
+kpi_clientes.innerText=clientes.length;
+}
+
+// WA
 function whatsapp(s){
 const tel=s.vehiculos?.clientes?.telefono?.replace(/[^0-9]/g,"");
-const msg=`Hola ${s.vehiculos?.clientes?.nombre}, tu vehículo está listo 🚗`;
-window.open(`https://wa.me/54${tel}?text=${encodeURIComponent(msg)}`);
+window.open(`https://wa.me/54${tel}`);
 }
 
 // INIT
+cargarClientes();
+cargarVehiculos();
+cargarTurnos();
+cargarCaja();
 cargarServicios();
 cargarKPIs();
 
