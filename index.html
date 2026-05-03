@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Monaco Detailing CRM</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+
+<style>
+:root{
+  --green:#00c853;
+}
+body{
+  background:#020617;
+  font-family:Inter,sans-serif;
+}
+.card{
+  background:#0f172a;
+  border-radius:20px;
+  padding:30px;
+}
+.btn{
+  background:var(--green);
+  padding:12px;
+  border-radius:10px;
+}
+.input{
+  background:#020617;
+  border:1px solid #1e293b;
+  color:white;
+}
+</style>
+</head>
+
+<body class="flex items-center justify-center h-screen">
+
+<div class="card w-full max-w-md text-white">
+
+<h1 class="text-2xl font-bold mb-6 text-center">Monaco Detailing</h1>
+
+<div id="msg" class="text-red-400 mb-3 hidden"></div>
+
+<form id="loginForm">
+
+<input id="email" type="email" placeholder="Correo" class="input w-full p-3 mb-3" required>
+<input id="password" type="password" placeholder="Contraseña" class="input w-full p-3 mb-5" required>
+
+<button class="btn w-full">Ingresar</button>
+
+</form>
+
+</div>
+
+<script>
+const SUPABASE_URL = "https://TU_URL";
+const SUPABASE_KEY = "TU_KEY";
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+loginForm.addEventListener("submit", async(e)=>{
+  e.preventDefault();
+
+  const {error} = await sb.auth.signInWithPassword({
+    email: email.value,
+    password: password.value
+  });
+
+  if(error){
+    msg.innerText = error.message;
+    msg.classList.remove("hidden");
+  } else {
+    location.href="dashboard.html";
+  }
+});
+</script>
+
+</body>
+</html>
