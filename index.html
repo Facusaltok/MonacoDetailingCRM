@@ -54,13 +54,18 @@ body{
 </div>
 
 <script>
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+
 <script>
 const SUPABASE_URL = "https://wuewcawbpajdehquorfq.supabase.co";
-
 const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.xpZ_OqHj0BUwF8BOmq6olg9UiThD7-VBGA2Esj05gYY";
 
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-</script>
+
+const loginForm = document.getElementById("loginForm");
+const email = document.getElementById("email");
+const password = document.getElementById("password");
+const msg = document.getElementById("msg");
 
 loginForm.addEventListener("submit", async(e)=>{
   e.preventDefault();
@@ -78,6 +83,3 @@ loginForm.addEventListener("submit", async(e)=>{
   }
 });
 </script>
-
-</body>
-</html>
