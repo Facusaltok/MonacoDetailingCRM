@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Monaco Detailing CRM</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+
+<style>
+:root{
+  --green:#00c853;
+  --green-dark:#009624;
+  --black:#0f172a;
+}
+
+body{
+  background: linear-gradient(135deg,#0f172a,#020617);
+  font-family: Inter, sans-serif;
+}
+
+/* Card */
+.card{
+  background:#0b1220;
+  border:1px solid rgba(0,200,83,0.2);
+  border-radius:20px;
+  box-shadow:0 20px 60px rgba(0,0,0,0.6);
+}
+
+/* Botón */
+.btn{
+  background:linear-gradient(135deg,var(--green),var(--green-dark));
+  transition:.3s;
+}
+.btn:hover{
+  transform:translateY(-2px);
+  box-shadow:0 10px 20px rgba(0,200,83,0.4);
+}
+
+/* Inputs */
+.input{
+  background:#020617;
+  border:1px solid #1e293b;
+  color:white;
+}
+.input:focus{
+  border-color:var(--green);
+  box-shadow:0 0 0 2px rgba(0,200,83,.2);
+}
+</style>
+</head>
+
+<body class="flex items-center justify-center h-screen">
+
+<div class="w-full max-w-md card p-8">
+
+  <!-- LOGO -->
+  <div class="text-center mb-6">
+    <img src="logo.png" class="w-24 mx-auto mb-4">
+    <h1 class="text-white text-2xl font-bold">Monaco Detailing</h1>
+    <p class="text-gray-400 text-sm">CRM Premium</p>
+  </div>
+
+  <!-- MENSAJE -->
+  <div id="msg" class="hidden mb-4 text-sm text-red-400"></div>
+
+  <!-- FORM -->
+  <form id="loginForm">
+
+    <input id="email" type="email" placeholder="Correo"
+      class="input w-full p-3 rounded-lg mb-3" required>
+
+    <input id="password" type="password" placeholder="Contraseña"
+      class="input w-full p-3 rounded-lg mb-5" required>
+
+    <button class="btn w-full py-3 rounded-lg text-white font-semibold">
+      Ingresar
+    </button>
+
+  </form>
+
+</div>
+
+<script>
+const SUPABASE_URL = "https://ecmjxpnpdgmvnxmbciur.supabase.co";
+const SUPABASE_KEY = "TU_KEY";
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+loginForm.addEventListener("submit", async(e)=>{
+  e.preventDefault();
+
+  const {error} = await sb.auth.signInWithPassword({
+    email: email.value,
+    password: password.value
+  });
+
+  if(error){
+    msg.innerText = error.message;
+    msg.classList.remove("hidden");
+  } else {
+    location.href="dashboard.html";
+  }
+});
+</script>
+
+</body>
+</html>
