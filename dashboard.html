@@ -13,113 +13,141 @@ body{
   color:white;
   font-family:Inter;
 }
+
+/* SIDEBAR */
+.sidebar{
+  width:240px;
+  background:#020617;
+  border-right:1px solid #111827;
+  height:100vh;
+  position:fixed;
+}
+
+/* MENU */
+.menu-item{
+  padding:12px;
+  border-radius:10px;
+  cursor:pointer;
+}
+.menu-item:hover{
+  background:#0f172a;
+}
+.active{
+  background:#00c853;
+  color:black;
+}
+
+/* CONTENT */
+.content{
+  margin-left:240px;
+  padding:30px;
+}
+
+/* CARD */
 .card{
   background:#0f172a;
-  border-radius:20px;
   padding:20px;
+  border-radius:20px;
   border:1px solid rgba(0,255,100,.1);
 }
+
+/* BUTTON */
 .btn{
   background:#00c853;
   color:black;
-  padding:10px 18px;
+  padding:10px;
   border-radius:10px;
   font-weight:600;
 }
+
+/* INPUT */
 .input{
   background:#020617;
   border:1px solid #1e293b;
   padding:10px;
   border-radius:8px;
   width:100%;
-  color:white;
-}
-.tab{
-  padding:10px 20px;
-  border-radius:10px;
-  cursor:pointer;
-  background:#0f172a;
-}
-.tab.active{
-  background:#00c853;
-  color:black;
 }
 </style>
 </head>
 
 <body>
 
-<!-- HEADER -->
-<div class="flex justify-between items-center p-6 border-b border-gray-800">
-  <h1 class="text-xl font-bold">Monaco Detailing CRM</h1>
-  <button id="logout" class="btn">Salir</button>
+<!-- SIDEBAR -->
+<div class="sidebar p-5">
+
+  <div class="flex items-center gap-3 mb-10">
+    <img src="logo.png" class="w-10">
+    <span class="font-bold">Monaco</span>
+  </div>
+
+  <div class="menu-item active" onclick="tab('servicios')">Servicios</div>
+  <div class="menu-item" onclick="tab('clientes')">Clientes</div>
+  <div class="menu-item" onclick="tab('turnos')">Turnos</div>
+  <div class="menu-item" onclick="tab('caja')">Caja</div>
+
 </div>
 
-<!-- TABS -->
-<div class="flex gap-3 p-6">
-  <div class="tab active" onclick="cambiarTab('servicios')">Servicios</div>
-  <div class="tab" onclick="cambiarTab('clientes')">Clientes</div>
-  <div class="tab" onclick="cambiarTab('turnos')">Turnos</div>
-  <div class="tab" onclick="cambiarTab('caja')">Caja</div>
-</div>
-
-<!-- CONTENIDO -->
-<div class="p-6">
+<!-- CONTENT -->
+<div class="content">
 
 <!-- SERVICIOS -->
-<div id="servicios" class="tabContent">
+<div id="servicios">
 
 <div class="grid grid-cols-3 gap-4 mb-6">
 
 <div class="card">
-<h3 class="mb-3 font-bold">Cliente</h3>
+<h3>Cliente</h3>
 <select id="cliente_select" class="input mb-3"></select>
 
-<input id="nuevo_nombre" placeholder="Nuevo cliente" class="input mb-2">
+<input id="nuevo_nombre" placeholder="Nombre" class="input mb-2">
 <input id="nuevo_tel" placeholder="Teléfono" class="input mb-3">
+
 <button onclick="crearCliente()" class="btn w-full">Crear</button>
 </div>
 
 <div class="card">
-<h3 class="mb-3 font-bold">Vehículo</h3>
+<h3>Vehículo</h3>
 <select id="vehiculo_select" class="input mb-3"></select>
 
 <input id="marca" placeholder="Marca" class="input mb-2">
 <input id="modelo" placeholder="Modelo" class="input mb-2">
 <input id="dominio" placeholder="Patente" class="input mb-3">
+
 <button onclick="crearVehiculo()" class="btn w-full">Agregar</button>
 </div>
 
 <div class="card">
-<h3 class="mb-3 font-bold">Servicio</h3>
+<h3>Servicio</h3>
+
 <select id="tipo" class="input mb-2">
 <option>PPF Completo</option>
-<option>Tratamiento Cerámico</option>
+<option>Cerámico</option>
 <option>Acrílico</option>
 <option>Interior</option>
-<option>Pulido</option>
 </select>
 
 <input id="precio" placeholder="Precio" class="input mb-3">
+
 <button onclick="crearServicio()" class="btn w-full">Crear</button>
 </div>
 
 </div>
 
 <div class="card">
-<h3 class="mb-4 font-bold">Servicios activos</h3>
+<h3 class="mb-4">Servicios</h3>
 
-<table class="w-full text-sm">
-<thead class="text-gray-400">
+<table class="w-full">
+<thead>
 <tr>
 <th>Servicio</th>
-<th>Precio</th>
 <th>Auto</th>
 <th>Cliente</th>
 <th>Estado</th>
-<th>Acción</th>
+<th></th>
 </tr>
 </thead>
+
 <tbody id="tabla"></tbody>
 </table>
 
@@ -127,91 +155,61 @@ body{
 
 </div>
 
-<!-- CLIENTES -->
-<div id="clientes" class="tabContent hidden">
-<div class="card">
-<h3 class="mb-4 font-bold">Clientes</h3>
-<ul id="listaClientes"></ul>
-</div>
-</div>
-
-<!-- TURNOS -->
-<div id="turnos" class="tabContent hidden">
-<div class="card">
-<h3 class="mb-4 font-bold">Turnos</h3>
-
-<input id="turno_cliente" placeholder="Cliente" class="input mb-2">
-<input id="turno_servicio" placeholder="Servicio" class="input mb-2">
-<input id="turno_fecha" type="date" class="input mb-2">
-
-<button onclick="crearTurno()" class="btn w-full mb-4">Agregar turno</button>
-
-<ul id="listaTurnos"></ul>
-
-</div>
-</div>
-
-<!-- CAJA -->
-<div id="caja" class="tabContent hidden">
-<div class="card">
-<h3 class="mb-4 font-bold">Caja</h3>
-
-<input id="concepto" placeholder="Concepto" class="input mb-2">
-<input id="monto" placeholder="Monto" class="input mb-2">
-
-<button onclick="agregarCaja()" class="btn w-full mb-4">Registrar</button>
-
-<ul id="listaCaja"></ul>
-
-</div>
-</div>
-
 </div>
 
 <script>
 const SUPABASE_URL = "https://wuewcawbpajdehquorfq.supabase.co";
 const SUPABASE_KEY = "sb_publishable_nzzOvYY0RYXDUavs-pFH6Q_pqnLU2tb";
-
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-// TABS
-function cambiarTab(tab){
-  document.querySelectorAll(".tabContent").forEach(t=>t.classList.add("hidden"));
-  document.getElementById(tab).classList.remove("hidden");
-
-  document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
-  event.target.classList.add("active");
-}
 
 // CLIENTES
 async function cargarClientes(){
   const {data} = await sb.from("clientes").select("*");
-
   cliente_select.innerHTML="";
-  listaClientes.innerHTML="";
-
   data.forEach(c=>{
-    cliente_select.innerHTML += `<option value="${c.id}">${c.nombre}</option>`;
-    listaClientes.innerHTML += `<li>${c.nombre} - ${c.telefono}</li>`;
+    cliente_select.innerHTML+=`<option value="${c.id}">${c.nombre}</option>`;
   });
 }
 
+// VEHICULOS
+async function cargarVehiculos(){
+  const {data} = await sb.from("vehiculos").select("*");
+  vehiculo_select.innerHTML="";
+  data.forEach(v=>{
+    vehiculo_select.innerHTML+=`<option value="${v.id}">${v.marca}</option>`;
+  });
+}
+
+// SERVICIOS
+async function cargarServicios(){
+  const {data} = await sb.from("servicios")
+  .select(`id,tipo,estado,vehiculos(marca,clientes(nombre,telefono))`);
+
+  tabla.innerHTML="";
+
+  data.forEach(s=>{
+    tabla.innerHTML+=`
+    <tr>
+      <td>${s.tipo}</td>
+      <td>${s.vehiculos?.marca}</td>
+      <td>${s.vehiculos?.clientes?.nombre}</td>
+      <td>${s.estado}</td>
+      <td>
+        <button onclick='terminar(${JSON.stringify(s)})' class="btn">
+        ✔
+        </button>
+      </td>
+    </tr>`;
+  });
+}
+
+// CREAR
 async function crearCliente(){
   await sb.from("clientes").insert({
     nombre:nuevo_nombre.value,
     telefono:nuevo_tel.value
   });
   cargarClientes();
-}
-
-// VEHICULOS
-async function cargarVehiculos(){
-  const {data} = await sb.from("vehiculos").select("*");
-
-  vehiculo_select.innerHTML="";
-  data.forEach(v=>{
-    vehiculo_select.innerHTML += `<option value="${v.id}">${v.marca} ${v.modelo}</option>`;
-  });
 }
 
 async function crearVehiculo(){
@@ -224,7 +222,6 @@ async function crearVehiculo(){
   cargarVehiculos();
 }
 
-// SERVICIOS
 async function crearServicio(){
   await sb.from("servicios").insert({
     vehiculo_id:vehiculo_select.value,
@@ -235,104 +232,27 @@ async function crearServicio(){
   cargarServicios();
 }
 
-async function cargarServicios(){
-  const {data} = await sb
-  .from("servicios")
-  .select(`id,tipo,precio,estado,
-    vehiculos(marca,modelo,clientes(nombre,telefono))
-  `);
+// WHATSAPP AUTO
+function terminar(s){
 
-  tabla.innerHTML="";
+  sb.from("servicios")
+    .update({estado:"terminado"})
+    .eq("id",s.id);
 
-  data.forEach(s=>{
-    const v=s.vehiculos;
-    const c=v?.clientes;
+  const tel = s.vehiculos?.clientes?.telefono.replace(/[^0-9]/g,"");
 
-    tabla.innerHTML+=`
-    <tr>
-      <td>${s.tipo}</td>
-      <td>$${s.precio}</td>
-      <td>${v?.marca||""} ${v?.modelo||""}</td>
-      <td>${c?.nombre||""}</td>
+  const msg = `Hola ${s.vehiculos?.clientes?.nombre},
+tu vehículo ya está listo 🚗✨
 
-      <td>
-        <select onchange="cambiarEstado('${s.id}', this.value)">
-          <option ${s.estado=="pendiente"?"selected":""}>pendiente</option>
-          <option ${s.estado=="proceso"?"selected":""}>proceso</option>
-          <option ${s.estado=="terminado"?"selected":""}>terminado</option>
-        </select>
-      </td>
-
-      <td>
-        <button onclick='terminarServicio(${JSON.stringify(s)})' class="btn">
-        Terminar
-        </button>
-      </td>
-    </tr>`;
-  });
-}
-
-async function cambiarEstado(id, estado){
-  await sb.from("servicios").update({estado}).eq("id",id);
-}
-
-function terminarServicio(s){
-  cambiarEstado(s.id,"terminado");
-
-  const tel = s.vehiculos?.clientes?.telefono?.replace(/[^0-9]/g,"");
-
-  const msg = `Hola ${s.vehiculos?.clientes?.nombre}, tu ${s.vehiculos?.marca} ${s.vehiculos?.modelo} ya está listo 🙌`;
+Gracias por confiar en Monaco Detailing`;
 
   window.open(`https://wa.me/54${tel}?text=${encodeURIComponent(msg)}`);
-}
-
-// TURNOS
-async function crearTurno(){
-  await sb.from("turnos").insert({
-    cliente:turno_cliente.value,
-    servicio:turno_servicio.value,
-    fecha:turno_fecha.value
-  });
-  cargarTurnos();
-}
-
-async function cargarTurnos(){
-  const {data}=await sb.from("turnos").select("*");
-  listaTurnos.innerHTML="";
-  data.forEach(t=>{
-    listaTurnos.innerHTML+=`<li>${t.fecha} - ${t.cliente} (${t.servicio})</li>`;
-  });
-}
-
-// CAJA
-async function agregarCaja(){
-  await sb.from("caja").insert({
-    concepto:concepto.value,
-    monto:monto.value
-  });
-  cargarCaja();
-}
-
-async function cargarCaja(){
-  const {data}=await sb.from("caja").select("*");
-  listaCaja.innerHTML="";
-  data.forEach(c=>{
-    listaCaja.innerHTML+=`<li>$${c.monto} - ${c.concepto}</li>`;
-  });
 }
 
 // INIT
 cargarClientes();
 cargarVehiculos();
 cargarServicios();
-cargarTurnos();
-cargarCaja();
-
-// LOGOUT
-logout.onclick=async()=>{
-  await sb.auth.signOut();
-  location.href="index.html";
-};
 </script>
 
 </body>
