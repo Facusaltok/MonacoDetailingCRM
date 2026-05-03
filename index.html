@@ -54,10 +54,13 @@ body{
 </div>
 
 <script>
+<script>
 const SUPABASE_URL = "https://wuewcawbpajdehquorfq.supabase.co";
 
 const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.xpZ_OqHj0BUwF8BOmq6olg9UiThD7-VBGA2Esj05gYY";
+
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+</script>
 
 loginForm.addEventListener("submit", async(e)=>{
   e.preventDefault();
