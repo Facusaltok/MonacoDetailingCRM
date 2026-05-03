@@ -8,136 +8,331 @@
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 
 <style>
-body{background:#020617;color:white;font-family:Inter;}
-.card{background:#0f172a;padding:20px;border-radius:20px;}
-.btn{background:#00c853;color:black;padding:10px 20px;border-radius:10px;}
-.input{background:#020617;border:1px solid #1e293b;color:white;padding:10px;border-radius:8px;width:100%;}
+body{
+  background:#020617;
+  color:white;
+  font-family:Inter;
+}
+.card{
+  background:#0f172a;
+  border-radius:20px;
+  padding:20px;
+  border:1px solid rgba(0,255,100,.1);
+}
+.btn{
+  background:#00c853;
+  color:black;
+  padding:10px 18px;
+  border-radius:10px;
+  font-weight:600;
+}
+.input{
+  background:#020617;
+  border:1px solid #1e293b;
+  padding:10px;
+  border-radius:8px;
+  width:100%;
+  color:white;
+}
+.tab{
+  padding:10px 20px;
+  border-radius:10px;
+  cursor:pointer;
+  background:#0f172a;
+}
+.tab.active{
+  background:#00c853;
+  color:black;
+}
 </style>
 </head>
 
 <body>
 
 <!-- HEADER -->
-<div class="flex justify-between p-6">
+<div class="flex justify-between items-center p-6 border-b border-gray-800">
   <h1 class="text-xl font-bold">Monaco Detailing CRM</h1>
   <button id="logout" class="btn">Salir</button>
 </div>
 
-<!-- FORMULARIO -->
-<div class="grid grid-cols-3 gap-4 p-6">
-
-<div class="card">
-  <h2 class="mb-3 font-bold">Nuevo Cliente</h2>
-  <input id="nombre" placeholder="Nombre" class="input mb-2">
-  <input id="telefono" placeholder="Teléfono" class="input mb-3">
-  <button onclick="crearCliente()" class="btn w-full">Guardar</button>
+<!-- TABS -->
+<div class="flex gap-3 p-6">
+  <div class="tab active" onclick="cambiarTab('servicios')">Servicios</div>
+  <div class="tab" onclick="cambiarTab('clientes')">Clientes</div>
+  <div class="tab" onclick="cambiarTab('turnos')">Turnos</div>
+  <div class="tab" onclick="cambiarTab('caja')">Caja</div>
 </div>
 
-<div class="card">
-  <h2 class="mb-3 font-bold">Vehículo</h2>
-  <input id="cliente_id" placeholder="ID Cliente" class="input mb-2">
-  <input id="marca" placeholder="Marca" class="input mb-2">
-  <input id="modelo" placeholder="Modelo" class="input mb-2">
-  <input id="dominio" placeholder="Patente" class="input mb-3">
-  <button onclick="crearVehiculo()" class="btn w-full">Guardar</button>
-</div>
-
-<div class="card">
-  <h2 class="mb-3 font-bold">Servicio</h2>
-  <input id="vehiculo_id" placeholder="ID Vehículo" class="input mb-2">
-  <input id="tipo" placeholder="Ej: PPF Completo" class="input mb-2">
-  <input id="precio" placeholder="Precio" class="input mb-3">
-  <button onclick="crearServicio()" class="btn w-full">Guardar</button>
-</div>
-
-</div>
-
-<!-- TABLA -->
+<!-- CONTENIDO -->
 <div class="p-6">
-  <div class="card">
-    <h2 class="mb-4 font-bold">Servicios</h2>
 
-    <table class="w-full text-sm">
-      <thead class="text-gray-400">
-        <tr>
-          <th>Tipo</th>
-          <th>Precio</th>
-          <th>Estado</th>
-        </tr>
-      </thead>
-      <tbody id="tabla"></tbody>
-    </table>
+<!-- SERVICIOS -->
+<div id="servicios" class="tabContent">
 
-  </div>
+<div class="grid grid-cols-3 gap-4 mb-6">
+
+<div class="card">
+<h3 class="mb-3 font-bold">Cliente</h3>
+<select id="cliente_select" class="input mb-3"></select>
+
+<input id="nuevo_nombre" placeholder="Nuevo cliente" class="input mb-2">
+<input id="nuevo_tel" placeholder="Teléfono" class="input mb-3">
+<button onclick="crearCliente()" class="btn w-full">Crear</button>
 </div>
 
-<script>
-<script>
-<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+<div class="card">
+<h3 class="mb-3 font-bold">Vehículo</h3>
+<select id="vehiculo_select" class="input mb-3"></select>
+
+<input id="marca" placeholder="Marca" class="input mb-2">
+<input id="modelo" placeholder="Modelo" class="input mb-2">
+<input id="dominio" placeholder="Patente" class="input mb-3">
+<button onclick="crearVehiculo()" class="btn w-full">Agregar</button>
+</div>
+
+<div class="card">
+<h3 class="mb-3 font-bold">Servicio</h3>
+<select id="tipo" class="input mb-2">
+<option>PPF Completo</option>
+<option>Tratamiento Cerámico</option>
+<option>Acrílico</option>
+<option>Interior</option>
+<option>Pulido</option>
+</select>
+
+<input id="precio" placeholder="Precio" class="input mb-3">
+<button onclick="crearServicio()" class="btn w-full">Crear</button>
+</div>
+
+</div>
+
+<div class="card">
+<h3 class="mb-4 font-bold">Servicios activos</h3>
+
+<table class="w-full text-sm">
+<thead class="text-gray-400">
+<tr>
+<th>Servicio</th>
+<th>Precio</th>
+<th>Auto</th>
+<th>Cliente</th>
+<th>Estado</th>
+<th>Acción</th>
+</tr>
+</thead>
+<tbody id="tabla"></tbody>
+</table>
+
+</div>
+
+</div>
+
+<!-- CLIENTES -->
+<div id="clientes" class="tabContent hidden">
+<div class="card">
+<h3 class="mb-4 font-bold">Clientes</h3>
+<ul id="listaClientes"></ul>
+</div>
+</div>
+
+<!-- TURNOS -->
+<div id="turnos" class="tabContent hidden">
+<div class="card">
+<h3 class="mb-4 font-bold">Turnos</h3>
+
+<input id="turno_cliente" placeholder="Cliente" class="input mb-2">
+<input id="turno_servicio" placeholder="Servicio" class="input mb-2">
+<input id="turno_fecha" type="date" class="input mb-2">
+
+<button onclick="crearTurno()" class="btn w-full mb-4">Agregar turno</button>
+
+<ul id="listaTurnos"></ul>
+
+</div>
+</div>
+
+<!-- CAJA -->
+<div id="caja" class="tabContent hidden">
+<div class="card">
+<h3 class="mb-4 font-bold">Caja</h3>
+
+<input id="concepto" placeholder="Concepto" class="input mb-2">
+<input id="monto" placeholder="Monto" class="input mb-2">
+
+<button onclick="agregarCaja()" class="btn w-full mb-4">Registrar</button>
+
+<ul id="listaCaja"></ul>
+
+</div>
+</div>
+
+</div>
 
 <script>
 const SUPABASE_URL = "https://wuewcawbpajdehquorfq.supabase.co";
-
 const SUPABASE_KEY = "sb_publishable_nzzOvYY0RYXDUavs-pFH6Q_pqnLU2tb";
 
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
+// TABS
+function cambiarTab(tab){
+  document.querySelectorAll(".tabContent").forEach(t=>t.classList.add("hidden"));
+  document.getElementById(tab).classList.remove("hidden");
 
-// LOGOUT
-logout.onclick = async ()=>{
-  await sb.auth.signOut();
-  location.href="index.html";
+  document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
+  event.target.classList.add("active");
 }
 
-// CREAR CLIENTE
+// CLIENTES
+async function cargarClientes(){
+  const {data} = await sb.from("clientes").select("*");
+
+  cliente_select.innerHTML="";
+  listaClientes.innerHTML="";
+
+  data.forEach(c=>{
+    cliente_select.innerHTML += `<option value="${c.id}">${c.nombre}</option>`;
+    listaClientes.innerHTML += `<li>${c.nombre} - ${c.telefono}</li>`;
+  });
+}
+
 async function crearCliente(){
   await sb.from("clientes").insert({
-    nombre: nombre.value,
-    telefono: telefono.value
+    nombre:nuevo_nombre.value,
+    telefono:nuevo_tel.value
   });
-  alert("Cliente creado");
+  cargarClientes();
 }
 
-// CREAR VEHICULO
+// VEHICULOS
+async function cargarVehiculos(){
+  const {data} = await sb.from("vehiculos").select("*");
+
+  vehiculo_select.innerHTML="";
+  data.forEach(v=>{
+    vehiculo_select.innerHTML += `<option value="${v.id}">${v.marca} ${v.modelo}</option>`;
+  });
+}
+
 async function crearVehiculo(){
   await sb.from("vehiculos").insert({
-    cliente_id: cliente_id.value,
-    marca: marca.value,
-    modelo: modelo.value,
-    dominio: dominio.value
+    cliente_id:cliente_select.value,
+    marca:marca.value,
+    modelo:modelo.value,
+    dominio:dominio.value
   });
-  alert("Vehículo creado");
+  cargarVehiculos();
 }
 
-// CREAR SERVICIO
+// SERVICIOS
 async function crearServicio(){
   await sb.from("servicios").insert({
-    vehiculo_id: vehiculo_id.value,
-    tipo: tipo.value,
-    precio: precio.value
+    vehiculo_id:vehiculo_select.value,
+    tipo:tipo.value,
+    precio:precio.value,
+    estado:"pendiente"
   });
-  alert("Servicio creado");
   cargarServicios();
 }
 
-// CARGAR SERVICIOS
 async function cargarServicios(){
-  const {data} = await sb.from("servicios").select("*");
+  const {data} = await sb
+  .from("servicios")
+  .select(`id,tipo,precio,estado,
+    vehiculos(marca,modelo,clientes(nombre,telefono))
+  `);
 
-  tabla.innerHTML = "";
+  tabla.innerHTML="";
 
   data.forEach(s=>{
-    tabla.innerHTML += `
-      <tr>
-        <td>${s.tipo}</td>
-        <td>$${s.precio}</td>
-        <td>${s.estado}</td>
-      </tr>
-    `;
+    const v=s.vehiculos;
+    const c=v?.clientes;
+
+    tabla.innerHTML+=`
+    <tr>
+      <td>${s.tipo}</td>
+      <td>$${s.precio}</td>
+      <td>${v?.marca||""} ${v?.modelo||""}</td>
+      <td>${c?.nombre||""}</td>
+
+      <td>
+        <select onchange="cambiarEstado('${s.id}', this.value)">
+          <option ${s.estado=="pendiente"?"selected":""}>pendiente</option>
+          <option ${s.estado=="proceso"?"selected":""}>proceso</option>
+          <option ${s.estado=="terminado"?"selected":""}>terminado</option>
+        </select>
+      </td>
+
+      <td>
+        <button onclick='terminarServicio(${JSON.stringify(s)})' class="btn">
+        Terminar
+        </button>
+      </td>
+    </tr>`;
   });
 }
 
+async function cambiarEstado(id, estado){
+  await sb.from("servicios").update({estado}).eq("id",id);
+}
+
+function terminarServicio(s){
+  cambiarEstado(s.id,"terminado");
+
+  const tel = s.vehiculos?.clientes?.telefono?.replace(/[^0-9]/g,"");
+
+  const msg = `Hola ${s.vehiculos?.clientes?.nombre}, tu ${s.vehiculos?.marca} ${s.vehiculos?.modelo} ya está listo 🙌`;
+
+  window.open(`https://wa.me/54${tel}?text=${encodeURIComponent(msg)}`);
+}
+
+// TURNOS
+async function crearTurno(){
+  await sb.from("turnos").insert({
+    cliente:turno_cliente.value,
+    servicio:turno_servicio.value,
+    fecha:turno_fecha.value
+  });
+  cargarTurnos();
+}
+
+async function cargarTurnos(){
+  const {data}=await sb.from("turnos").select("*");
+  listaTurnos.innerHTML="";
+  data.forEach(t=>{
+    listaTurnos.innerHTML+=`<li>${t.fecha} - ${t.cliente} (${t.servicio})</li>`;
+  });
+}
+
+// CAJA
+async function agregarCaja(){
+  await sb.from("caja").insert({
+    concepto:concepto.value,
+    monto:monto.value
+  });
+  cargarCaja();
+}
+
+async function cargarCaja(){
+  const {data}=await sb.from("caja").select("*");
+  listaCaja.innerHTML="";
+  data.forEach(c=>{
+    listaCaja.innerHTML+=`<li>$${c.monto} - ${c.concepto}</li>`;
+  });
+}
+
+// INIT
+cargarClientes();
+cargarVehiculos();
 cargarServicios();
+cargarTurnos();
+cargarCaja();
+
+// LOGOUT
+logout.onclick=async()=>{
+  await sb.auth.signOut();
+  location.href="index.html";
+};
 </script>
 
 </body>
