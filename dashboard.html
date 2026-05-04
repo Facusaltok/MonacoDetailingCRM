@@ -39,7 +39,6 @@ body {
   overflow-x: hidden;
 }
 
-/* ─── FONDO AMBIENTAL ─── */
 body::before {
   content:'';
   position:fixed;
@@ -68,7 +67,6 @@ body::after {
   66%{ transform: translate(-20px,40px) scale(0.95); }
 }
 
-/* ─── SIDEBAR ─── */
 .sidebar {
   position:fixed; top:0; left:0;
   width:260px; height:100vh;
@@ -142,7 +140,6 @@ body::after {
 .sidebar-footer span { font-size:12px; color:var(--text-secondary); }
 .sidebar-footer small { font-size:10px; color:var(--text-muted); display:block; }
 
-/* ─── CONTENIDO PRINCIPAL ─── */
 .main-content {
   margin-left:260px;
   min-height:100vh;
@@ -166,7 +163,6 @@ body::after {
 
 .page-body { padding:28px 32px 40px; }
 
-/* ─── SECCIONES ─── */
 .tab-section { display:none; }
 .tab-section.active { display:block; animation: fadeUp 0.35s ease; }
 @keyframes fadeUp {
@@ -174,7 +170,6 @@ body::after {
   to { opacity:1; transform:translateY(0); }
 }
 
-/* ─── TARJETAS KPI ─── */
 .kpi-card {
   background:var(--bg-card);
   border:1px solid var(--border);
@@ -196,6 +191,7 @@ body::after {
 .kpi-card.kpi-emerald::before { background:linear-gradient(90deg, var(--emerald), transparent); }
 .kpi-card.kpi-gold::before { background:linear-gradient(90deg, var(--gold), transparent); }
 .kpi-card.kpi-amber::before { background:linear-gradient(90deg, var(--amber), transparent); }
+.kpi-card.kpi-rose::before { background:linear-gradient(90deg, var(--rose), transparent); }
 
 .kpi-icon {
   width:42px; height:42px;
@@ -208,11 +204,11 @@ body::after {
 .kpi-emerald .kpi-icon { background:rgba(16,185,129,0.12); color:var(--emerald); }
 .kpi-gold .kpi-icon { background:var(--gold-soft); color:var(--gold); }
 .kpi-amber .kpi-icon { background:rgba(245,158,11,0.12); color:var(--amber); }
+.kpi-rose .kpi-icon { background:rgba(244,63,94,0.12); color:var(--rose); }
 
 .kpi-value { font-size:28px; font-weight:800; letter-spacing:-1px; line-height:1; }
 .kpi-label { font-size:12px; color:var(--text-secondary); margin-top:6px; font-weight:500; }
 
-/* ─── TARJETA GENÉRICA ─── */
 .card {
   background:var(--bg-card);
   border:1px solid var(--border);
@@ -227,7 +223,6 @@ body::after {
 }
 .card-title i { color:var(--gold); font-size:13px; }
 
-/* ─── INPUTS ─── */
 .form-group { margin-bottom:14px; }
 .form-label { display:block; font-size:11px; font-weight:600; color:var(--text-secondary); margin-bottom:6px; text-transform:uppercase; letter-spacing:0.5px; }
 .form-input {
@@ -249,7 +244,6 @@ body::after {
 .form-input::placeholder { color:var(--text-muted); }
 select.form-input { cursor:pointer; appearance:auto; }
 
-/* ─── BOTONES ─── */
 .btn-gold {
   background:linear-gradient(135deg, var(--gold), #A07830);
   color:#000;
@@ -267,6 +261,7 @@ select.form-input { cursor:pointer; appearance:auto; }
   transform:translateY(-1px);
   box-shadow:0 4px 20px var(--gold-glow);
 }
+.btn-gold:active { transform:translateY(0); }
 .btn-ghost {
   background:transparent;
   color:var(--text-secondary);
@@ -301,7 +296,6 @@ select.form-input { cursor:pointer; appearance:auto; }
 .btn-rose { background:rgba(244,63,94,0.1); color:var(--rose); }
 .btn-rose:hover { background:rgba(244,63,94,0.2); }
 
-/* ─── KANBAN ─── */
 .kanban-col {
   background:var(--bg-sidebar);
   border:1px solid var(--border);
@@ -347,7 +341,6 @@ select.form-input { cursor:pointer; appearance:auto; }
 .task-meta i { font-size:10px; }
 .task-actions { display:flex; gap:6px; }
 
-/* ─── LISTAS / TABLAS ─── */
 .list-item {
   display:flex; align-items:center; justify-content:space-between;
   padding:12px 16px;
@@ -362,6 +355,7 @@ select.form-input { cursor:pointer; appearance:auto; }
   border-radius:9px;
   display:flex; align-items:center; justify-content:center;
   font-size:14px;
+  flex-shrink:0;
 }
 .list-item-info h4 { font-size:13px; font-weight:600; }
 .list-item-info p { font-size:11px; color:var(--text-muted); margin-top:1px; }
@@ -373,6 +367,7 @@ select.form-input { cursor:pointer; appearance:auto; }
   font-weight:700;
   text-transform:uppercase;
   letter-spacing:0.5px;
+  white-space:nowrap;
 }
 .badge-ingreso { background:rgba(16,185,129,0.12); color:var(--emerald); }
 .badge-egreso { background:rgba(244,63,94,0.12); color:var(--rose); }
@@ -380,11 +375,11 @@ select.form-input { cursor:pointer; appearance:auto; }
 .badge-proceso { background:rgba(59,130,246,0.12); color:var(--blue); }
 .badge-terminado { background:rgba(16,185,129,0.12); color:var(--emerald); }
 
-/* ─── TOAST ─── */
 .toast-container {
   position:fixed; top:20px; right:20px;
   z-index:9999;
   display:flex; flex-direction:column; gap:10px;
+  pointer-events:none;
 }
 .toast {
   padding:14px 20px;
@@ -393,9 +388,11 @@ select.form-input { cursor:pointer; appearance:auto; }
   display:flex; align-items:center; gap:10px;
   animation:toastIn 0.35s ease;
   min-width:280px;
+  max-width:420px;
   box-shadow:0 10px 40px rgba(0,0,0,0.5);
   border:1px solid var(--border);
   backdrop-filter:blur(12px);
+  pointer-events:auto;
 }
 .toast-success { background:rgba(16,185,129,0.15); color:var(--emerald); border-color:rgba(16,185,129,0.2); }
 .toast-error { background:rgba(244,63,94,0.15); color:var(--rose); border-color:rgba(244,63,94,0.2); }
@@ -404,7 +401,6 @@ select.form-input { cursor:pointer; appearance:auto; }
 @keyframes toastIn { from{opacity:0;transform:translateX(40px);} to{opacity:1;transform:translateX(0);} }
 @keyframes toastOut { to{opacity:0;transform:translateX(40px);} }
 
-/* ─── MODAL ─── */
 .modal-overlay {
   position:fixed; inset:0;
   background:rgba(0,0,0,0.6);
@@ -429,14 +425,12 @@ select.form-input { cursor:pointer; appearance:auto; }
 .modal-box p { font-size:13px; color:var(--text-secondary); margin-bottom:20px; }
 .modal-actions { display:flex; gap:10px; justify-content:flex-end; }
 
-/* ─── EMPTY STATE ─── */
 .empty-state {
   text-align:center; padding:40px 20px; color:var(--text-muted);
 }
-.empty-state i { font-size:32px; margin-bottom:12px; opacity:0.3; }
+.empty-state i { font-size:32px; margin-bottom:12px; opacity:0.3; display:block; }
 .empty-state p { font-size:13px; }
 
-/* ─── SECCIÓN HEADER ─── */
 .section-header {
   display:flex; align-items:center; justify-content:space-between;
   margin-bottom:24px;
@@ -444,12 +438,28 @@ select.form-input { cursor:pointer; appearance:auto; }
 .section-header h2 { font-size:18px; font-weight:700; }
 .section-header-sub { font-size:12px; color:var(--text-muted); margin-top:2px; }
 
-/* ─── COUNTER ANIM ─── */
-@keyframes countPulse {
-  0%{transform:scale(1);} 50%{transform:scale(1.05);} 100%{transform:scale(1);}
+/* Debug banner */
+.debug-banner {
+  background:rgba(244,63,94,0.08);
+  border:1px solid rgba(244,63,94,0.2);
+  border-radius:10px;
+  padding:14px 18px;
+  margin-bottom:16px;
+  font-size:12px;
+  color:var(--rose);
+  display:none;
+  align-items:center;
+  gap:10px;
+}
+.debug-banner.show { display:flex; }
+.debug-banner code {
+  background:rgba(0,0,0,0.3);
+  padding:2px 8px;
+  border-radius:4px;
+  font-size:11px;
+  word-break:break-all;
 }
 
-/* ─── RESPONSIVE ─── */
 @media(max-width:1024px){
   .sidebar { transform:translateX(-100%); }
   .sidebar.open { transform:translateX(0); box-shadow:20px 0 60px rgba(0,0,0,0.5); }
@@ -461,13 +471,12 @@ select.form-input { cursor:pointer; appearance:auto; }
   .top-bar { padding:14px 16px; }
   .kpi-grid { grid-template-columns:1fr 1fr !important; }
   .kanban-grid { grid-template-columns:1fr !important; }
-  .form-row { grid-template-columns:1fr !important; }
+  .two-col { grid-template-columns:1fr !important; }
 }
 @media(max-width:480px){
   .kpi-grid { grid-template-columns:1fr !important; }
 }
 
-/* ─── SCROLLBAR ─── */
 ::-webkit-scrollbar { width:6px; }
 ::-webkit-scrollbar-track { background:transparent; }
 ::-webkit-scrollbar-thumb { background:rgba(255,255,255,0.08); border-radius:10px; }
@@ -477,7 +486,6 @@ select.form-input { cursor:pointer; appearance:auto; }
 
 <body>
 
-<!-- ═══════════════════ SIDEBAR ═══════════════════ -->
 <aside class="sidebar" id="sidebar">
   <div class="sidebar-logo">
     <div class="logo-icon">M</div>
@@ -486,7 +494,6 @@ select.form-input { cursor:pointer; appearance:auto; }
       <div class="logo-sub">CRM Pro</div>
     </div>
   </div>
-
   <nav class="sidebar-nav">
     <div class="nav-item active" data-tab="dashboard" onclick="switchTab('dashboard',this)">
       <i class="fa-solid fa-gauge-high"></i> Dashboard
@@ -507,7 +514,6 @@ select.form-input { cursor:pointer; appearance:auto; }
       <i class="fa-solid fa-vault"></i> Caja
     </div>
   </nav>
-
   <div class="sidebar-footer">
     <div class="avatar">A</div>
     <div>
@@ -517,10 +523,7 @@ select.form-input { cursor:pointer; appearance:auto; }
   </div>
 </aside>
 
-<!-- ═══════════════════ MAIN ═══════════════════ -->
 <div class="main-content">
-
-  <!-- TOP BAR -->
   <div class="top-bar">
     <div style="display:flex;align-items:center;">
       <button class="hamburger" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></button>
@@ -536,10 +539,9 @@ select.form-input { cursor:pointer; appearance:auto; }
     </div>
   </div>
 
-  <!-- PAGE BODY -->
   <div class="page-body">
 
-    <!-- ═══ DASHBOARD ═══ -->
+    <!-- DASHBOARD -->
     <div class="tab-section active" id="sec-dashboard">
       <div class="kpi-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px;">
         <div class="kpi-card kpi-blue">
@@ -563,16 +565,13 @@ select.form-input { cursor:pointer; appearance:auto; }
           <div class="kpi-label">Clientes</div>
         </div>
       </div>
-
-      <div style="display:grid;grid-template-columns:2fr 1fr;gap:20px;">
-        <!-- Servicios recientes -->
+      <div class="two-col" style="display:grid;grid-template-columns:2fr 1fr;gap:20px;">
         <div class="card">
           <div class="card-title"><i class="fa-solid fa-clock-rotate-left"></i> Servicios Recientes</div>
           <div id="recentServices">
             <div class="empty-state"><i class="fa-solid fa-inbox"></i><p>Cargando servicios...</p></div>
           </div>
         </div>
-        <!-- Resumen financiero -->
         <div class="card">
           <div class="card-title"><i class="fa-solid fa-chart-line"></i> Resumen Financiero</div>
           <div style="margin-bottom:18px;">
@@ -601,7 +600,7 @@ select.form-input { cursor:pointer; appearance:auto; }
       </div>
     </div>
 
-    <!-- ═══ OPERACIONES ═══ -->
+    <!-- OPERACIONES -->
     <div class="tab-section" id="sec-operaciones">
       <div class="section-header">
         <div>
@@ -634,7 +633,7 @@ select.form-input { cursor:pointer; appearance:auto; }
       </div>
     </div>
 
-    <!-- ═══ TURNOS ═══ -->
+    <!-- TURNOS -->
     <div class="tab-section" id="sec-turnos">
       <div class="section-header">
         <div>
@@ -642,7 +641,7 @@ select.form-input { cursor:pointer; appearance:auto; }
           <div class="section-header-sub">Registra un nuevo servicio</div>
         </div>
       </div>
-      <div style="display:grid;grid-template-columns:1fr 1.5fr;gap:20px;">
+      <div class="two-col" style="display:grid;grid-template-columns:1fr 1.5fr;gap:20px;">
         <div class="card">
           <div class="card-title"><i class="fa-solid fa-plus"></i> Crear Turno</div>
           <div class="form-group">
@@ -665,7 +664,7 @@ select.form-input { cursor:pointer; appearance:auto; }
           <div id="t_vehiculo_fields">
             <div class="form-group">
               <label class="form-label">Vehiculo</label>
-              <select id="t_vehiculo_sel" class="form-input">
+              <select id="t_vehiculo_sel" class="form-input" onchange="onVehiculoSelect()">
                 <option value="">-- Seleccionar --</option>
                 <option value="__nuevo">+ Nuevo vehiculo</option>
               </select>
@@ -701,7 +700,7 @@ select.form-input { cursor:pointer; appearance:auto; }
             <label class="form-label">Fecha</label>
             <input id="t_fecha" type="date" class="form-input">
           </div>
-          <button onclick="crearTurno()" class="btn-gold w-full" style="width:100%;justify-content:center;margin-top:6px;">
+          <button onclick="crearTurno()" class="btn-gold" style="width:100%;justify-content:center;margin-top:6px;">
             <i class="fa-solid fa-calendar-plus"></i> Crear Turno
           </button>
         </div>
@@ -714,7 +713,7 @@ select.form-input { cursor:pointer; appearance:auto; }
       </div>
     </div>
 
-    <!-- ═══ CLIENTES ═══ -->
+    <!-- CLIENTES -->
     <div class="tab-section" id="sec-clientes">
       <div class="section-header">
         <div>
@@ -722,7 +721,7 @@ select.form-input { cursor:pointer; appearance:auto; }
           <div class="section-header-sub">Base de datos de clientes</div>
         </div>
       </div>
-      <div style="display:grid;grid-template-columns:1fr 1.5fr;gap:20px;">
+      <div class="two-col" style="display:grid;grid-template-columns:1fr 1.5fr;gap:20px;">
         <div class="card">
           <div class="card-title"><i class="fa-solid fa-user-plus"></i> <span id="clienteFormTitle">Agregar Cliente</span></div>
           <input type="hidden" id="c_edit_id" value="">
@@ -750,7 +749,7 @@ select.form-input { cursor:pointer; appearance:auto; }
       </div>
     </div>
 
-    <!-- ═══ VEHICULOS ═══ -->
+    <!-- VEHICULOS -->
     <div class="tab-section" id="sec-vehiculos">
       <div class="section-header">
         <div>
@@ -758,7 +757,7 @@ select.form-input { cursor:pointer; appearance:auto; }
           <div class="section-header-sub">Registro de vehiculos</div>
         </div>
       </div>
-      <div style="display:grid;grid-template-columns:1fr 1.5fr;gap:20px;">
+      <div class="two-col" style="display:grid;grid-template-columns:1fr 1.5fr;gap:20px;">
         <div class="card">
           <div class="card-title"><i class="fa-solid fa-car-side"></i> Agregar Vehiculo</div>
           <div class="form-group">
@@ -794,7 +793,7 @@ select.form-input { cursor:pointer; appearance:auto; }
       </div>
     </div>
 
-    <!-- ═══ CAJA ═══ -->
+    <!-- CAJA -->
     <div class="tab-section" id="sec-caja">
       <div class="section-header">
         <div>
@@ -802,14 +801,20 @@ select.form-input { cursor:pointer; appearance:auto; }
           <div class="section-header-sub">Control de ingresos y egresos</div>
         </div>
       </div>
+
+      <!-- Banner de debug — visible solo si hay error de conexion -->
+      <div class="debug-banner" id="cajaDebugBanner">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        <span id="cajaDebugMsg">Error de conexion</span>
+      </div>
+
       <div class="kpi-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:24px;">
         <div class="kpi-card kpi-emerald">
           <div class="kpi-icon"><i class="fa-solid fa-arrow-trend-up"></i></div>
           <div class="kpi-value" id="caja_ingresos">$0</div>
           <div class="kpi-label">Total Ingresos</div>
         </div>
-        <div class="kpi-card kpi-rose" style="overflow:hidden;position:relative;">
-          <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--rose),transparent);"></div>
+        <div class="kpi-card kpi-rose">
           <div class="kpi-icon" style="background:rgba(244,63,94,0.12);color:var(--rose);"><i class="fa-solid fa-arrow-trend-down"></i></div>
           <div class="kpi-value" id="caja_egresos">$0</div>
           <div class="kpi-label">Total Egresos</div>
@@ -820,7 +825,7 @@ select.form-input { cursor:pointer; appearance:auto; }
           <div class="kpi-label">Balance</div>
         </div>
       </div>
-      <div style="display:grid;grid-template-columns:1fr 1.5fr;gap:20px;">
+      <div class="two-col" style="display:grid;grid-template-columns:1fr 1.5fr;gap:20px;">
         <div class="card">
           <div class="card-title"><i class="fa-solid fa-receipt"></i> Registrar Movimiento</div>
           <div class="form-group">
@@ -828,8 +833,8 @@ select.form-input { cursor:pointer; appearance:auto; }
             <input id="cx_concepto" class="form-input" placeholder="Ej: Detailing Completo">
           </div>
           <div class="form-group">
-            <label class="form-label">Monto</label>
-            <input id="cx_monto" type="number" class="form-input" placeholder="15000">
+            <label class="form-label">Monto ($)</label>
+            <input id="cx_monto" class="form-input" placeholder="15000" inputmode="decimal">
           </div>
           <div class="form-group">
             <label class="form-label">Tipo</label>
@@ -851,10 +856,10 @@ select.form-input { cursor:pointer; appearance:auto; }
       </div>
     </div>
 
-  </div><!-- /page-body -->
-</div><!-- /main-content -->
+  </div>
+</div>
 
-<!-- ═══ MODAL ═══ -->
+<!-- MODAL -->
 <div class="modal-overlay" id="modalOverlay">
   <div class="modal-box">
     <h3 id="modalTitle">Confirmar</h3>
@@ -866,20 +871,18 @@ select.form-input { cursor:pointer; appearance:auto; }
   </div>
 </div>
 
-<!-- ═══ TOASTS ═══ -->
 <div class="toast-container" id="toastContainer"></div>
-
 
 <script>
 /* ═══════════════════════════════════════════════
-   CONFIGURACIÓN SUPABASE
+   SUPABASE
    ═══════════════════════════════════════════════ */
 const sb = supabase.createClient(
   "https://wuewcawbpajdehquorfq.supabase.co",
   "sb_publishable_nzzOvYY0RYXDUavs-pFH6Q_pqnLU2tb"
 );
 
-/* ═══ ESTADO GLOBAL ═══ */
+/* ═══ ESTADO ═══ */
 let clientes = [];
 let vehiculos = [];
 let servicios = [];
@@ -892,13 +895,10 @@ let modalCallback = null;
 function formatMoney(n) {
   return '$' + Number(n || 0).toLocaleString('es-AR');
 }
-
 function formatDate(d) {
   if (!d) return '-';
-  const date = new Date(d);
-  return date.toLocaleDateString('es-AR', { day:'2-digit', month:'short', year:'numeric' });
+  return new Date(d).toLocaleDateString('es-AR', { day:'2-digit', month:'short', year:'numeric' });
 }
-
 function timeAgo(d) {
   if (!d) return '';
   const diff = Date.now() - new Date(d).getTime();
@@ -907,18 +907,19 @@ function timeAgo(d) {
   if (mins < 60) return mins + ' min';
   const hrs = Math.floor(mins / 60);
   if (hrs < 24) return hrs + 'h';
-  const days = Math.floor(hrs / 24);
-  return days + 'd';
+  return Math.floor(hrs / 24) + 'd';
 }
-
-/* Animación de conteo para KPIs */
+function esc(s) {
+  const d = document.createElement('div');
+  d.textContent = s || '';
+  return d.innerHTML;
+}
 function animateValue(el, target, prefix, suffix) {
   prefix = prefix || '';
   suffix = suffix || '';
   const start = parseInt(el.dataset.current || '0');
   const duration = 600;
   const startTime = performance.now();
-
   function update(now) {
     const elapsed = now - startTime;
     const progress = Math.min(elapsed / duration, 1);
@@ -931,25 +932,18 @@ function animateValue(el, target, prefix, suffix) {
   requestAnimationFrame(update);
 }
 
-/* ═══════════════════════════════════════════════
-   TOASTS
-   ═══════════════════════════════════════════════ */
+/* ═══ TOASTS ═══ */
 function toast(msg, type) {
   type = type || 'info';
   const icons = { success:'fa-circle-check', error:'fa-circle-xmark', info:'fa-circle-info' };
   const el = document.createElement('div');
   el.className = 'toast toast-' + type;
-  el.innerHTML = '<i class="fa-solid ' + icons[type] + '"></i> ' + msg;
+  el.innerHTML = '<i class="fa-solid ' + icons[type] + '"></i> <span>' + msg + '</span>';
   document.getElementById('toastContainer').appendChild(el);
-  setTimeout(() => {
-    el.classList.add('toast-out');
-    setTimeout(() => el.remove(), 300);
-  }, 3000);
+  setTimeout(() => { el.classList.add('toast-out'); setTimeout(() => el.remove(), 300); }, 4000);
 }
 
-/* ═══════════════════════════════════════════════
-   MODAL
-   ═══════════════════════════════════════════════ */
+/* ═══ MODAL ═══ */
 function showModal(title, msg, onConfirm) {
   document.getElementById('modalTitle').textContent = title;
   document.getElementById('modalMsg').textContent = msg;
@@ -966,32 +960,18 @@ function confirmModal() {
 }
 
 /* ═══════════════════════════════════════════════
-   NAVEGACIÓN
+   NAVEGACION
    ═══════════════════════════════════════════════ */
-const tabNames = {
-  dashboard: 'Dashboard',
-  operaciones: 'Operaciones',
-  turnos: 'Turnos',
-  clientes: 'Clientes',
-  vehiculos: 'Vehiculos',
-  caja: 'Caja'
-};
-
+const tabNames = { dashboard:'Dashboard', operaciones:'Operaciones', turnos:'Turnos', clientes:'Clientes', vehiculos:'Vehiculos', caja:'Caja' };
 function switchTab(id, el) {
   document.querySelectorAll('.tab-section').forEach(s => s.classList.remove('active'));
   document.getElementById('sec-' + id).classList.add('active');
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
   el.classList.add('active');
   document.getElementById('topTitle').textContent = tabNames[id] || id;
-  /* Cerrar sidebar en mobile */
   document.getElementById('sidebar').classList.remove('open');
 }
-
-function toggleSidebar() {
-  document.getElementById('sidebar').classList.toggle('open');
-}
-
-/* Cerrar sidebar al clickear fuera (mobile) */
+function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); }
 document.addEventListener('click', (e) => {
   const sb = document.getElementById('sidebar');
   const hamburger = document.querySelector('.hamburger');
@@ -1001,16 +981,16 @@ document.addEventListener('click', (e) => {
 });
 
 /* ═══════════════════════════════════════════════
-   CARGA DE DATOS
+   CARGA DE DATOS — con manejo robusto de errores
    ═══════════════════════════════════════════════ */
 async function loadClientes() {
   try {
     const { data, error } = await sb.from('clientes').select('*').order('created_at', { ascending: false });
-    if (error) throw error;
+    if (error) { console.error('Error clientes SELECT:', error); throw error; }
     clientes = data || [];
   } catch (e) {
-    console.error('Error cargando clientes:', e);
-    clientes = [];
+    console.error('loadClientes:', e);
+    clientes = clientes || [];
   }
   renderClientes();
   populateClienteSelects();
@@ -1019,11 +999,11 @@ async function loadClientes() {
 async function loadVehiculos() {
   try {
     const { data, error } = await sb.from('vehiculos').select('*, clientes(nombre)').order('created_at', { ascending: false });
-    if (error) throw error;
+    if (error) { console.error('Error vehiculos SELECT:', error); throw error; }
     vehiculos = data || [];
   } catch (e) {
-    console.error('Error cargando vehiculos:', e);
-    vehiculos = [];
+    console.error('loadVehiculos:', e);
+    vehiculos = vehiculos || [];
   }
   renderVehiculos();
 }
@@ -1033,11 +1013,11 @@ async function loadServicios() {
     const { data, error } = await sb.from('servicios')
       .select('id,tipo,estado,created_at,vehiculos(id,marca,modelo,clientes(id,nombre,telefono))')
       .order('created_at', { ascending: false });
-    if (error) throw error;
+    if (error) { console.error('Error servicios SELECT:', error); throw error; }
     servicios = data || [];
   } catch (e) {
-    console.error('Error cargando servicios:', e);
-    servicios = [];
+    console.error('loadServicios:', e);
+    servicios = servicios || [];
   }
   renderKanban();
   renderRecentServices();
@@ -1048,11 +1028,16 @@ async function loadServicios() {
 async function loadCaja() {
   try {
     const { data, error } = await sb.from('caja').select('*').order('created_at', { ascending: false });
-    if (error) throw error;
+    if (error) { console.error('Error caja SELECT:', error); throw error; }
     movimientos = data || [];
+    /* Ocultar banner de debug si la lectura funciona */
+    document.getElementById('cajaDebugBanner').classList.remove('show');
   } catch (e) {
-    console.error('Error cargando caja:', e);
-    movimientos = [];
+    console.error('loadCaja:', e);
+    movimientos = movimientos || [];
+    /* Mostrar banner de debug con el error */
+    document.getElementById('cajaDebugMsg').textContent = 'Error leyendo caja: ' + (e.message || e);
+    document.getElementById('cajaDebugBanner').classList.add('show');
   }
   renderCaja();
   updateKPIs();
@@ -1069,15 +1054,14 @@ async function refreshAll() {
 function updateKPIs() {
   const enProceso = servicios.filter(s => s.estado === 'proceso').length;
   const terminados = servicios.filter(s => s.estado === 'terminado').length;
-  const ingresos = movimientos.filter(m => m.tipo === 'ingreso').reduce((a, m) => a + Number(m.monto), 0);
-  const egresos = movimientos.filter(m => m.tipo === 'egreso').reduce((a, m) => a + Number(m.monto), 0);
+  const ingresos = movimientos.filter(m => m.tipo === 'ingreso').reduce((a, m) => a + Number(m.monto || 0), 0);
+  const egresos = movimientos.filter(m => m.tipo === 'egreso').reduce((a, m) => a + Number(m.monto || 0), 0);
 
   animateValue(document.getElementById('kpi_proceso'), enProceso);
   animateValue(document.getElementById('kpi_terminado'), terminados);
   animateValue(document.getElementById('kpi_facturacion'), ingresos, '$');
   animateValue(document.getElementById('kpi_clientes'), clientes.length);
 
-  /* Dashboard financiero */
   document.getElementById('dash_ingresos').textContent = formatMoney(ingresos);
   document.getElementById('dash_egresos').textContent = formatMoney(egresos);
   document.getElementById('dash_balance').textContent = formatMoney(ingresos - egresos);
@@ -1088,7 +1072,6 @@ function updateKPIs() {
     document.getElementById('bar_egresos').style.width = (egresos / maxVal * 100) + '%';
   }, 100);
 
-  /* Caja KPIs */
   animateValue(document.getElementById('caja_ingresos'), ingresos, '$');
   animateValue(document.getElementById('caja_egresos'), egresos, '$');
   animateValue(document.getElementById('caja_balance'), ingresos - egresos, '$');
@@ -1108,12 +1091,10 @@ function renderClientes() {
     return `
     <div class="list-item">
       <div class="list-item-left">
-        <div class="list-icon" style="background:var(--gold-soft);color:var(--gold);">
-          <i class="fa-solid fa-user"></i>
-        </div>
+        <div class="list-icon" style="background:var(--gold-soft);color:var(--gold);"><i class="fa-solid fa-user"></i></div>
         <div class="list-item-info">
           <h4>${esc(c.nombre)}</h4>
-          <p><i class="fa-solid fa-phone" style="font-size:9px;margin-right:3px;"></i>${esc(c.telefono || '-')} &nbsp;·&nbsp; ${vCount} vehiculo${vCount!==1?'s':''}</p>
+          <p><i class="fa-solid fa-phone" style="font-size:9px;margin-right:3px;"></i>${esc(c.telefono || '-')} &nbsp;&middot;&nbsp; ${vCount} vehiculo${vCount!==1?'s':''}</p>
         </div>
       </div>
       <div style="display:flex;gap:6px;">
@@ -1122,13 +1103,6 @@ function renderClientes() {
       </div>
     </div>`;
   }).join('');
-}
-
-/* Escapar HTML */
-function esc(s) {
-  const d = document.createElement('div');
-  d.textContent = s || '';
-  return d.innerHTML;
 }
 
 /* ═══════════════════════════════════════════════
@@ -1143,12 +1117,10 @@ function renderVehiculos() {
   el.innerHTML = vehiculos.map(v => `
     <div class="list-item">
       <div class="list-item-left">
-        <div class="list-icon" style="background:rgba(59,130,246,0.1);color:var(--blue);">
-          <i class="fa-solid fa-car"></i>
-        </div>
+        <div class="list-icon" style="background:rgba(59,130,246,0.1);color:var(--blue);"><i class="fa-solid fa-car"></i></div>
         <div class="list-item-info">
-          <h4>${esc(v.marca)} ${esc(v.modelo)}</h4>
-          <p><i class="fa-solid fa-user" style="font-size:9px;margin-right:3px;"></i>${esc(v.clientes?.nombre || '-')} ${v.patente ? '· ' + esc(v.patente) : ''}</p>
+          <h4>${esc(v.marca)} ${esc(v.modelo || '')}</h4>
+          <p><i class="fa-solid fa-user" style="font-size:9px;margin-right:3px;"></i>${esc(v.clientes?.nombre || '-')} ${v.patente ? '&middot; ' + esc(v.patente) : ''}</p>
         </div>
       </div>
       <button class="btn-sm btn-rose" onclick="eliminarVehiculo('${v.id}')"><i class="fa-solid fa-trash"></i></button>
@@ -1165,26 +1137,18 @@ function renderKanban() {
     const col = document.getElementById('col_' + est);
     const items = servicios.filter(s => s.estado === est);
     document.getElementById('count_' + est).textContent = items.length;
-
     if (!items.length) {
       col.innerHTML = '<div class="empty-state" style="padding:30px 10px;"><i class="fa-solid fa-inbox"></i><p>Sin servicios</p></div>';
       return;
     }
-
     col.innerHTML = items.map(s => {
       const cliente = s.vehiculos?.clientes?.nombre || 'Sin cliente';
       const vehiculo = s.vehiculos ? (s.vehiculos.marca + ' ' + (s.vehiculos.modelo || '')) : '';
-
       let actions = '';
-      if (est === 'pendiente') {
-        actions = `<button class="btn-sm btn-blue" onclick="moverServicio('${s.id}','proceso')"><i class="fa-solid fa-play"></i> Iniciar</button>`;
-      } else if (est === 'proceso') {
-        actions = `<button class="btn-sm btn-emerald" onclick="moverServicio('${s.id}','terminado')"><i class="fa-solid fa-check"></i> Completar</button>`;
-      } else {
-        actions = `<button class="btn-sm btn-amber" onclick="moverServicio('${s.id}','pendiente')"><i class="fa-solid fa-rotate-left"></i> Reabrir</button>`;
-      }
+      if (est === 'pendiente') actions = `<button class="btn-sm btn-blue" onclick="moverServicio('${s.id}','proceso')"><i class="fa-solid fa-play"></i> Iniciar</button>`;
+      else if (est === 'proceso') actions = `<button class="btn-sm btn-emerald" onclick="moverServicio('${s.id}','terminado')"><i class="fa-solid fa-check"></i> Completar</button>`;
+      else actions = `<button class="btn-sm btn-amber" onclick="moverServicio('${s.id}','pendiente')"><i class="fa-solid fa-rotate-left"></i> Reabrir</button>`;
       actions += ` <button class="btn-sm btn-rose" onclick="eliminarServicio('${s.id}')"><i class="fa-solid fa-trash"></i></button>`;
-
       return `
         <div class="task-card">
           <div class="task-service">${esc(s.tipo)}</div>
@@ -1214,12 +1178,10 @@ function renderRecentServices() {
     return `
     <div class="list-item">
       <div class="list-item-left">
-        <div class="list-icon" style="background:rgba(200,168,80,0.08);color:var(--gold);font-size:12px;">
-          <i class="fa-solid fa-spray-can-sparkles"></i>
-        </div>
+        <div class="list-icon" style="background:rgba(200,168,80,0.08);color:var(--gold);font-size:12px;"><i class="fa-solid fa-spray-can-sparkles"></i></div>
         <div class="list-item-info">
           <h4>${esc(s.tipo)}</h4>
-          <p>${esc(cliente)} · ${timeAgo(s.created_at)}</p>
+          <p>${esc(cliente)} &middot; ${timeAgo(s.created_at)}</p>
         </div>
       </div>
       <span class="badge ${badgeClass}">${estadoLabel}</span>
@@ -1228,7 +1190,7 @@ function renderRecentServices() {
 }
 
 /* ═══════════════════════════════════════════════
-   RENDER: TURNOS (pendientes)
+   RENDER: TURNOS
    ═══════════════════════════════════════════════ */
 function renderTurnos() {
   const el = document.getElementById('listaTurnos');
@@ -1243,12 +1205,10 @@ function renderTurnos() {
     return `
     <div class="list-item">
       <div class="list-item-left">
-        <div class="list-icon" style="background:rgba(245,158,11,0.1);color:var(--amber);">
-          <i class="fa-solid fa-clock"></i>
-        </div>
+        <div class="list-icon" style="background:rgba(245,158,11,0.1);color:var(--amber);"><i class="fa-solid fa-clock"></i></div>
         <div class="list-item-info">
           <h4>${esc(s.tipo)}</h4>
-          <p>${esc(cliente)} ${vehiculo ? '· ' + esc(vehiculo) : ''} · ${timeAgo(s.created_at)}</p>
+          <p>${esc(cliente)} ${vehiculo ? '&middot; ' + esc(vehiculo) : ''} &middot; ${timeAgo(s.created_at)}</p>
         </div>
       </div>
       <div style="display:flex;gap:6px;">
@@ -1290,7 +1250,7 @@ function renderCaja() {
 }
 
 /* ═══════════════════════════════════════════════
-   SELECTORES DE CLIENTES
+   SELECTORES
    ═══════════════════════════════════════════════ */
 function populateClienteSelects() {
   const selects = ['t_cliente_sel', 'v_cliente'];
@@ -1298,22 +1258,17 @@ function populateClienteSelects() {
     const sel = document.getElementById(id);
     if (!sel) return;
     const val = sel.value;
-    const firstOption = sel.querySelector('option:first-child');
-    const newOption = id === 't_cliente_sel' ? '<option value="__nuevo">+ Nuevo cliente</option>' : '';
-    sel.innerHTML = (firstOption ? firstOption.outerHTML : '') + newOption;
-    clientes.forEach(c => {
-      sel.innerHTML += `<option value="${c.id}">${esc(c.nombre)}</option>`;
-    });
+    const firstOpt = sel.querySelector('option:first-child');
+    const nuevoOpt = id === 't_cliente_sel' ? '<option value="__nuevo">+ Nuevo cliente</option>' : '';
+    sel.innerHTML = (firstOpt ? firstOpt.outerHTML : '') + nuevoOpt;
+    clientes.forEach(c => { sel.innerHTML += `<option value="${c.id}">${esc(c.nombre)}</option>`; });
     sel.value = val;
   });
 }
-
-/* Cuando selecciona cliente en turno */
 function onClienteSelect() {
   const val = document.getElementById('t_cliente_sel').value;
   const nuevoFields = document.getElementById('t_nuevo_cliente_fields');
   const vehiculoFields = document.getElementById('t_vehiculo_fields');
-
   if (val === '__nuevo') {
     nuevoFields.style.display = 'block';
     vehiculoFields.style.display = 'none';
@@ -1327,21 +1282,16 @@ function onClienteSelect() {
     populateVehiculoSelect('');
   }
 }
-
 function populateVehiculoSelect(clienteId) {
   const sel = document.getElementById('t_vehiculo_sel');
   sel.innerHTML = '<option value="">-- Seleccionar --</option><option value="__nuevo">+ Nuevo vehiculo</option>';
   const filtered = clienteId ? vehiculos.filter(v => v.cliente_id === clienteId) : vehiculos;
-  filtered.forEach(v => {
-    sel.innerHTML += `<option value="${v.id}">${esc(v.marca)} ${esc(v.modelo || '')}</option>`;
-  });
+  filtered.forEach(v => { sel.innerHTML += `<option value="${v.id}">${esc(v.marca)} ${esc(v.modelo || '')}</option>`; });
 }
-
-/* Cuando selecciona vehiculo en turno */
-document.getElementById('t_vehiculo_sel').addEventListener('change', function() {
+function onVehiculoSelect() {
   const nuevoFields = document.getElementById('t_nuevo_vehiculo_fields');
-  nuevoFields.style.display = this.value === '__nuevo' ? 'block' : 'none';
-});
+  nuevoFields.style.display = document.getElementById('t_vehiculo_sel').value === '__nuevo' ? 'block' : 'none';
+}
 
 /* ═══════════════════════════════════════════════
    CRUD: CLIENTES
@@ -1350,16 +1300,15 @@ async function guardarCliente() {
   const editId = document.getElementById('c_edit_id').value;
   const nombre = document.getElementById('c_nombre').value.trim();
   const telefono = document.getElementById('c_tel').value.trim();
-
   if (!nombre) { toast('Ingresa el nombre del cliente', 'error'); return; }
-
   try {
+    let error;
     if (editId) {
-      const { error } = await sb.from('clientes').update({ nombre, telefono }).eq('id', editId);
+      ({ error } = await sb.from('clientes').update({ nombre, telefono }).eq('id', editId));
       if (error) throw error;
       toast('Cliente actualizado', 'success');
     } else {
-      const { error } = await sb.from('clientes').insert({ nombre, telefono });
+      ({ error } = await sb.from('clientes').insert({ nombre, telefono }));
       if (error) throw error;
       toast('Cliente creado', 'success');
     }
@@ -1371,10 +1320,10 @@ async function guardarCliente() {
     document.getElementById('btnCancelEdit').style.display = 'none';
     await loadClientes();
   } catch (e) {
-    toast('Error: ' + e.message, 'error');
+    console.error('guardarCliente error:', e);
+    toast('Error al guardar cliente: ' + (e.message || e), 'error');
   }
 }
-
 function editarCliente(id) {
   const c = clientes.find(x => x.id === id);
   if (!c) return;
@@ -1384,10 +1333,8 @@ function editarCliente(id) {
   document.getElementById('clienteFormTitle').textContent = 'Editar Cliente';
   document.getElementById('clienteBtnText').textContent = 'Actualizar';
   document.getElementById('btnCancelEdit').style.display = 'inline-flex';
-  /* Scroll al formulario */
   document.getElementById('c_nombre').focus();
 }
-
 function cancelarEditCliente() {
   document.getElementById('c_edit_id').value = '';
   document.getElementById('c_nombre').value = '';
@@ -1396,7 +1343,6 @@ function cancelarEditCliente() {
   document.getElementById('clienteBtnText').textContent = 'Guardar';
   document.getElementById('btnCancelEdit').style.display = 'none';
 }
-
 function eliminarCliente(id) {
   const c = clientes.find(x => x.id === id);
   showModal('Eliminar cliente', 'Se eliminara ' + (c?.nombre || 'el cliente') + '. Esta accion no se puede deshacer.', async () => {
@@ -1406,7 +1352,7 @@ function eliminarCliente(id) {
       toast('Cliente eliminado', 'success');
       await loadClientes();
     } catch (e) {
-      toast('Error: ' + e.message, 'error');
+      toast('Error: ' + (e.message || e), 'error');
     }
   });
 }
@@ -1419,10 +1365,8 @@ async function crearVehiculo() {
   const marca = document.getElementById('v_marca').value.trim();
   const modelo = document.getElementById('v_modelo').value.trim();
   const patente = document.getElementById('v_patente').value.trim();
-
   if (!cliente_id) { toast('Selecciona un propietario', 'error'); return; }
   if (!marca) { toast('Ingresa la marca', 'error'); return; }
-
   try {
     const { error } = await sb.from('vehiculos').insert({ cliente_id, marca, modelo, patente });
     if (error) throw error;
@@ -1432,10 +1376,10 @@ async function crearVehiculo() {
     document.getElementById('v_patente').value = '';
     await loadVehiculos();
   } catch (e) {
-    toast('Error: ' + e.message, 'error');
+    console.error('crearVehiculo error:', e);
+    toast('Error al registrar vehiculo: ' + (e.message || e), 'error');
   }
 }
-
 function eliminarVehiculo(id) {
   showModal('Eliminar vehiculo', 'Se eliminara el vehiculo. Esta accion no se puede deshacer.', async () => {
     try {
@@ -1444,7 +1388,7 @@ function eliminarVehiculo(id) {
       toast('Vehiculo eliminado', 'success');
       await loadVehiculos();
     } catch (e) {
-      toast('Error: ' + e.message, 'error');
+      toast('Error: ' + (e.message || e), 'error');
     }
   });
 }
@@ -1456,32 +1400,25 @@ async function crearTurno() {
   const clienteSel = document.getElementById('t_cliente_sel').value;
   const servicio = document.getElementById('t_servicio').value;
   const fecha = document.getElementById('t_fecha').value;
-
   if (!servicio) { toast('Selecciona un servicio', 'error'); return; }
 
   try {
     let clienteId;
-
-    /* Cliente nuevo o existente */
     if (clienteSel === '__nuevo') {
       const nombre = document.getElementById('t_nombre').value.trim();
       const telefono = document.getElementById('t_tel').value.trim();
       if (!nombre) { toast('Ingresa el nombre del cliente', 'error'); return; }
-
       const { data, error } = await sb.from('clientes').insert({ nombre, telefono }).select();
       if (error) throw error;
       clienteId = data[0].id;
     } else if (clienteSel) {
       clienteId = clienteSel;
     } else {
-      toast('Selecciona o crea un cliente', 'error');
-      return;
+      toast('Selecciona o crea un cliente', 'error'); return;
     }
 
-    /* Vehiculo nuevo o existente */
     let vehiculoId;
     const vehiculoSel = document.getElementById('t_vehiculo_sel').value;
-
     if (clienteSel === '__nuevo' || vehiculoSel === '__nuevo') {
       const marca = document.getElementById('t_marca').value.trim() || 'Sin marca';
       const modelo = document.getElementById('t_modelo').value.trim() || '';
@@ -1491,22 +1428,17 @@ async function crearTurno() {
     } else if (vehiculoSel) {
       vehiculoId = vehiculoSel;
     } else {
-      /* Si no selecciona vehiculo y no es nuevo, crear uno generico */
       const { data, error } = await sb.from('vehiculos').insert({ cliente_id: clienteId, marca: 'Auto', modelo: '' }).select();
       if (error) throw error;
       vehiculoId = data[0].id;
     }
 
-    /* Crear servicio */
     const servicioData = { vehiculo_id: vehiculoId, tipo: servicio, estado: 'pendiente' };
     if (fecha) servicioData.fecha = fecha;
-
     const { error } = await sb.from('servicios').insert(servicioData);
     if (error) throw error;
 
     toast('Turno creado correctamente', 'success');
-
-    /* Limpiar form */
     document.getElementById('t_cliente_sel').value = '';
     document.getElementById('t_nombre').value = '';
     document.getElementById('t_tel').value = '';
@@ -1515,12 +1447,10 @@ async function crearTurno() {
     document.getElementById('t_modelo').value = '';
     document.getElementById('t_nuevo_cliente_fields').style.display = 'none';
     document.getElementById('t_nuevo_vehiculo_fields').style.display = 'none';
-
-    /* Recargar datos */
     await Promise.all([loadClientes(), loadVehiculos(), loadServicios()]);
-
   } catch (e) {
-    toast('Error: ' + e.message, 'error');
+    console.error('crearTurno error:', e);
+    toast('Error al crear turno: ' + (e.message || e), 'error');
   }
 }
 
@@ -1532,10 +1462,9 @@ async function moverServicio(id, nuevoEstado) {
     toast('Servicio movido a ' + labels[nuevoEstado], 'success');
     await loadServicios();
   } catch (e) {
-    toast('Error: ' + e.message, 'error');
+    toast('Error: ' + (e.message || e), 'error');
   }
 }
-
 function eliminarServicio(id) {
   showModal('Eliminar servicio', 'Se eliminara este servicio. Esta accion no se puede deshacer.', async () => {
     try {
@@ -1544,31 +1473,87 @@ function eliminarServicio(id) {
       toast('Servicio eliminado', 'success');
       await loadServicios();
     } catch (e) {
-      toast('Error: ' + e.message, 'error');
+      toast('Error: ' + (e.message || e), 'error');
     }
   });
 }
 
 /* ═══════════════════════════════════════════════
-   CRUD: CAJA
+   CRUD: CAJA — con diagnostico completo
    ═══════════════════════════════════════════════ */
 async function crearCaja() {
   const concepto = document.getElementById('cx_concepto').value.trim();
-  const monto = parseFloat(document.getElementById('cx_monto').value);
+  const montoRaw = document.getElementById('cx_monto').value.trim();
   const tipo = document.getElementById('cx_tipo').value;
 
   if (!concepto) { toast('Ingresa un concepto', 'error'); return; }
-  if (!monto || monto <= 0) { toast('Ingresa un monto valido', 'error'); return; }
+  if (!montoRaw) { toast('Ingresa un monto', 'error'); return; }
+
+  /* Parsear monto — aceptar comas como separador decimal */
+  const montoLimpio = montoRaw.replace(',', '.');
+  const montoNum = Number(montoLimpio);
+  if (isNaN(montoNum) || montoNum <= 0) {
+    toast('El monto debe ser un numero mayor a 0', 'error');
+    return;
+  }
+
+  /* Preparar payload — intentar con numero primero */
+  const payload = { concepto, monto: montoNum, tipo };
+
+  console.log('[CAJA] Intentando insert:', JSON.stringify(payload));
 
   try {
-    const { error } = await sb.from('caja').insert({ concepto, monto, tipo });
-    if (error) throw error;
+    /* Intento 1: monto como numero */
+    const result = await sb.from('caja').insert(payload).select();
+    console.log('[CAJA] Resultado intento 1:', JSON.stringify(result));
+
+    if (result.error) {
+      console.warn('[CAJA] Error con monto numerico, intentando como string...', result.error);
+
+      /* Intento 2: monto como string (por si la columna es text) */
+      const payload2 = { concepto, monto: montoRaw, tipo };
+      const result2 = await sb.from('caja').insert(payload2).select();
+      console.log('[CAJA] Resultado intento 2 (string):', JSON.stringify(result2));
+
+      if (result2.error) {
+        /* Intento 3: sin campo monto para diagnosticar */
+        console.warn('[CAJA] Error tambien con string. Intentando sin monto para diagnosticar...');
+        const payload3 = { concepto, tipo };
+        const result3 = await sb.from('caja').insert(payload3).select();
+        console.log('[CAJA] Resultado intento 3 (sin monto):', JSON.stringify(result3));
+
+        if (result3.error) {
+          throw new Error(result3.error.message || JSON.stringify(result3.error));
+        } else {
+          toast('Registro creado SIN monto — la columna "monto" puede no existir. Verifica tu tabla.', 'error');
+          await loadCaja();
+          return;
+        }
+      }
+
+      /* Si el insert con string funciono */
+      toast((tipo === 'ingreso' ? 'Ingreso' : 'Egreso') + ' registrado', 'success');
+      document.getElementById('cx_concepto').value = '';
+      document.getElementById('cx_monto').value = '';
+      document.getElementById('cajaDebugBanner').classList.remove('show');
+      await loadCaja();
+      return;
+    }
+
+    /* Intento 1 exitoso */
+    console.log('[CAJA] Insert exitoso, data:', JSON.stringify(result.data));
     toast((tipo === 'ingreso' ? 'Ingreso' : 'Egreso') + ' registrado', 'success');
     document.getElementById('cx_concepto').value = '';
     document.getElementById('cx_monto').value = '';
+    document.getElementById('cajaDebugBanner').classList.remove('show');
     await loadCaja();
+
   } catch (e) {
-    toast('Error: ' + e.message, 'error');
+    console.error('[CAJA] Error final:', e);
+    const errMsg = e.message || String(e);
+    document.getElementById('cajaDebugMsg').textContent = 'Error: ' + errMsg;
+    document.getElementById('cajaDebugBanner').classList.add('show');
+    toast('Error al registrar: ' + errMsg, 'error');
   }
 }
 
@@ -1580,26 +1565,64 @@ function eliminarCaja(id) {
       toast('Movimiento eliminado', 'success');
       await loadCaja();
     } catch (e) {
-      toast('Error: ' + e.message, 'error');
+      toast('Error: ' + (e.message || e), 'error');
     }
   });
 }
 
 /* ═══════════════════════════════════════════════
-   INICIALIZACIÓN
+   TEST DE CONEXION — se ejecuta al inicio
+   ═══════════════════════════════════════════════ */
+async function testConnection() {
+  console.log('[INIT] Testeando conexion a Supabase...');
+  try {
+    /* Test lectura de caja */
+    const { data, error } = await sb.from('caja').select('*').limit(1);
+    if (error) {
+      console.error('[INIT] Error leyendo tabla caja:', error);
+      document.getElementById('cajaDebugMsg').textContent =
+        'No se puede leer la tabla "caja": ' + (error.message || JSON.stringify(error)) +
+        ' — Verifica que la tabla exista y RLS permita SELECT para anon.';
+      document.getElementById('cajaDebugBanner').classList.add('show');
+    } else {
+      console.log('[INIT] Lectura caja OK, columnas:', data.length > 0 ? Object.keys(data[0]).join(', ') : 'tabla vacia');
+    }
+
+    /* Test de permisos INSERT */
+    const testData = { concepto: '__test_conexion__', monto: 1, tipo: 'ingreso' };
+    const insertResult = await sb.from('caja').insert(testData).select();
+    if (insertResult.error) {
+      console.error('[INIT] Error INSERT en caja:', insertResult.error);
+      document.getElementById('cajaDebugMsg').textContent =
+        'INSERT bloqueado en "caja": ' + (insertResult.error.message || JSON.stringify(insertResult.error)) +
+        ' — Verifica las politicas RLS en tu panel de Supabase.';
+      document.getElementById('cajaDebugBanner').classList.add('show');
+    } else {
+      console.log('[INIT] INSERT caja OK:', insertResult.data);
+      /* Borrar el registro de test */
+      if (insertResult.data && insertResult.data[0]) {
+        await sb.from('caja').delete().eq('id', insertResult.data[0].id);
+        console.log('[INIT] Registro de test eliminado');
+      }
+      document.getElementById('cajaDebugBanner').classList.remove('show');
+    }
+  } catch (e) {
+    console.error('[INIT] Error general de conexion:', e);
+  }
+}
+
+/* ═══════════════════════════════════════════════
+   INICIALIZACION
    ═══════════════════════════════════════════════ */
 (function init() {
-  /* Fecha en top bar */
   const now = new Date();
   const dias = ['Domingo','Lunes','Martes','Miercoles','Jueves','Viernes','Sabado'];
   const meses = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
   document.getElementById('topDate').textContent = dias[now.getDay()] + ', ' + now.getDate() + ' de ' + meses[now.getMonth()] + ', ' + now.getFullYear();
-
-  /* Fecha default en turno */
   document.getElementById('t_fecha').valueAsDate = now;
 
-  /* Cargar datos */
-  refreshAll();
+  /* Test de conexion primero, luego cargar datos */
+  testConnection().then(() => refreshAll());
 })();
 </script>
 
