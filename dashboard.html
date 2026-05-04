@@ -237,7 +237,6 @@ select.form-input {cursor:pointer;appearance:auto;}
 .ppf-info-card p {font-size:11px;color:var(--text-secondary);line-height:1.5;}
 .ppf-year-big {font-size:20px;font-weight:800;color:var(--primary);margin:0 2px;}
 
-/* ── Certificate Overlay ── */
 .cert-overlay {
   position:fixed;inset:0;background:rgba(0,0,0,0.85);backdrop-filter:blur(8px);
   z-index:200;display:flex;align-items:flex-start;justify-content:center;
@@ -305,7 +304,6 @@ select.form-input {cursor:pointer;appearance:auto;}
 .caja-tag-inst {background:rgba(16,185,129,0.1);color:var(--emerald);}
 .caja-tag-desc {background:rgba(245,158,11,0.1);color:var(--amber);}
 
-/* ── Caja Net Box ── */
 .caja-net-box {
   background:rgba(16,185,129,0.06);border:1px solid rgba(16,185,129,0.15);border-radius:10px;
   padding:12px 15px;margin-bottom:14px;
@@ -318,7 +316,6 @@ select.form-input {cursor:pointer;appearance:auto;}
 .caja-net-div {border-top:1px dashed rgba(255,255,255,0.08);margin:8px 0;padding-top:8px;}
 .caja-net-total {font-size:16px;font-weight:800;color:var(--primary);}
 
-/* ── Caja Group Card ── */
 .caja-group-card {
   background:rgba(255,255,255,0.015);border:1px solid var(--border);border-radius:11px;
   margin-bottom:10px;overflow:hidden;transition:border-color 0.2s;
@@ -335,7 +332,6 @@ select.form-input {cursor:pointer;appearance:auto;}
 .caja-group-row-left i {font-size:10px;}
 .caja-group-row-right {font-weight:700;font-size:12px;}
 
-/* ── Caja Mode Toggle ── */
 .mode-toggle {display:flex;gap:0;margin-bottom:18px;background:var(--bg-input);border-radius:10px;padding:3px;border:1px solid var(--border);}
 .mode-btn {flex:1;padding:9px 12px;border:none;border-radius:8px;font-family:inherit;font-size:12px;font-weight:700;cursor:pointer;transition:all 0.25s;display:flex;align-items:center;justify-content:center;gap:6px;letter-spacing:0.2px;}
 .mode-btn-trabajo.active {background:linear-gradient(135deg,var(--primary),#059669);color:#000;box-shadow:0 2px 12px rgba(16,185,129,0.2);}
@@ -506,9 +502,9 @@ select.form-input {cursor:pointer;appearance:auto;}
           <div class="form-group"><label class="form-label">Marca / Rollo de PPF *</label><select id="g_ppf_marca" class="form-input" onchange="onPPFBrandChange()"><option value="">-- Seleccionar marca --</option></select></div>
           <div class="ppf-info-card" id="ppfInfoCard">
             <h4><i class="fa-solid fa-circle-info"></i> <span id="ppfInfoName">-</span></h4>
-            <p>Garantia producto: <span class="ppf-year-big" id="ppfInfoProdYears">-</span> anos &nbsp;|&nbsp; Garantia instalacion: <span class="ppf-year-big" id="ppfInfoInstYears">-</span> ano(s)</p>
+            <p>Garantia producto: <span class="ppf-year-big" id="ppfInfoProdYears">-</span> anos | Garantia instalacion: <span class="ppf-year-big" id="ppfInfoInstYears">-</span> ano(s)</p>
           </div>
-          <div class="form-group"><label class="form-label">Codigo del producto</label><input id="g_codigo" class="form-input" placeholder="Ej: XPEL-UP-2025"></div>
+          <div class="form-group"><label class="form-label">Codigo del producto</label><input id="g_codigo" class="form-input" placeholder="Ej: NG-CL-2025"></div>
           <div class="form-group"><label class="form-label">Fecha de instalacion *</label><input id="g_fecha" type="date" class="form-input"></div>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
             <div class="form-group"><label class="form-label">Garantia producto (anos)</label><input id="g_anios_prod" type="number" min="1" max="30" class="form-input" placeholder="10"></div>
@@ -537,7 +533,6 @@ select.form-input {cursor:pointer;appearance:auto;}
             <button id="modeTrabajo" class="mode-btn mode-btn-trabajo active" onclick="setCajaMode('trabajo')"><i class="fa-solid fa-spray-can-sparkles"></i> Trabajo</button>
             <button id="modeEgreso" class="mode-btn mode-btn-egreso" onclick="setCajaMode('egreso')"><i class="fa-solid fa-arrow-down"></i> Egreso</button>
           </div>
-          <!-- MODO TRABAJO -->
           <div id="cajaTrabajoFields">
             <div class="form-group"><label class="form-label">Vehiculo</label><select id="cx_vehiculo" class="form-input"><option value="">-- Sin vehiculo --</option></select></div>
             <div class="form-group"><label class="form-label">Concepto</label><input id="cx_concepto" class="form-input" placeholder="Ej: PPF Completo BMW"></div>
@@ -556,7 +551,6 @@ select.form-input {cursor:pointer;appearance:auto;}
               <div class="caja-net-div"><div class="caja-net-row"><span class="caja-net-label" style="font-weight:700;">Neto a cobrar</span><span class="caja-net-total" id="net_total">$0</span></div></div>
             </div>
           </div>
-          <!-- MODO EGRESO -->
           <div id="cajaEgresoFields" style="display:none;">
             <div class="form-group"><label class="form-label">Concepto</label><input id="cx_egreso_concepto" class="form-input" placeholder="Ej: Alquiler del local"></div>
             <div class="form-group"><label class="form-label">Monto ($)</label><input id="cx_egreso_monto" class="form-input" placeholder="50000" inputmode="decimal"></div>
@@ -598,15 +592,13 @@ select.form-input {cursor:pointer;appearance:auto;}
 <div class="toast-container" id="toastContainer"></div>
 
 <script>
-/* ═══════════════════════════════════════════
-   SUPABASE
-   ═══════════════════════════════════════════ */
+// SUPABASE
 const sb = supabase.createClient(
   "https://wuewcawbpajdehquorfq.supabase.co",
   "sb_publishable_nzzOvYY0RYXDUavs-pFH6Q_pqnLU2tb"
 );
 
-/* ═══ ESTADO ═══ */
+// ESTADO
 let clientes = [];
 let vehiculos = [];
 let servicios = [];
@@ -616,9 +608,7 @@ let modalCallback = null;
 let cajaMode = 'trabajo';
 const tableColumns = { caja:null, clientes:null, vehiculos:null, servicios:null, garantias:null };
 
-/* ═══════════════════════════════════════════
-   CONFIG PPF — MARCAS Y AÑOS DE GARANTIA
-   ═══════════════════════════════════════════ */
+// CONFIG PPF - MARCAS Y AÑOS DE GARANTIA
 const ppfBrands = [
   { name:'3M Scotchgard Pro',        prodYears: 5, instYears:1, code:'3M-SP' },
   { name:'3M Scotchgard Standard',   prodYears: 3, instYears:1, code:'3M-SS' },
@@ -628,40 +618,125 @@ const ppfBrands = [
   { name:'PROTEMAX CLEAR',           prodYears:10, instYears:1, code:'PM-CL' }
 ];
 
-/* ═══ UTILIDADES ═══ */
-function formatMoney(n){return '$'+Number(n||0).toLocaleString('es-AR');}
-function formatDate(d){if(!d)return'-';return new Date(d).toLocaleDateString('es-AR',{day:'2-digit',month:'short',year:'numeric'});}
-function formatDateShort(d){if(!d)return'-';return new Date(d).toLocaleDateString('es-AR',{day:'2-digit',month:'2-digit',year:'numeric'});}
-function timeAgo(d){if(!d)return'';const diff=Date.now()-new Date(d).getTime();const m=Math.floor(diff/60000);if(m<1)return'Ahora';if(m<60)return m+' min';const h=Math.floor(m/60);if(h<24)return h+'h';return Math.floor(h/24)+'d';}
-function esc(s){const d=document.createElement('div');d.textContent=s||'';return d.innerHTML;}
-function animateValue(el,target,prefix,suffix){prefix=prefix||'';suffix=suffix||'';const start=parseInt(el.dataset.current||'0');const dur=600;const st=performance.now();function up(now){const p=Math.min((now-st)/dur,1);const e=1-Math.pow(1-p,3);const c=Math.round(start+(target-start)*e);el.textContent=prefix+c.toLocaleString('es-AR')+suffix;if(p<1)requestAnimationFrame(up);else el.dataset.current=target;}requestAnimationFrame(up);}
-function numToWord(n){const w=['cero','uno','dos','tres','cuatro','cinco','seis','siete','ocho','nueve','diez','once','doce','trece','catorce','quince','dieciseis','diecisiete','dieciocho','diecinueve','veinte','veintiuno','veintidos','veintitres','veinticuatro','veinticinco','veintiseis','veintisiete','veintiocho','veintinueve','treinta'];if(n>=0&&n<=30)return w[n];return n.toString();}
+// UTILIDADES
+function formatMoney(n){ return '$'+Number(n||0).toLocaleString('es-AR'); }
+function formatDate(d){ if(!d)return'-'; return new Date(d).toLocaleDateString('es-AR',{day:'2-digit',month:'short',year:'numeric'}); }
+function formatDateShort(d){ if(!d)return'-'; return new Date(d).toLocaleDateString('es-AR',{day:'2-digit',month:'2-digit',year:'numeric'}); }
+function timeAgo(d){ 
+  if(!d)return''; 
+  const diff=Date.now()-new Date(d).getTime(); 
+  const m=Math.floor(diff/60000); 
+  if(m<1)return'Ahora'; 
+  if(m<60)return m+' min'; 
+  const h=Math.floor(m/60); 
+  if(h<24)return h+'h'; 
+  return Math.floor(h/24)+'d'; 
+}
+function esc(s){ const d=document.createElement('div'); d.textContent=s||''; return d.innerHTML; }
 
-/* ═══ TOASTS ═══ */
-function toast(msg,type){type=type||'info';const ic={success:'fa-circle-check',error:'fa-circle-xmark',info:'fa-circle-info'};const el=document.createElement('div');el.className='toast toast-'+type;el.innerHTML='<i class="fa-solid '+ic[type]+'"></i> <span>'+msg+'</span>';document.getElementById('toastContainer').appendChild(el);setTimeout(()=>{el.classList.add('toast-out');setTimeout(()=>el.remove(),300);},4500);}
+function animateValue(el,target,prefix,suffix){
+  prefix=prefix||''; 
+  suffix=suffix||''; 
+  const start=parseInt(el.dataset.current||'0'); 
+  const dur=600; 
+  const st=performance.now(); 
+  function up(now){
+    const p=Math.min((now-st)/dur,1); 
+    const e=1-Math.pow(1-p,3); 
+    const c=Math.round(start+(target-start)*e); 
+    el.textContent=prefix+c.toLocaleString('es-AR')+suffix; 
+    if(p<1)requestAnimationFrame(up); 
+    else el.dataset.current=target;
+  } 
+  requestAnimationFrame(up);
+}
 
-/* ═══ MODAL ═══ */
-function showModal(title,msg,cb){document.getElementById('modalTitle').textContent=title;document.getElementById('modalMsg').textContent=msg;modalCallback=cb;document.getElementById('modalOverlay').classList.add('show');}
-function closeModal(){document.getElementById('modalOverlay').classList.remove('show');modalCallback=null;}
-function confirmModal(){if(modalCallback)modalCallback();closeModal();}
+function numToWord(n){
+  const w=['cero','uno','dos','tres','cuatro','cinco','seis','siete','ocho','nueve','diez','once','doce','trece','catorce','quince','dieciseis','diecisiete','dieciocho','diecinueve','veinte','veintiuno','veintidos','veintitres','veinticuatro','veinticinco','veintiseis','veintisiete','veintiocho','veintinueve','treinta'];
+  if(n>=0 && n<=30) return w[n]; 
+  return n.toString();
+}
 
-/* ═══════════════════════════════════════════
-   NAVEGACION
-   ═══════════════════════════════════════════ */
+// TOASTS
+function toast(msg,type){
+  type=type||'info';
+  const ic={success:'fa-circle-check',error:'fa-circle-xmark',info:'fa-circle-info'};
+  const el=document.createElement('div');
+  el.className='toast toast-'+type;
+  el.innerHTML='<i class="fa-solid '+ic[type]+'"></i> <span>'+msg+'</span>';
+  document.getElementById('toastContainer').appendChild(el);
+  setTimeout(function(){
+    el.classList.add('toast-out');
+    setTimeout(function(){ el.remove(); },300);
+  },4500);
+}
+
+// MODAL
+function showModal(title,msg,cb){
+  document.getElementById('modalTitle').textContent=title;
+  document.getElementById('modalMsg').textContent=msg;
+  modalCallback=cb;
+  document.getElementById('modalOverlay').classList.add('show');
+}
+function closeModal(){
+  document.getElementById('modalOverlay').classList.remove('show');
+  modalCallback=null;
+}
+function confirmModal(){
+  if(modalCallback) modalCallback();
+  closeModal();
+}
+
+// NAVEGACION
 const tabNames={dashboard:'Dashboard',operaciones:'Operaciones',turnos:'Turnos',clientes:'Clientes',vehiculos:'Vehiculos',garantia:'Garantia PPF',caja:'Caja'};
-function switchTab(id,el){document.querySelectorAll('.tab-section').forEach(s=>s.classList.remove('active'));document.getElementById('sec-'+id).classList.add('active');document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));el.classList.add('active');document.getElementById('topTitle').textContent=tabNames[id]||id;document.getElementById('sidebar').classList.remove('open');}
-function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');}
-document.addEventListener('click',e=>{const sb2=document.getElementById('sidebar');const hm=document.querySelector('.hamburger');if(window.innerWidth<=1024&&sb2.classList.contains('open')&&!sb2.contains(e.target)&&!hm.contains(e.target)){sb2.classList.remove('open');}});
 
-/* ═══════════════════════════════════════════
-   DETECCION DE COLUMNAS
-   ═══════════════════════════════════════════ */
-async function detectColumns(tn){try{const{data,error}=await sb.from(tn).select('*').limit(1);if(error){console.warn('[detectColumns]',tn,error.message);return null;}if(data&&data.length>0){const c=Object.keys(data[0]);console.log('[detectColumns]',tn,c.join(', '));return c;}return null;}catch(e){return null;}}
-function maybeOrder(q,tn,col,asc){const k=tableColumns[tn];if(k&&k.includes(col))return q.order(col,{ascending:!!asc});return q;}
+function switchTab(id,el){
+  document.querySelectorAll('.tab-section').forEach(function(s){ s.classList.remove('active'); });
+  document.getElementById('sec-'+id).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(function(n){ n.classList.remove('active'); });
+  el.classList.add('active');
+  document.getElementById('topTitle').textContent=tabNames[id]||id;
+  document.getElementById('sidebar').classList.remove('open');
+}
 
-/* ═══════════════════════════════════════════
-   CAJA MODE TOGGLE
-   ═══════════════════════════════════════════ */
+function toggleSidebar(){
+  document.getElementById('sidebar').classList.toggle('open');
+}
+
+document.addEventListener('click',function(e){
+  const sb2=document.getElementById('sidebar');
+  const hm=document.querySelector('.hamburger');
+  if(window.innerWidth<=1024 && sb2.classList.contains('open') && !sb2.contains(e.target) && !hm.contains(e.target)){
+    sb2.classList.remove('open');
+  }
+});
+
+// DETECCION DE COLUMNAS
+async function detectColumns(tn){
+  try{
+    const res=await sb.from(tn).select('*').limit(1);
+    if(res.error){
+      console.warn('[detectColumns]',tn,res.error.message);
+      return null;
+    }
+    if(res.data && res.data.length>0){
+      const c=Object.keys(res.data[0]);
+      console.log('[detectColumns]',tn,c.join(', '));
+      return c;
+    }
+    return null;
+  }catch(e){
+    return null;
+  }
+}
+
+function maybeOrder(q,tn,col,asc){
+  const k=tableColumns[tn];
+  if(k && k.includes(col)) return q.order(col,{ascending:!!asc});
+  return q;
+}
+
+// CAJA MODE TOGGLE
 function setCajaMode(mode){
   cajaMode=mode;
   document.getElementById('modeTrabajo').classList.toggle('active',mode==='trabajo');
@@ -670,9 +745,7 @@ function setCajaMode(mode){
   document.getElementById('cajaEgresoFields').style.display=mode==='egreso'?'block':'none';
 }
 
-/* ═══════════════════════════════════════════
-   CALCULO NETO EN FORMULARIO DE CAJA
-   ═══════════════════════════════════════════ */
+// CALCULO NETO EN FORMULARIO DE CAJA
 function calcularNeto(){
   const monto=parseFloat(document.getElementById('cx_monto').value)||0;
   const material=parseFloat(document.getElementById('cx_material').value)||0;
@@ -680,391 +753,848 @@ function calcularNeto(){
   const descuento=parseFloat(document.getElementById('cx_descuento').value)||0;
   const neto=monto-material-instalador-descuento;
   const box=document.getElementById('cajaNetBox');
-  if(monto>0||material>0||instalador>0||descuento>0){
+  
+  if(monto>0 || material>0 || instalador>0 || descuento>0){
     box.style.display='block';
     document.getElementById('net_cobrado').textContent=formatMoney(monto);
     document.getElementById('net_material').textContent='-'+formatMoney(material);
     document.getElementById('net_instalador').textContent='-'+formatMoney(instalador);
     document.getElementById('net_descuento').textContent='-'+formatMoney(descuento);
     document.getElementById('net_total').textContent=formatMoney(neto);
-    document.getElementById('net_total').style.color=neto>=0?'var(--primary)':'var(--rose)';
-  } else { box.style.display='none'; }
+    document.getElementById('net_total').style.color=neto>=0 ? 'var(--primary)' : 'var(--rose)';
+  } else {
+    box.style.display='none';
+  }
 }
 
-/* ═══════════════════════════════════════════
-   CARGA DE DATOS
-   ═══════════════════════════════════════════ */
+// CARGA DE DATOS
 async function loadClientes(){
-  try{let q=sb.from('clientes').select('*');q=maybeOrder(q,'clientes','created_at',false);const{data,error}=await q;if(error){const fb=await sb.from('clientes').select('*');if(fb.error)throw fb.error;clientes=fb.data||[];}else{clientes=data||[];}if(!tableColumns['clientes']&&clientes.length>0)tableColumns['clientes']=Object.keys(clientes[0]);}
-  catch(e){console.error('loadClientes',e);clientes=[];}
-  renderClientes();populateClienteSelects();
+  try{
+    let q=sb.from('clientes').select('*');
+    q=maybeOrder(q,'clientes','created_at',false);
+    const res=await q;
+    
+    if(res.error){
+      const fb=await sb.from('clientes').select('*');
+      if(fb.error) throw fb.error;
+      clientes=fb.data||[];
+    }else{
+      clientes=res.data||[];
+    }
+    
+    if(!tableColumns['clientes'] && clientes.length>0){
+      tableColumns['clientes']=Object.keys(clientes[0]);
+    }
+  }catch(e){
+    console.error('loadClientes',e);
+    clientes=[];
+  }
+  renderClientes();
+  populateClienteSelects();
 }
 
 async function loadVehiculos(){
-  try{let q=sb.from('vehiculos').select('*, clientes(nombre)');q=maybeOrder(q,'vehiculos','created_at',false);const{data,error}=await q;if(error){const fb=await sb.from('vehiculos').select('*, clientes(nombre)');if(fb.error)throw fb.error;vehiculos=fb.data||[];}else{vehiculos=data||[];}if(!tableColumns['vehiculos']&&vehiculos.length>0)tableColumns['vehiculos']=Object.keys(vehiculos[0]);}
-  catch(e){console.error('loadVehiculos',e);vehiculos=[];}
-  renderVehiculos();populateCajaVehiculoSelects();
+  try{
+    let q=sb.from('vehiculos').select('*, clientes(nombre)');
+    q=maybeOrder(q,'vehiculos','created_at',false);
+    const res=await q;
+    
+    if(res.error){
+      const fb=await sb.from('vehiculos').select('*, clientes(nombre)');
+      if(fb.error) throw fb.error;
+      vehiculos=fb.data||[];
+    }else{
+      vehiculos=res.data||[];
+    }
+    
+    if(!tableColumns['vehiculos'] && vehiculos.length>0){
+      tableColumns['vehiculos']=Object.keys(vehiculos[0]);
+    }
+  }catch(e){
+    console.error('loadVehiculos',e);
+    vehiculos=[];
+  }
+  renderVehiculos();
+  populateCajaVehiculoSelects();
 }
 
 async function loadServicios(){
-  try{let q=sb.from('servicios').select('id,tipo,estado,created_at,vehiculos(id,marca,modelo,clientes(id,nombre,telefono))');q=maybeOrder(q,'servicios','created_at',false);const{data,error}=await q;if(error){const fb=await sb.from('servicios').select('id,tipo,estado,created_at,vehiculos(id,marca,modelo,clientes(id,nombre,telefono))');if(fb.error)throw fb.error;servicios=fb.data||[];}else{servicios=data||[];}if(!tableColumns['servicios']&&servicios.length>0)tableColumns['servicios']=Object.keys(servicios[0]);}
-  catch(e){console.error('loadServicios',e);servicios=[];}
-  renderKanban();renderRecentServices();renderTurnos();updateKPIs();
+  try{
+    let q=sb.from('servicios').select('id,tipo,estado,created_at,vehiculos(id,marca,modelo,clientes(id,nombre,telefono))');
+    q=maybeOrder(q,'servicios','created_at',false);
+    const res=await q;
+    
+    if(res.error){
+      const fb=await sb.from('servicios').select('id,tipo,estado,created_at,vehiculos(id,marca,modelo,clientes(id,nombre,telefono))');
+      if(fb.error) throw fb.error;
+      servicios=fb.data||[];
+    }else{
+      servicios=res.data||[];
+    }
+    
+    if(!tableColumns['servicios'] && servicios.length>0){
+      tableColumns['servicios']=Object.keys(servicios[0]);
+    }
+  }catch(e){
+    console.error('loadServicios',e);
+    servicios=[];
+  }
+  renderKanban();
+  renderRecentServices();
+  renderTurnos();
+  updateKPIs();
 }
 
 async function loadCaja(){
-  try{let q=sb.from('caja').select('*');q=maybeOrder(q,'caja','created_at',false);let{data,error}=await q;if(error){const fb=await sb.from('caja').select('*');if(fb.error)throw fb.error;data=fb.data;showCajaBanner();}else{document.getElementById('cajaSetupBanner').classList.remove('show');}movimientos=data||[];if(!tableColumns['caja']&&movimientos.length>0)tableColumns['caja']=Object.keys(movimientos[0]);}
-  catch(e){console.error('loadCaja',e);movimientos=[];showCajaBanner(e.message);}
-  renderCaja();updateKPIs();
+  try{
+    let q=sb.from('caja').select('*');
+    q=maybeOrder(q,'caja','created_at',false);
+    const res=await q;
+    
+    if(res.error){
+      const fb=await sb.from('caja').select('*');
+      if(fb.error) throw fb.error;
+      movimientos=fb.data;
+      showCajaBanner();
+    }else{
+      document.getElementById('cajaSetupBanner').classList.remove('show');
+      movimientos=res.data||[];
+    }
+    
+    if(!tableColumns['caja'] && movimientos.length>0){
+      tableColumns['caja']=Object.keys(movimientos[0]);
+    }
+  }catch(e){
+    console.error('loadCaja',e);
+    movimientos=[];
+    showCajaBanner(e.message);
+  }
+  renderCaja();
+  updateKPIs();
 }
+
 function showCajaBanner(err){
-  const b=document.getElementById('cajaSetupBanner');const m=document.getElementById('cajaSetupMsg');
-  if(err){m.innerHTML='Error: <code>'+esc(err)+'</code>';}
-  else{m.innerHTML='Ejecuta en Supabase SQL:<br><code>ALTER TABLE caja ADD COLUMN vehiculo_id UUID REFERENCES vehiculos(id);</code><br><code>ALTER TABLE caja ADD COLUMN servicio TEXT;</code><br><code>ALTER TABLE caja ADD COLUMN material NUMERIC DEFAULT 0;</code><br><code>ALTER TABLE caja ADD COLUMN instalador NUMERIC DEFAULT 0;</code><br><code>ALTER TABLE caja ADD COLUMN descuento_3_csi NUMERIC DEFAULT 0;</code><br><code>ALTER TABLE caja ADD COLUMN grupo_id TEXT;</code><br><code>ALTER TABLE caja ADD COLUMN IF NOT EXISTS created_at TIMESTAMPTZ DEFAULT NOW();</code>';}
+  const b=document.getElementById('cajaSetupBanner');
+  const m=document.getElementById('cajaSetupMsg');
+  if(err){
+    m.innerHTML='Error: <code>'+esc(err)+'</code>';
+  }else{
+    m.innerHTML='Ejecuta en Supabase SQL:<br><code>ALTER TABLE caja ADD COLUMN vehiculo_id UUID REFERENCES vehiculos(id);</code><br><code>ALTER TABLE caja ADD COLUMN servicio TEXT;</code><br><code>ALTER TABLE caja ADD COLUMN material NUMERIC DEFAULT 0;</code><br><code>ALTER TABLE caja ADD COLUMN instalador NUMERIC DEFAULT 0;</code><br><code>ALTER TABLE caja ADD COLUMN descuento_3_csi NUMERIC DEFAULT 0;</code><br><code>ALTER TABLE caja ADD COLUMN grupo_id TEXT;</code><br><code>ALTER TABLE caja ADD COLUMN IF NOT EXISTS created_at TIMESTAMPTZ DEFAULT NOW();</code>';
+  }
   b.classList.add('show');
 }
 
 async function loadGarantias(){
-  try{let q=sb.from('garantias').select('*');q=maybeOrder(q,'garantias','created_at',false);const{data,error}=await q;if(error){console.warn('[loadGarantias]',error.message);garantias=[];document.getElementById('garSetupBanner').classList.add('show');}else{garantias=data||[];if(!tableColumns['garantias']&&garantias.length>0)tableColumns['garantias']=Object.keys(garantias[0]);document.getElementById('garSetupBanner').classList.remove('show');}}
-  catch(e){console.error('loadGarantias',e);garantias=[];}
+  try{
+    let q=sb.from('garantias').select('*');
+    q=maybeOrder(q,'garantias','created_at',false);
+    const res=await q;
+    
+    if(res.error){
+      console.warn('[loadGarantias]',res.error.message);
+      garantias=[];
+      document.getElementById('garSetupBanner').classList.add('show');
+    }else{
+      garantias=res.data||[];
+      if(!tableColumns['garantias'] && garantias.length>0){
+        tableColumns['garantias']=Object.keys(garantias[0]);
+      }
+      document.getElementById('garSetupBanner').classList.remove('show');
+    }
+  }catch(e){
+    console.error('loadGarantias',e);
+    garantias=[];
+  }
   renderGarantias();
 }
 
-async function refreshAll(){await Promise.all([loadClientes(),loadVehiculos(),loadServicios(),loadCaja(),loadGarantias()]);toast('Datos actualizados','success');}
+async function refreshAll(){
+  await Promise.all([loadClientes(),loadVehiculos(),loadServicios(),loadCaja(),loadGarantias()]);
+  toast('Datos actualizados','success');
+}
 
-/* ═══ KPIs ═══ */
+// KPIs
 function updateKPIs(){
-  const ep=servicios.filter(s=>s.estado==='proceso').length;
-  const et=servicios.filter(s=>s.estado==='terminado').length;
-  const ing=movimientos.filter(m=>m.tipo==='ingreso').reduce((a,m)=>a+Number(m.monto||0),0);
-  const egr=movimientos.filter(m=>m.tipo==='egreso').reduce((a,m)=>a+Number(m.monto||0),0);
+  const ep=servicios.filter(function(s){ return s.estado==='proceso'; }).length;
+  const et=servicios.filter(function(s){ return s.estado==='terminado'; }).length;
+  const ing=movimientos.filter(function(m){ return m.tipo==='ingreso'; }).reduce(function(a,m){ return a+Number(m.monto||0); },0);
+  const egr=movimientos.filter(function(m){ return m.tipo==='egreso'; }).reduce(function(a,m){ return a+Number(m.monto||0); },0);
+  
   animateValue(document.getElementById('kpi_proceso'),ep);
   animateValue(document.getElementById('kpi_terminado'),et);
   animateValue(document.getElementById('kpi_facturacion'),ing,'$');
   animateValue(document.getElementById('kpi_clientes'),clientes.length);
+  
   document.getElementById('dash_ingresos').textContent=formatMoney(ing);
   document.getElementById('dash_egresos').textContent=formatMoney(egr);
   document.getElementById('dash_balance').textContent=formatMoney(ing-egr);
+  
   const mx=Math.max(ing,egr,1);
-  setTimeout(()=>{document.getElementById('bar_ingresos').style.width=(ing/mx*100)+'%';document.getElementById('bar_egresos').style.width=(egr/mx*100)+'%';},100);
-  const fv=document.getElementById('cx_filtro_vehiculo')?.value||'';
+  setTimeout(function(){
+    document.getElementById('bar_ingresos').style.width=(ing/mx*100)+'%';
+    document.getElementById('bar_egresos').style.width=(egr/mx*100)+'%';
+  },100);
+  
+  const fv=document.getElementById('cx_filtro_vehiculo') ? document.getElementById('cx_filtro_vehiculo').value : '';
   let movSet=movimientos;
-  if(fv){movSet=movimientos.filter(m=>m.vehiculo_id===fv);}
-  const cIng=movSet.filter(m=>m.tipo==='ingreso').reduce((a,m)=>a+Number(m.monto||0),0);
-  const cEgr=movSet.filter(m=>m.tipo==='egreso').reduce((a,m)=>a+Number(m.monto||0),0);
+  if(fv){
+    movSet=movimientos.filter(function(m){ return m.vehiculo_id===fv; });
+  }
+  const cIng=movSet.filter(function(m){ return m.tipo==='ingreso'; }).reduce(function(a,m){ return a+Number(m.monto||0); },0);
+  const cEgr=movSet.filter(function(m){ return m.tipo==='egreso'; }).reduce(function(a,m){ return a+Number(m.monto||0); },0);
+  
   animateValue(document.getElementById('caja_ingresos'),cIng,'$');
   animateValue(document.getElementById('caja_egresos'),cEgr,'$');
   animateValue(document.getElementById('caja_balance'),cIng-cEgr,'$');
 }
 
-/* ═══════════════════════════════════════════
-   RENDER: CLIENTES
-   ═══════════════════════════════════════════ */
+// RENDER: CLIENTES
 function renderClientes(){
   const el=document.getElementById('listaClientes');
-  if(!clientes.length){el.innerHTML='<div class="empty-state"><i class="fa-solid fa-user-slash"></i><p>No hay clientes</p></div>';return;}
-  el.innerHTML=clientes.map(c=>{const vc=vehiculos.filter(v=>v.cliente_id===c.id).length;return`<div class="list-item"><div class="list-item-left"><div class="list-icon" style="background:var(--primary-soft);color:var(--primary);"><i class="fa-solid fa-user"></i></div><div class="list-item-info"><h4>${esc(c.nombre)}</h4><p><i class="fa-solid fa-phone" style="font-size:9px;margin-right:3px;"></i>${esc(c.telefono||'-')} &middot; ${vc} veh.</p></div></div><div style="display:flex;gap:5px;"><button class="btn-sm btn-amber" onclick="editarCliente('${c.id}')"><i class="fa-solid fa-pen"></i></button><button class="btn-sm btn-rose" onclick="eliminarCliente('${c.id}')"><i class="fa-solid fa-trash"></i></button></div></div>`;}).join('');
+  if(!clientes.length){
+    el.innerHTML='<div class="empty-state"><i class="fa-solid fa-user-slash"></i><p>No hay clientes</p></div>';
+    return;
+  }
+  
+  let html='';
+  for(let i=0;i<clientes.length;i++){
+    const c=clientes[i];
+    const vc=vehiculos.filter(function(v){ return v.cliente_id===c.id; }).length;
+    html+='<div class="list-item">';
+    html+='<div class="list-item-left">';
+    html+='<div class="list-icon" style="background:var(--primary-soft);color:var(--primary);"><i class="fa-solid fa-user"></i></div>';
+    html+='<div class="list-item-info">';
+    html+='<h4>'+esc(c.nombre)+'</h4>';
+    html+='<p><i class="fa-solid fa-phone" style="font-size:9px;margin-right:3px;"></i>'+esc(c.telefono||'-')+' &middot; '+vc+' veh.</p>';
+    html+='</div></div>';
+    html+='<div style="display:flex;gap:5px;">';
+    html+='<button class="btn-sm btn-amber" onclick="editarCliente(\''+c.id+'\')"><i class="fa-solid fa-pen"></i></button>';
+    html+='<button class="btn-sm btn-rose" onclick="eliminarCliente(\''+c.id+'\')"><i class="fa-solid fa-trash"></i></button>';
+    html+='</div></div>';
+  }
+  el.innerHTML=html;
 }
 
-/* ═══ RENDER: VEHICULOS ═══ */
+// RENDER: VEHICULOS
 function renderVehiculos(){
   const el=document.getElementById('listaVehiculos');
-  if(!vehiculos.length){el.innerHTML='<div class="empty-state"><i class="fa-solid fa-car-burst"></i><p>No hay vehiculos</p></div>';return;}
-  el.innerHTML=vehiculos.map(v=>`<div class="list-item"><div class="list-item-left"><div class="list-icon" style="background:rgba(59,130,246,0.1);color:var(--blue);"><i class="fa-solid fa-car"></i></div><div class="list-item-info"><h4>${esc(v.marca)} ${esc(v.modelo||'')}</h4><p><i class="fa-solid fa-user" style="font-size:9px;margin-right:3px;"></i>${esc(v.clientes?.nombre||'-')} ${v.patente?'&middot; '+esc(v.patente):''}</p></div></div><button class="btn-sm btn-rose" onclick="eliminarVehiculo('${v.id}')"><i class="fa-solid fa-trash"></i></button></div>`).join('');
+  if(!vehiculos.length){
+    el.innerHTML='<div class="empty-state"><i class="fa-solid fa-car-burst"></i><p>No hay vehiculos</p></div>';
+    return;
+  }
+  
+  let html='';
+  for(let i=0;i<vehiculos.length;i++){
+    const v=vehiculos[i];
+    html+='<div class="list-item">';
+    html+='<div class="list-item-left">';
+    html+='<div class="list-icon" style="background:rgba(59,130,246,0.1);color:var(--blue);"><i class="fa-solid fa-car"></i></div>';
+    html+='<div class="list-item-info">';
+    html+='<h4>'+esc(v.marca)+' '+(esc(v.modelo)||'')+'</h4>';
+    html+='<p><i class="fa-solid fa-user" style="font-size:9px;margin-right:3px;"></i>'+(esc(v.clientes?.nombre)||'-')+(v.patente ? ' &middot; '+esc(v.patente) : '')+'</p>';
+    html+='</div></div>';
+    html+='<button class="btn-sm btn-rose" onclick="eliminarVehiculo(\''+v.id+'\')"><i class="fa-solid fa-trash"></i></button>';
+    html+='</div>';
+  }
+  el.innerHTML=html;
 }
 
-/* ═══ RENDER: KANBAN ═══ */
+// RENDER: KANBAN
 function renderKanban(){
-  ['pendiente','proceso','terminado'].forEach(est=>{
+  const estados=['pendiente','proceso','terminado'];
+  for(let ei=0;ei<estados.length;ei++){
+    const est=estados[ei];
     const col=document.getElementById('col_'+est);
-    const items=servicios.filter(s=>s.estado===est);
+    const items=servicios.filter(function(s){ return s.estado===est; });
     document.getElementById('count_'+est).textContent=items.length;
-    if(!items.length){col.innerHTML='<div class="empty-state" style="padding:28px 10px;"><i class="fa-solid fa-inbox"></i><p>Sin servicios</p></div>';return;}
-    col.innerHTML=items.map(s=>{
-      const cl=s.vehiculos?.clientes?.nombre||'Sin cliente';
-      const vh=s.vehiculos?(s.vehiculos.marca+' '+(s.vehiculos.modelo||'')):'';
+    
+    if(!items.length){
+      col.innerHTML='<div class="empty-state" style="padding:28px 10px;"><i class="fa-solid fa-inbox"></i><p>Sin servicios</p></div>';
+      continue;
+    }
+    
+    let html='';
+    for(let i=0;i<items.length;i++){
+      const s=items[i];
+      const cl=s.vehiculos?.clientes?.nombre || 'Sin cliente';
+      const vh=s.vehiculos ? (s.vehiculos.marca+' '+(s.vehiculos.modelo||'')) : '';
+      
       let ac='';
-      if(est==='pendiente')ac=`<button class="btn-sm btn-blue" onclick="moverServicio('${s.id}','proceso')"><i class="fa-solid fa-play"></i> Iniciar</button>`;
-      else if(est==='proceso')ac=`<button class="btn-sm btn-emerald" onclick="moverServicio('${s.id}','terminado')"><i class="fa-solid fa-check"></i> Completar</button>`;
-      else ac=`<button class="btn-sm btn-amber" onclick="moverServicio('${s.id}','pendiente')"><i class="fa-solid fa-rotate-left"></i> Reabrir</button>`;
-      ac+=` <button class="btn-sm btn-rose" onclick="eliminarServicio('${s.id}')"><i class="fa-solid fa-trash"></i></button>`;
-      return`<div class="task-card"><div class="task-service">${esc(s.tipo)}</div><div class="task-meta"><i class="fa-solid fa-user"></i> ${esc(cl)}</div>${vh?`<div class="task-meta"><i class="fa-solid fa-car"></i> ${esc(vh)}</div>`:''}<div class="task-meta"><i class="fa-regular fa-clock"></i> ${timeAgo(s.created_at)}</div><div class="task-actions">${ac}</div></div>`;
-    }).join('');
-  });
+      if(est==='pendiente'){
+        ac='<button class="btn-sm btn-blue" onclick="moverServicio(\''+s.id+'\',\'proceso\')"><i class="fa-solid fa-play"></i> Iniciar</button>';
+      }else if(est==='proceso'){
+        ac='<button class="btn-sm btn-emerald" onclick="moverServicio(\''+s.id+'\',\'terminado\')"><i class="fa-solid fa-check"></i> Completar</button>';
+      }else{
+        ac='<button class="btn-sm btn-amber" onclick="moverServicio(\''+s.id+'\',\'pendiente\')"><i class="fa-solid fa-rotate-left"></i> Reabrir</button>';
+      }
+      ac+=' <button class="btn-sm btn-rose" onclick="eliminarServicio(\''+s.id+'\')"><i class="fa-solid fa-trash"></i></button>';
+      
+      html+='<div class="task-card">';
+      html+='<div class="task-service">'+esc(s.tipo)+'</div>';
+      html+='<div class="task-meta"><i class="fa-solid fa-user"></i> '+esc(cl)+'</div>';
+      if(vh) html+='<div class="task-meta"><i class="fa-solid fa-car"></i> '+esc(vh)+'</div>';
+      html+='<div class="task-meta"><i class="fa-regular fa-clock"></i> '+timeAgo(s.created_at)+'</div>';
+      html+='<div class="task-actions">'+ac+'</div>';
+      html+='</div>';
+    }
+    col.innerHTML=html;
+  }
 }
 
-/* ═══ RENDER: SERVICIOS RECIENTES ═══ */
+// RENDER: SERVICIOS RECIENTES
 function renderRecentServices(){
   const el=document.getElementById('recentServices');
   const rec=servicios.slice(0,8);
-  if(!rec.length){el.innerHTML='<div class="empty-state"><i class="fa-solid fa-inbox"></i><p>No hay servicios</p></div>';return;}
-  el.innerHTML=rec.map(s=>{const bc='badge-'+s.estado;const lb=s.estado==='proceso'?'En proceso':s.estado.charAt(0).toUpperCase()+s.estado.slice(1);const cl=s.vehiculos?.clientes?.nombre||'-';return`<div class="list-item"><div class="list-item-left"><div class="list-icon" style="background:rgba(16,185,129,0.08);color:var(--primary);font-size:12px;"><i class="fa-solid fa-spray-can-sparkles"></i></div><div class="list-item-info"><h4>${esc(s.tipo)}</h4><p>${esc(cl)} &middot; ${timeAgo(s.created_at)}</p></div></div><span class="badge ${bc}">${lb}</span></div>`;}).join('');
+  if(!rec.length){
+    el.innerHTML='<div class="empty-state"><i class="fa-solid fa-inbox"></i><p>No hay servicios</p></div>';
+    return;
+  }
+  
+  let html='';
+  for(let i=0;i<rec.length;i++){
+    const s=rec[i];
+    const bc='badge-'+s.estado;
+    const lb=s.estado==='proceso' ? 'En proceso' : s.estado.charAt(0).toUpperCase()+s.estado.slice(1);
+    const cl=s.vehiculos?.clientes?.nombre || '-';
+    
+    html+='<div class="list-item">';
+    html+='<div class="list-item-left">';
+    html+='<div class="list-icon" style="background:rgba(16,185,129,0.08);color:var(--primary);font-size:12px;"><i class="fa-solid fa-spray-can-sparkles"></i></div>';
+    html+='<div class="list-item-info"><h4>'+esc(s.tipo)+'</h4><p>'+esc(cl)+' &middot; '+timeAgo(s.created_at)+'</p></div></div>';
+    html+='<span class="badge '+bc+'">'+lb+'</span>';
+    html+='</div>';
+  }
+  el.innerHTML=html;
 }
 
-/* ═══ RENDER: TURNOS ═══ */
+// RENDER: TURNOS
 function renderTurnos(){
   const el=document.getElementById('listaTurnos');
-  const pend=servicios.filter(s=>s.estado==='pendiente');
-  if(!pend.length){el.innerHTML='<div class="empty-state"><i class="fa-solid fa-calendar-xmark"></i><p>No hay turnos pendientes</p></div>';return;}
-  el.innerHTML=pend.map(s=>{const cl=s.vehiculos?.clientes?.nombre||'-';const vh=s.vehiculos?(s.vehiculos.marca+' '+(s.vehiculos.modelo||'')):'';return`<div class="list-item"><div class="list-item-left"><div class="list-icon" style="background:rgba(245,158,11,0.1);color:var(--amber);"><i class="fa-solid fa-clock"></i></div><div class="list-item-info"><h4>${esc(s.tipo)}</h4><p>${esc(cl)} ${vh?'&middot; '+esc(vh):''} &middot; ${timeAgo(s.created_at)}</p></div></div><div style="display:flex;gap:5px;"><button class="btn-sm btn-blue" onclick="moverServicio('${s.id}','proceso')"><i class="fa-solid fa-play"></i></button><button class="btn-sm btn-rose" onclick="eliminarServicio('${s.id}')"><i class="fa-solid fa-trash"></i></button></div></div>`;}).join('');
+  const pend=servicios.filter(function(s){ return s.estado==='pendiente'; });
+  if(!pend.length){
+    el.innerHTML='<div class="empty-state"><i class="fa-solid fa-calendar-xmark"></i><p>No hay turnos pendientes</p></div>';
+    return;
+  }
+  
+  let html='';
+  for(let i=0;i<pend.length;i++){
+    const s=pend[i];
+    const cl=s.vehiculos?.clientes?.nombre || '-';
+    const vh=s.vehiculos ? (s.vehiculos.marca+' '+(s.vehiculos.modelo||'')) : '';
+    
+    html+='<div class="list-item">';
+    html+='<div class="list-item-left">';
+    html+='<div class="list-icon" style="background:rgba(245,158,11,0.1);color:var(--amber);"><i class="fa-solid fa-clock"></i></div>';
+    html+='<div class="list-item-info"><h4>'+esc(s.tipo)+'</h4><p>'+esc(cl)+(vh ? ' &middot; '+esc(vh) : '')+' &middot; '+timeAgo(s.created_at)+'</p></div></div>';
+    html+='<div style="display:flex;gap:5px;">';
+    html+='<button class="btn-sm btn-blue" onclick="moverServicio(\''+s.id+'\',\'proceso\')"><i class="fa-solid fa-play"></i></button>';
+    html+='<button class="btn-sm btn-rose" onclick="eliminarServicio(\''+s.id+'\')"><i class="fa-solid fa-trash"></i></button>';
+    html+='</div></div>';
+  }
+  el.innerHTML=html;
 }
 
-/* ═══ RENDER: CAJA (agrupado por grupo_id) ═══ */
+// RENDER: CAJA
 function renderCaja(){
   const el=document.getElementById('listaCaja');
-  const fv=document.getElementById('cx_filtro_vehiculo')?.value||'';
+  const fv=document.getElementById('cx_filtro_vehiculo') ? document.getElementById('cx_filtro_vehiculo').value : '';
   let filtered=movimientos;
-  if(fv){filtered=movimientos.filter(m=>m.vehiculo_id===fv);}
-
-  if(!filtered.length){
-    el.innerHTML='<div class="empty-state"><i class="fa-solid fa-receipt"></i><p>'+(fv?'No hay movimientos para este vehiculo':'No hay movimientos')+'</p></div>';
-    updateKPIs();return;
+  if(fv){
+    filtered=movimientos.filter(function(m){ return m.vehiculo_id===fv; });
   }
 
-  /* Agrupar por grupo_id */
+  if(!filtered.length){
+    el.innerHTML='<div class="empty-state"><i class="fa-solid fa-receipt"></i><p>'+(fv ? 'No hay movimientos para este vehiculo' : 'No hay movimientos')+'</p></div>';
+    updateKPIs();
+    return;
+  }
+
+  // Agrupar por grupo_id
   const groups=new Map();
   const ungrouped=[];
-  filtered.forEach(m=>{
+  
+  for(let i=0;i<filtered.length;i++){
+    const m=filtered[i];
     if(m.grupo_id){
-      if(!groups.has(m.grupo_id))groups.set(m.grupo_id,[]);
+      if(!groups.has(m.grupo_id)) groups.set(m.grupo_id,[]);
       groups.get(m.grupo_id).push(m);
-    } else { ungrouped.push(m); }
-  });
+    } else {
+      ungrouped.push(m);
+    }
+  }
 
   let html='';
 
-  /* Grupos (trabajos con ingreso + egresos vinculados) */
-  groups.forEach((items,gid)=>{
-    const ingreso=items.find(i=>i.tipo==='ingreso');
-    const egresos=items.filter(i=>i.tipo==='egreso');
-    const totalEgr=egresos.reduce((a,e)=>a+Number(e.monto||0),0);
+  // Grupos
+  groups.forEach(function(items,gid){
+    const ingreso=items.find(function(i){ return i.tipo==='ingreso'; });
+    const egresos=items.filter(function(i){ return i.tipo==='egreso'; });
+    const totalEgr=egresos.reduce(function(a,e){ return a+Number(e.monto||0); },0);
     const neto=Number(ingreso?.monto||0)-totalEgr;
+    
     let vehLabel='';
-    const vid=ingreso?.vehiculo_id||items[0]?.vehiculo_id;
-    if(vid){const v=vehiculos.find(x=>x.id===vid);if(v)vehLabel=(v.marca+' '+(v.modelo||'')).trim()+(v.patente?' ('+v.patente+')':'');}
-    const fd=ingreso?.created_at||items[0]?.created_at;
-    const fs=fd?formatDate(fd):'';
-    const servicio=ingreso?.servicio||items[0]?.servicio||'';
+    const vid=ingreso?.vehiculo_id || items[0]?.vehiculo_id;
+    if(vid){
+      const v=vehiculos.find(function(x){ return x.id===vid; });
+      if(v) vehLabel=(v.marca+' '+(v.modelo||'')).trim()+(v.patente ? ' ('+v.patente+')' : '');
+    }
+    
+    const fd=ingreso?.created_at || items[0]?.created_at;
+    const fs=fd ? formatDate(fd) : '';
+    const servicio=ingreso?.servicio || items[0]?.servicio || '';
 
-    html+=`<div class="caja-group-card">
-      <div class="caja-group-header">
-        <div class="list-item-left" style="gap:10px;">
-          <div class="list-icon" style="background:var(--primary-soft);color:var(--primary);width:32px;height:32px;font-size:12px;border-radius:8px;"><i class="fa-solid fa-layer-group"></i></div>
-          <div class="list-item-info">
-            <h4 style="font-size:13px;">${esc(ingreso?.concepto||items[0]?.concepto||'-')}</h4>
-            <p>${fs}${vehLabel?' &middot; <i class="fa-solid fa-car" style="font-size:9px;"></i> '+esc(vehLabel):''}${servicio?' &middot; '+esc(servicio):''}</p>
-          </div>
-        </div>
-        <div style="display:flex;align-items:center;gap:10px;">
-          <div style="text-align:right;">
-            <div style="font-size:10px;color:var(--text-muted);margin-bottom:1px;">Neto</div>
-            <div style="font-size:15px;font-weight:800;color:${neto>=0?'var(--primary)':'var(--rose)'};">${formatMoney(neto)}</div>
-          </div>
-          <button class="btn-sm btn-rose" onclick="eliminarCajaGrupo('${esc(gid)}')"><i class="fa-solid fa-trash"></i></button>
-        </div>
-      </div>
-      <div class="caja-group-body">
-        ${ingreso?`<div class="caja-group-row"><div class="caja-group-row-left"><i class="fa-solid fa-arrow-up" style="color:var(--emerald);"></i><span>Ingreso (cobrado)</span></div><div class="caja-group-row-right" style="color:var(--emerald);">+${formatMoney(ingreso.monto)}</div></div>`:''}
-        ${egresos.map(e=>`<div class="caja-group-row"><div class="caja-group-row-left"><i class="fa-solid fa-arrow-down" style="color:var(--rose);"></i><span>${esc(e.concepto)}</span></div><div class="caja-group-row-right" style="color:var(--rose);">-${formatMoney(e.monto)}</div></div>`).join('')}
-      </div>
-    </div>`;
+    html+='<div class="caja-group-card">';
+    html+='<div class="caja-group-header">';
+    html+='<div class="list-item-left" style="gap:10px;">';
+    html+='<div class="list-icon" style="background:var(--primary-soft);color:var(--primary);width:32px;height:32px;font-size:12px;border-radius:8px;"><i class="fa-solid fa-layer-group"></i></div>';
+    html+='<div class="list-item-info">';
+    html+='<h4 style="font-size:13px;">'+esc(ingreso?.concepto || items[0]?.concepto || '-')+'</h4>';
+    html+='<p>'+fs+(vehLabel ? ' &middot; <i class="fa-solid fa-car" style="font-size:9px;"></i> '+esc(vehLabel) : '')+(servicio ? ' &middot; '+esc(servicio) : '')+'</p>';
+    html+='</div></div>';
+    html+='<div style="display:flex;align-items:center;gap:10px;">';
+    html+='<div style="text-align:right;"><div style="font-size:10px;color:var(--text-muted);margin-bottom:1px;">Neto</div>';
+    html+='<div style="font-size:15px;font-weight:800;color:'+(neto>=0 ? 'var(--primary)' : 'var(--rose)')+';">'+formatMoney(neto)+'</div></div>';
+    html+='<button class="btn-sm btn-rose" onclick="eliminarCajaGrupo(\''+esc(gid)+'\')"><i class="fa-solid fa-trash"></i></button>';
+    html+='</div></div>';
+    html+='<div class="caja-group-body">';
+    if(ingreso){
+      html+='<div class="caja-group-row"><div class="caja-group-row-left"><i class="fa-solid fa-arrow-up" style="color:var(--emerald);"></i><span>Ingreso (cobrado)</span></div><div class="caja-group-row-right" style="color:var(--emerald);">+'+formatMoney(ingreso.monto)+'</div></div>';
+    }
+    for(let ei=0;ei<egresos.length;ei++){
+      const e=egresos[ei];
+      html+='<div class="caja-group-row"><div class="caja-group-row-left"><i class="fa-solid fa-arrow-down" style="color:var(--rose);"></i><span>'+esc(e.concepto)+'</span></div><div class="caja-group-row-right" style="color:var(--rose);">-'+formatMoney(e.monto)+'</div></div>';
+    }
+    html+='</div></div>';
   });
 
-  /* Registros sin grupo (egresos sueltos, registros viejos) */
-  ungrouped.forEach(m=>{
+  // Sin grupo
+  for(let ui=0;ui<ungrouped.length;ui++){
+    const m=ungrouped[ui];
     const isIn=m.tipo==='ingreso';
-    const fd=m.created_at||m.fecha||m.date;
-    const fs=fd?formatDate(fd):'';
+    const fd=m.created_at || m.fecha || m.date;
+    const fs=fd ? formatDate(fd) : '';
+    
     let vehLabel='';
-    if(m.vehiculo_id){const v=vehiculos.find(x=>x.id===m.vehiculo_id);if(v)vehLabel=(v.marca+' '+(v.modelo||'')).trim()+(v.patente?' ('+v.patente+')':'');}
+    if(m.vehiculo_id){
+      const v=vehiculos.find(function(x){ return x.id===m.vehiculo_id; });
+      if(v) vehLabel=(v.marca+' '+(v.modelo||'')).trim()+(v.patente ? ' ('+v.patente+')' : '');
+    }
+    
     let tags='';
-    if(vehLabel)tags+=`<span class="caja-tag caja-tag-veh"><i class="fa-solid fa-car" style="font-size:8px;margin-right:3px;"></i>${esc(vehLabel)}</span>`;
-    if(m.servicio)tags+=`<span class="caja-tag caja-tag-serv">${esc(m.servicio)}</span>`;
+    if(vehLabel) tags+='<span class="caja-tag caja-tag-veh"><i class="fa-solid fa-car" style="font-size:8px;margin-right:3px;"></i>'+esc(vehLabel)+'</span>';
+    if(m.servicio) tags+='<span class="caja-tag caja-tag-serv">'+esc(m.servicio)+'</span>';
 
-    html+=`<div class="list-item" style="flex-wrap:wrap;">
-      <div class="list-item-left" style="flex:1;min-width:0;">
-        <div class="list-icon" style="background:${isIn?'rgba(16,185,129,0.1)':'rgba(244,63,94,0.1)'};color:${isIn?'var(--emerald)':'var(--rose)'};">
-          <i class="fa-solid ${isIn?'fa-arrow-up':'fa-arrow-down'}"></i>
-        </div>
-        <div class="list-item-info" style="flex:1;min-width:0;">
-          <h4>${esc(m.concepto)}</h4>
-          <p>${fs||'Sin fecha'}</p>
-          ${tags?`<div class="caja-detail-row">${tags}</div>`:''}
-        </div>
-      </div>
-      <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
-        <span style="font-weight:700;color:${isIn?'var(--emerald)':'var(--rose)'};">${isIn?'+':'-'}${formatMoney(m.monto)}</span>
-        <button class="btn-sm btn-rose" onclick="eliminarCaja('${m.id}')"><i class="fa-solid fa-trash"></i></button>
-      </div>
-    </div>`;
-  });
+    html+='<div class="list-item" style="flex-wrap:wrap;">';
+    html+='<div class="list-item-left" style="flex:1;min-width:0;">';
+    html+='<div class="list-icon" style="background:'+(isIn ? 'rgba(16,185,129,0.1)' : 'rgba(244,63,94,0.1)')+';color:'+(isIn ? 'var(--emerald)' : 'var(--rose)')+';">';
+    html+='<i class="fa-solid '+(isIn ? 'fa-arrow-up' : 'fa-arrow-down')+'"></i></div>';
+    html+='<div class="list-item-info" style="flex:1;min-width:0;">';
+    html+='<h4>'+esc(m.concepto)+'</h4>';
+    html+='<p>'+(fs || 'Sin fecha')+'</p>';
+    if(tags) html+='<div class="caja-detail-row">'+tags+'</div>';
+    html+='</div></div>';
+    html+='<div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">';
+    html+='<span style="font-weight:700;color:'+(isIn ? 'var(--emerald)' : 'var(--rose)')+';">'+(isIn ? '+' : '-')+formatMoney(m.monto)+'</span>';
+    html+='<button class="btn-sm btn-rose" onclick="eliminarCaja(\''+m.id+'\')"><i class="fa-solid fa-trash"></i></button>';
+    html+='</div></div>';
+  }
 
   el.innerHTML=html;
   updateKPIs();
 }
 
-/* ═══ RENDER: GARANTIAS ═══ */
+// RENDER: GARANTIAS
 function renderGarantias(){
   const el=document.getElementById('listaGarantias');
-  if(!garantias.length){el.innerHTML='<div class="empty-state"><i class="fa-solid fa-shield-halved"></i><p>No hay certificados generados</p></div>';return;}
-  el.innerHTML=garantias.map(g=>{const fd=g.fecha_instalacion||g.created_at||'';return`<div class="gar-list-item"><div class="gar-list-icon"><i class="fa-solid fa-shield-halved"></i></div><div class="gar-list-info"><h4>${esc(g.ppf_marca||'PPF')} — ${esc(g.cliente_nombre||g.vehiculo_desc||'-')}</h4><p>N\u00b0 ${esc(g.numero||'-')} &middot; ${fd?formatDate(fd):'Sin fecha'} &middot; Prod: ${g.garantia_producto_anios||'?'}a / Inst: ${g.garantia_instalacion_anios||'?'}a</p></div><div class="gar-list-actions"><button class="btn-sm btn-blue" onclick="reimprimirGarantia('${g.id}')"><i class="fa-solid fa-print"></i></button><button class="btn-sm btn-rose" onclick="eliminarGarantia('${g.id}')"><i class="fa-solid fa-trash"></i></button></div></div>`;}).join('');
+  if(!garantias.length){
+    el.innerHTML='<div class="empty-state"><i class="fa-solid fa-shield-halved"></i><p>No hay certificados generados</p></div>';
+    return;
+  }
+  
+  let html='';
+  for(let i=0;i<garantias.length;i++){
+    const g=garantias[i];
+    const fd=g.fecha_instalacion || g.created_at || '';
+    html+='<div class="gar-list-item">';
+    html+='<div class="gar-list-icon"><i class="fa-solid fa-shield-halved"></i></div>';
+    html+='<div class="gar-list-info">';
+    html+='<h4>'+esc(g.ppf_marca||'PPF')+' — '+(esc(g.cliente_nombre||g.vehiculo_desc||'-'))+'</h4>';
+    html+='<p>N° '+esc(g.numero||-'')+' &middot; '+(fd ? formatDate(fd) : 'Sin fecha')+' &middot; Prod: '+(g.garantia_producto_anios||'?')+'a / Inst: '+(g.garantia_instalacion_anios||'?')+'a</p>';
+    html+='</div>';
+    html+='<div class="gar-list-actions">';
+    html+='<button class="btn-sm btn-blue" onclick="reimprimirGarantia(\''+g.id+'\')"><i class="fa-solid fa-print"></i></button>';
+    html+='<button class="btn-sm btn-rose" onclick="eliminarGarantia(\''+g.id+'\')"><i class="fa-solid fa-trash"></i></button>';
+    html+='</div></div>';
+  }
+  el.innerHTML=html;
 }
 
-/* ═══════════════════════════════════════════
-   SELECTORES
-   ═══════════════════════════════════════════ */
+// SELECTORES
 function populateClienteSelects(){
-  ['t_cliente_sel','v_cliente','g_cliente'].forEach(id=>{
-    const sel=document.getElementById(id);if(!sel)return;
+  const ids=['t_cliente_sel','v_cliente','g_cliente'];
+  for(let idx=0;idx<ids.length;idx++){
+    const id=ids[idx];
+    const sel=document.getElementById(id);
+    if(!sel) continue;
+    
     const val=sel.value;
     const first=sel.querySelector('option:first-child');
-    const nuevoOpt=id==='t_cliente_sel'?'<option value="__nuevo">+ Nuevo cliente</option>':'';
-    sel.innerHTML=(first?first.outerHTML:'')+nuevoOpt;
-    clientes.forEach(c=>{sel.innerHTML+=`<option value="${c.id}">${esc(c.nombre)}</option>`;});
+    const nuevoOpt=id==='t_cliente_sel' ? '<option value="__nuevo">+ Nuevo cliente</option>' : '';
+    
+    let optHtml=(first ? first.outerHTML : '')+nuevoOpt;
+    for(let ci=0;ci<clientes.length;ci++){
+      optHtml+='<option value="'+clientes[ci].id+'">'+esc(clientes[ci].nombre)+'</option>';
+    }
+    sel.innerHTML=optHtml;
     sel.value=val;
-  });
+  }
 }
 
 function populateCajaVehiculoSelects(){
-  ['cx_vehiculo','cx_egreso_vehiculo'].forEach(sid=>{
-    const sel=document.getElementById(sid);if(!sel)return;const val=sel.value;
-    sel.innerHTML='<option value="">-- Sin vehiculo --</option>';
-    vehiculos.forEach(v=>{const owner=v.clientes?.nombre||'';const label=esc(v.marca)+' '+(v.modelo?esc(v.modelo):'')+(v.patente?(' ('+esc(v.patente)+')'):'')+(owner?' — '+esc(owner):'');sel.innerHTML+=`<option value="${v.id}">${label}</option>`;});
+  const sids=['cx_vehiculo','cx_egreso_vehiculo'];
+  for(let si=0;si<sids.length;si++){
+    const sid=sids[si];
+    const sel=document.getElementById(sid);
+    if(!sel) continue;
+    
+    const val=sel.value;
+    let optHtml='<option value="">-- Sin vehiculo --</option>';
+    
+    for(let vi=0;vi<vehiculos.length;vi++){
+      const v=vehiculos[vi];
+      const owner=v.clientes?.nombre || '';
+      const label=esc(v.marca)+' '+(v.modelo ? esc(v.modelo) : '')+(v.patente ? ' ('+esc(v.patente)+')' : '')+(owner ? ' — '+esc(owner) : '');
+      optHtml+='<option value="'+v.id+'">'+label+'</option>';
+    }
+    sel.innerHTML=optHtml;
     sel.value=val;
-  });
+  }
+  
   const filt=document.getElementById('cx_filtro_vehiculo');
-  if(filt){const val=filt.value;filt.innerHTML='<option value="">Todos los vehiculos</option>';vehiculos.forEach(v=>{const label=esc(v.marca)+' '+(v.modelo?esc(v.modelo):'')+(v.patente?(' ('+esc(v.patente)+')'):'');filt.innerHTML+=`<option value="${v.id}">${label}</option>`;});filt.value=val;}
+  if(filt){
+    const val=filt.value;
+    let fHtml='<option value="">Todos los vehiculos</option>';
+    for(let vi=0;vi<vehiculos.length;vi++){
+      const v=vehiculos[vi];
+      const label=esc(v.marca)+' '+(v.modelo ? esc(v.modelo) : '')+(v.patente ? ' ('+esc(v.patente)+')' : '');
+      fHtml+='<option value="'+v.id+'">'+label+'</option>';
+    }
+    filt.innerHTML=fHtml;
+    filt.value=val;
+  }
 }
 
 function onClienteSelect(){
   const val=document.getElementById('t_cliente_sel').value;
   const nf=document.getElementById('t_nuevo_cliente_fields');
   const vf=document.getElementById('t_vehiculo_fields');
-  if(val==='__nuevo'){nf.style.display='block';vf.style.display='none';}
-  else if(val){nf.style.display='none';vf.style.display='block';populateVehiculoSelect(val);}
-  else{nf.style.display='none';vf.style.display='block';populateVehiculoSelect('');}
+  
+  if(val==='__nuevo'){
+    nf.style.display='block';
+    vf.style.display='none';
+  }else if(val){
+    nf.style.display='none';
+    vf.style.display='block';
+    populateVehiculoSelect(val);
+  }else{
+    nf.style.display='none';
+    vf.style.display='block';
+    populateVehiculoSelect('');
+  }
 }
 
 function populateVehiculoSelect(cid){
   const sel=document.getElementById('t_vehiculo_sel');
-  sel.innerHTML='<option value="">-- Seleccionar --</option><option value="__nuevo">+ Nuevo vehiculo</option>';
-  (cid?vehiculos.filter(v=>v.cliente_id===cid):vehiculos).forEach(v=>{sel.innerHTML+=`<option value="${v.id}">${esc(v.marca)} ${esc(v.modelo||'')}</option>`;});
+  let optHtml='<option value="">-- Seleccionar --</option><option value="__nuevo">+ Nuevo vehiculo</option>';
+  
+  const filtered=cid ? vehiculos.filter(function(v){ return v.cliente_id===cid; }) : vehiculos;
+  for(let i=0;i<filtered.length;i++){
+    optHtml+='<option value="'+filtered[i].id+'">'+esc(filtered[i].marca)+' '+(esc(filtered[i].modelo)||'')+'</option>';
+  }
+  sel.innerHTML=optHtml;
 }
 
-function onVehiculoSelect(){document.getElementById('t_nuevo_vehiculo_fields').style.display=document.getElementById('t_vehiculo_sel').value==='__nuevo'?'block':'none';}
+function onVehiculoSelect(){
+  document.getElementById('t_nuevo_vehiculo_fields').style.display=document.getElementById('t_vehiculo_sel').value==='__nuevo' ? 'block' : 'none';
+}
 
 function onGarClienteChange(){
   const cid=document.getElementById('g_cliente').value;
   const vSel=document.getElementById('g_vehiculo');
   vSel.innerHTML='<option value="">-- Seleccionar --</option>';
-  if(!cid)return;
-  vehiculos.filter(v=>v.cliente_id===cid).forEach(v=>{
-    vSel.innerHTML+=`<option value="${v.id}" data-marca="${esc(v.marca)}" data-modelo="${esc(v.modelo||'')}" data-patente="${esc(v.patente||'')}">${esc(v.marca)} ${esc(v.modelo||'')} ${v.patente?('('+esc(v.patente)+')':''}</option>`;
-  });
+  
+  if(!cid) return;
+  
+  const filtered=vehiculos.filter(function(v){ return v.cliente_id===cid; });
+  for(let i=0;i<filtered.length;i++){
+    const v=filtered[i];
+    vSel.innerHTML+='<option value="'+v.id+'" data-marca="'+esc(v.marca)+'" data-modelo="'+esc(v.modelo||'')+'" data-patente="'+esc(v.patente||'')+'">'+esc(v.marca)+' '+(esc(v.modelo)||'')+(v.patente ? '('+esc(v.patente)+')' : '')+'</option>';
+  }
 }
+
 function onGarVehiculoChange(){}
 
 function populatePPFSelect(){
   const sel=document.getElementById('g_ppf_marca');
-  sel.innerHTML='<option value="">-- Seleccionar marca --</option>';
-  ppfBrands.forEach((b,i)=>{sel.innerHTML+=`<option value="${i}">${esc(b.name)}</option>`;});
+  let optHtml='<option value="">-- Seleccionar marca --</option>';
+  for(let i=0;i<ppfBrands.length;i++){
+    optHtml+='<option value="'+i+'">'+esc(ppfBrands[i].name)+'</option>';
+  }
+  sel.innerHTML=optHtml;
 }
 
 function onPPFBrandChange(){
   const idx=parseInt(document.getElementById('g_ppf_marca').value);
   const card=document.getElementById('ppfInfoCard');
-  if(isNaN(idx)){card.classList.remove('show');document.getElementById('g_anios_prod').value='';document.getElementById('g_anios_inst').value='';document.getElementById('g_codigo').value='';return;}
+  
+  if(isNaN(idx)){
+    card.classList.remove('show');
+    document.getElementById('g_anios_prod').value='';
+    document.getElementById('g_anios_inst').value='';
+    document.getElementById('g_codigo').value='';
+    return;
+  }
+  
   const brand=ppfBrands[idx];
   card.classList.add('show');
   document.getElementById('ppfInfoName').textContent=brand.name;
-  document.getElementById('ppfInfoProdYears').textContent=brand.prodYears>0?brand.prodYears:'?';
+  document.getElementById('ppfInfoProdYears').textContent=brand.prodYears>0 ? brand.prodYears : '?';
   document.getElementById('ppfInfoInstYears').textContent=brand.instYears;
-  document.getElementById('g_anios_prod').value=brand.prodYears>0?brand.prodYears:'';
+  document.getElementById('g_anios_prod').value=brand.prodYears>0 ? brand.prodYears : '';
   document.getElementById('g_anios_inst').value=brand.instYears;
-  if(brand.code)document.getElementById('g_codigo').value=brand.code;
+  if(brand.code) document.getElementById('g_codigo').value=brand.code;
 }
 
-/* ═══════════════════════════════════════════
-   CRUD: CLIENTES
-   ═══════════════════════════════════════════ */
+// CRUD: CLIENTES
 async function guardarCliente(){
   const editId=document.getElementById('c_edit_id').value;
   const nombre=document.getElementById('c_nombre').value.trim();
   const telefono=document.getElementById('c_tel').value.trim();
-  if(!nombre){toast('Ingresa el nombre','error');return;}
+  
+  if(!nombre){ toast('Ingresa el nombre','error'); return; }
+  
   try{
-    let error;
-    if(editId){({error}=await sb.from('clientes').update({nombre,telefono}).eq('id',editId));if(error)throw error;toast('Cliente actualizado','success');}
-    else{({error}=await sb.from('clientes').insert({nombre,telefono}));if(error)throw error;toast('Cliente creado','success');}
-    document.getElementById('c_nombre').value='';document.getElementById('c_tel').value='';document.getElementById('c_edit_id').value='';
-    document.getElementById('clienteFormTitle').textContent='Agregar Cliente';document.getElementById('clienteBtnText').textContent='Guardar';document.getElementById('btnCancelEdit').style.display='none';
+    let res;
+    if(editId){
+      res=await sb.from('clientes').update({nombre:nombre,telefono:telefono}).eq('id',editId);
+      if(res.error) throw res.error;
+      toast('Cliente actualizado','success');
+    }else{
+      res=await sb.from('clientes').insert({nombre:nombre,telefono:telefono});
+      if(res.error) throw res.error;
+      toast('Cliente creado','success');
+    }
+    
+    document.getElementById('c_nombre').value='';
+    document.getElementById('c_tel').value='';
+    document.getElementById('c_edit_id').value='';
+    document.getElementById('clienteFormTitle').textContent='Agregar Cliente';
+    document.getElementById('clienteBtnText').textContent='Guardar';
+    document.getElementById('btnCancelEdit').style.display='none';
+    
     await loadClientes();
-  }catch(e){toast('Error: '+(e.message||e),'error');}
+  }catch(e){
+    toast('Error: '+(e.message||e),'error');
+  }
 }
-function editarCliente(id){const c=clientes.find(x=>x.id===id);if(!c)return;document.getElementById('c_edit_id').value=c.id;document.getElementById('c_nombre').value=c.nombre||'';document.getElementById('c_tel').value=c.telefono||'';document.getElementById('clienteFormTitle').textContent='Editar Cliente';document.getElementById('clienteBtnText').textContent='Actualizar';document.getElementById('btnCancelEdit').style.display='inline-flex';document.getElementById('c_nombre').focus();}
-function cancelarEditCliente(){document.getElementById('c_edit_id').value='';document.getElementById('c_nombre').value='';document.getElementById('c_tel').value='';document.getElementById('clienteFormTitle').textContent='Agregar Cliente';document.getElementById('clienteBtnText').textContent='Guardar';document.getElementById('btnCancelEdit').style.display='none';}
-function eliminarCliente(id){const c=clientes.find(x=>x.id===id);showModal('Eliminar cliente','Se eliminara '+(c?.nombre||'el cliente')+'.',async()=>{try{const{error}=await sb.from('clientes').delete().eq('id',id);if(error)throw error;toast('Cliente eliminado','success');await loadClientes();}catch(e){toast('Error: '+(e.message||e),'error');}});}
 
-/* ═══ CRUD: VEHICULOS ═══ */
-async function crearVehiculo(){const cliente_id=document.getElementById('v_cliente').value;const marca=document.getElementById('v_marca').value.trim();const modelo=document.getElementById('v_modelo').value.trim();const patente=document.getElementById('v_patente').value.trim();if(!cliente_id){toast('Selecciona un propietario','error');return;}if(!marca){toast('Ingresa la marca','error');return;}try{const{error}=await sb.from('vehiculos').insert({cliente_id,marca,modelo,patente});if(error)throw error;toast('Vehiculo registrado','success');document.getElementById('v_marca').value='';document.getElementById('v_modelo').value='';document.getElementById('v_patente').value='';await loadVehiculos();}catch(e){toast('Error: '+(e.message||e),'error');}}
-function eliminarVehiculo(id){showModal('Eliminar vehiculo','Se eliminara el vehiculo.',async()=>{try{const{error}=await sb.from('vehiculos').delete().eq('id',id);if(error)throw error;toast('Vehiculo eliminado','success');await loadVehiculos();}catch(e){toast('Error: '+(e.message||e),'error');}});}
+function editarCliente(id){
+  const c=clientes.find(function(x){ return x.id===id; });
+  if(!c) return;
+  
+  document.getElementById('c_edit_id').value=c.id;
+  document.getElementById('c_nombre').value=c.nombre||'';
+  document.getElementById('c_tel').value=c.telefono||'';
+  document.getElementById('clienteFormTitle').textContent='Editar Cliente';
+  document.getElementById('clienteBtnText').textContent='Actualizar';
+  document.getElementById('btnCancelEdit').style.display='inline-flex';
+  document.getElementById('c_nombre').focus();
+}
 
-/* ═══ CRUD: TURNOS / SERVICIOS ═══ */
+function cancelarEditCliente(){
+  document.getElementById('c_edit_id').value='';
+  document.getElementById('c_nombre').value='';
+  document.getElementById('c_tel').value='';
+  document.getElementById('clienteFormTitle').textContent='Agregar Cliente';
+  document.getElementById('clienteBtnText').textContent='Guardar';
+  document.getElementById('btnCancelEdit').style.display='none';
+}
+
+async function eliminarCliente(id){
+  const c=clientes.find(function(x){ return x.id===id; });
+  showModal('Eliminar cliente','Se eliminara '+(c?.nombre||'el cliente')+'.',async function(){
+    try{
+      const res=await sb.from('clientes').delete().eq('id',id);
+      if(res.error) throw res.error;
+      toast('Cliente eliminado','success');
+      await loadClientes();
+    }catch(e){
+      toast('Error: '+(e.message||e),'error');
+    }
+  });
+}
+
+// CRUD: VEHICULOS
+async function crearVehiculo(){
+  const cliente_id=document.getElementById('v_cliente').value;
+  const marca=document.getElementById('v_marca').value.trim();
+  const modelo=document.getElementById('v_modelo').value.trim();
+  const patente=document.getElementById('v_patente').value.trim();
+  
+  if(!cliente_id){ toast('Selecciona un propietario','error'); return; }
+  if(!marca){ toast('Ingresa la marca','error'); return; }
+  
+  try{
+    const res=await sb.from('vehiculos').insert({cliente_id:cliente_id,marca:marca,modelo:modelo,patente:patente});
+    if(res.error) throw res.error;
+    toast('Vehiculo registrado','success');
+    
+    document.getElementById('v_marca').value='';
+    document.getElementById('v_modelo').value='';
+    document.getElementById('v_patente').value='';
+    
+    await loadVehiculos();
+  }catch(e){
+    toast('Error: '+(e.message||e),'error');
+  }
+}
+
+async function eliminarVehiculo(id){
+  showModal('Eliminar vehiculo','Se eliminara el vehiculo.',async function(){
+    try{
+      const res=await sb.from('vehiculos').delete().eq('id',id);
+      if(res.error) throw res.error;
+      toast('Vehiculo eliminado','success');
+      await loadVehiculos();
+    }catch(e){
+      toast('Error: '+(e.message||e),'error');
+    }
+  });
+}
+
+// CRUD: TURNOS / SERVICIOS
 async function crearTurno(){
-  const clienteSel=document.getElementById('t_cliente_sel').value;const servicio=document.getElementById('t_servicio').value;const fecha=document.getElementById('t_fecha').value;
-  if(!servicio){toast('Selecciona un servicio','error');return;}
+  const clienteSel=document.getElementById('t_cliente_sel').value;
+  const servicio=document.getElementById('t_servicio').value;
+  const fecha=document.getElementById('t_fecha').value;
+  
+  if(!servicio){ toast('Selecciona un servicio','error'); return; }
+  
   try{
     let clienteId;
-    if(clienteSel==='__nuevo'){const nombre=document.getElementById('t_nombre').value.trim();const telefono=document.getElementById('t_tel').value.trim();if(!nombre){toast('Ingresa el nombre','error');return;}const{data,error}=await sb.from('clientes').insert({nombre,telefono}).select();if(error)throw error;clienteId=data[0].id;}
-    else if(clienteSel){clienteId=clienteSel;}else{toast('Selecciona o crea un cliente','error');return;}
-    let vehiculoId;const vehiculoSel=document.getElementById('t_vehiculo_sel').value;
-    if(clienteSel==='__nuevo'||vehiculoSel==='__nuevo'){const marca=document.getElementById('t_marca').value.trim()||'Sin marca';const modelo=document.getElementById('t_modelo').value.trim()||'';const{data,error}=await sb.from('vehiculos').insert({cliente_id:clienteId,marca,modelo}).select();if(error)throw error;vehiculoId=data[0].id;}
-    else if(vehiculoSel){vehiculoId=vehiculoSel;}else{const{data,error}=await sb.from('vehiculos').insert({cliente_id:clienteId,marca:'Auto',modelo:''}).select();if(error)throw error;vehiculoId=data[0].id;}
-    const sd={vehiculo_id:vehiculoId,tipo:servicio,estado:'pendiente'};if(fecha)sd.fecha=fecha;
-    const{error}=await sb.from('servicios').insert(sd);if(error)throw error;
-    toast('Turno creado','success');
-    document.getElementById('t_cliente_sel').value='';document.getElementById('t_nombre').value='';document.getElementById('t_tel').value='';document.getElementById('t_vehiculo_sel').value='';document.getElementById('t_marca').value='';document.getElementById('t_modelo').value='';
-    document.getElementById('t_nuevo_cliente_fields').style.display='none';document.getElementById('t_nuevo_vehiculo_fields').style.display='none';
-    await Promise.all([loadClientes(),loadVehiculos(),loadServicios()]);
-  }catch(e){toast('Error: '+(e.message||e),'error');}
-}
-async function moverServicio(id,ne){try{const{error}=await sb.from('servicios').update({estado:ne}).eq('id',id);if(error)throw error;const lb={pendiente:'Pendiente',proceso:'En proceso',terminado:'Completado'};toast('Servicio movido a '+lb[ne],'success');
-
-  /* Si se completo el trabajo, enviar notificacion por WhatsApp */
-  if(ne==='terminado'){
-    const servicio=servicios.find(s=>s.id===id);
-    if(servicio){
-      const clienteTel=servicio.vehiculos?.clientes?.telefono;
-      const clienteNombre=servicio.vehiculos?.clientes?.nombre||'Cliente';
-      const vehiculo=servicio.vehiculos?(servicio.vehiculos.marca+' '+(servicio.vehiculos.modelo||'')):'vehiculo';
+    
+    if(clienteSel==='__nuevo'){
+      const nombre=document.getElementById('t_nombre').value.trim();
+      const telefono=document.getElementById('t_tel').value.trim();
+      if(!nombre){ toast('Ingresa el nombre','error'); return; }
       
-      if(clienteTel){
-        /* Formatear telefono para Argentina (agregar +54 si no tiene) */
-        let telLimpio=clienteTel.replace(/[^0-9]/g,'');
-        if(!telLimpio.startsWith('54')){
-          if(telLimpio.startsWith('9')) telLimpio='54'+telLimpio;
-          else if(telLimpio.startsWith('15')) telLimpio='549'+telLimpio.substring(2);
-          else telLimpio='549'+telLimpio;
+      const res=await sb.from('clientes').insert({nombre:nombre,telefono:telefono}).select();
+      if(res.error) throw res.error;
+      clienteId=res.data[0].id;
+    }else if(clienteSel){
+      clienteId=clienteSel;
+    }else{
+      toast('Selecciona o crea un cliente','error');
+      return;
+    }
+    
+    let vehiculoId;
+    const vehiculoSel=document.getElementById('t_vehiculo_sel').value;
+    
+    if(clienteSel==='__nuevo' || vehiculoSel==='__nuevo'){
+      const marca=document.getElementById('t_marca').value.trim() || 'Sin marca';
+      const modelo=document.getElementById('t_modelo').value.trim() || '';
+      const res=await sb.from('vehiculos').insert({cliente_id:clienteId,marca:marca,modelo:modelo}).select();
+      if(res.error) throw res.error;
+      vehiculoId=res.data[0].id;
+    }else if(vehiculoSel){
+      vehiculoId=vehiculoSel;
+    }else{
+      const res=await sb.from('vehiculos').insert({cliente_id:clienteId,marca:'Auto',modelo:''}).select();
+      if(res.error) throw res.error;
+      vehiculoId=res.data[0].id;
+    }
+    
+    const sd={vehiculo_id:vehiculoId,tipo:servicio,estado:'pendiente'};
+    if(fecha) sd.fecha=fecha;
+    
+    const res=await sb.from('servicios').insert(sd);
+    if(res.error) throw res.error;
+    
+    toast('Turno creado','success');
+    
+    document.getElementById('t_cliente_sel').value='';
+    document.getElementById('t_nombre').value='';
+    document.getElementById('t_tel').value='';
+    document.getElementById('t_vehiculo_sel').value='';
+    document.getElementById('t_marca').value='';
+    document.getElementById('t_modelo').value='';
+    document.getElementById('t_nuevo_cliente_fields').style.display='none';
+    document.getElementById('t_nuevo_vehiculo_fields').style.display='none';
+    
+    await Promise.all([loadClientes(),loadVehiculos(),loadServicios()]);
+  }catch(e){
+    toast('Error: '+(e.message||e),'error');
+  }
+}
+
+async function moverServicio(id,ne){
+  try{
+    const res=await sb.from('servicios').update({estado:ne}).eq('id',id);
+    if(res.error) throw res.error;
+    
+    const lb={pendiente:'Pendiente',proceso:'En proceso',terminado:'Completado'};
+    toast('Servicio movido a '+lb[ne],'success');
+
+    // Si se completo, enviar WhatsApp
+    if(ne==='terminado'){
+      const serv=servicios.find(function(s){ return s.id===id; });
+      if(serv){
+        const clienteTel=serv.vehiculos?.clientes?.telefono;
+        const clienteNombre=serv.vehiculos?.clientes?.nombre || 'Cliente';
+        const vehiculo=serv.vehiculos ? (serv.vehiculos.marca+' '+(serv.vehiculos.modelo||'')) : 'vehiculo';
+        
+        if(clienteTel){
+          let telLimpio=clienteTel.replace(/[^0-9]/g,'');
+          if(!telLimpio.startsWith('54')){
+            if(telLimpio.startsWith('9')) telLimpio='54'+telLimpio;
+            else if(telLimpio.startsWith('15')) telLimpio='549'+telLimpio.substring(2);
+            else telLimpio='549'+telLimpio;
+          }
+          
+          const mensaje=encodeURIComponent('Hola '+clienteNombre+'! Tu '+vehiculo+' esta listo para retirar. Gracias por confiar en Monaco Detailing.');
+          const url='https://wa.me/'+telLimpio+'?text='+mensaje;
+          
+          toast('Abriendo WhatsApp...','success');
+          window.open(url,'_blank');
+        }else{
+          toast('Trabajo completado sin telefono','info');
         }
-        
-        const mensaje=encodeURIComponent(`¡Hola ${clienteNombre}! 🚗\n\nTu ${vehiculo} esta listo para retirar.\n\nGracias por confiar en Monaco Detailing. ¡Te esperamos!`);
-        const url=`https://wa.me/${telLimpio}?text=${mensaje}`;
-        
-        toast('Abriendo WhatsApp para notificar al cliente...','success');
-        window.open(url,'_blank');
-      } else {
-        toast('Trabajo completado, pero el cliente no tiene telefono registrado','info');
       }
     }
+
+    await loadServicios();
+  }catch(e){
+    toast('Error: '+(e.message||e),'error');
   }
+}
 
-  await loadServicios();}catch(e){toast('Error: '+(e.message||e),'error');}}
-function eliminarServicio(id){showModal('Eliminar servicio','Se eliminara este servicio.',async()=>{try{const{error}=await sb.from('servicios').delete().eq('id',id);if(error)throw error;toast('Servicio eliminado','success');await loadServicios();}catch(e){toast('Error: '+(e.message||e),'error');}});}
+async function eliminarServicio(id){
+  showModal('Eliminar servicio','Se eliminara este servicio.',async function(){
+    try{
+      const res=await sb.from('servicios').delete().eq('id',id);
+      if(res.error) throw res.error;
+      toast('Servicio eliminado','success');
+      await loadServicios();
+    }catch(e){
+      toast('Error: '+(e.message||e),'error');
+    }
+  });
+}
 
-/* ═══ CRUD: CAJA ═══ */
+// CRUD: CAJA
 async function crearCaja(){
   if(cajaMode==='trabajo'){
-    /* ── MODO TRABAJO: ingreso + egresos vinculados ── */
     const concepto=document.getElementById('cx_concepto').value.trim();
     const montoRaw=document.getElementById('cx_monto').value.trim().replace(',','.');
     const vehiculo_id=document.getElementById('cx_vehiculo').value;
@@ -1073,94 +1603,127 @@ async function crearCaja(){
     const instaladorRaw=document.getElementById('cx_instalador').value.trim().replace(',','.');
     const descuentoRaw=document.getElementById('cx_descuento').value.trim().replace(',','.');
 
-    if(!concepto){toast('Ingresa un concepto','error');return;}
-    if(!montoRaw||Number(montoRaw)<=0){toast('Ingresa el monto cobrado','error');return;}
+    if(!concepto){ toast('Ingresa un concepto','error'); return; }
+    if(!montoRaw || Number(montoRaw)<=0){ toast('Ingresa el monto cobrado','error'); return; }
+    
     const montoNum=Number(montoRaw);
-    const material=materialRaw?Number(materialRaw):0;
-    const instalador=instaladorRaw?Number(instaladorRaw):0;
-    const descuento=descuentoRaw?Number(descuentoRaw):0;
+    const material=materialRaw ? Number(materialRaw) : 0;
+    const instalador=instaladorRaw ? Number(instaladorRaw) : 0;
+    const descuento=descuentoRaw ? Number(descuentoRaw) : 0;
 
-    /* grupo_id vincula todos los registros de este trabajo */
     const grupoId='GRP-'+Date.now().toString(36).toUpperCase();
-
-    /* Construir los registros a insertar */
     const registros=[];
-    /* 1) INGRESO = monto cobrado al cliente */
-    const ingP={concepto,tipo:'ingreso',monto:montoNum,grupo_id:grupoId};
-    if(vehiculo_id)ingP.vehiculo_id=vehiculo_id;
-    if(servicio)ingP.servicio=servicio;
+
+    // Ingreso
+    const ingP={concepto:concepto,tipo:'ingreso',monto:montoNum,grupo_id:grupoId};
+    if(vehiculo_id) ingP.vehiculo_id=vehiculo_id;
+    if(servicio) ingP.servicio=servicio;
     registros.push(ingP);
 
-    /* 2) EGRESO: Material */
+    // Egreso Material
     if(material>0){
       const p={concepto:'Material',tipo:'egreso',monto:material,grupo_id:grupoId};
-      if(vehiculo_id)p.vehiculo_id=vehiculo_id;
-      if(servicio)p.servicio=servicio;
-      p.material=material;
+      if(vehiculo_id) p.vehiculo_id=vehiculo_id;
+      if(servicio) p.servicio=servicio;
       registros.push(p);
     }
-    /* 3) EGRESO: Instalador */
+
+    // Egreso Instalador
     if(instalador>0){
       const p={concepto:'Instalador',tipo:'egreso',monto:instalador,grupo_id:grupoId};
-      if(vehiculo_id)p.vehiculo_id=vehiculo_id;
-      if(servicio)p.servicio=servicio;
-      p.instalador=instalador;
+      if(vehiculo_id) p.vehiculo_id=vehiculo_id;
+      if(servicio) p.servicio=servicio;
       registros.push(p);
     }
-    /* 4) EGRESO: Descuento 3 CSI */
+
+    // Egreso Descuento
     if(descuento>0){
       const p={concepto:'Descuento 3 CSI',tipo:'egreso',monto:descuento,grupo_id:grupoId};
-      if(vehiculo_id)p.vehiculo_id=vehiculo_id;
-      if(servicio)p.servicio=servicio;
-      p.descuento_3_csi=descuento;
+      if(vehiculo_id) p.vehiculo_id=vehiculo_id;
+      if(servicio) p.servicio=servicio;
       registros.push(p);
     }
 
     try{
-      const{error}=await sb.from('caja').insert(registros);
-      if(error){
-        /* Si falla por columnas nuevas, intentar con campos basicos */
-        const basicRegistros=registros.map(r=>({concepto:r.concepto,tipo:r.tipo,monto:r.monto}));
+      const res=await sb.from('caja').insert(registros);
+      if(res.error){
+        const basicRegistros=registros.map(function(r){ return {concepto:r.concepto,tipo:r.tipo,monto:r.monto}; });
         const r2=await sb.from('caja').insert(basicRegistros);
-        if(r2.error)throw r2.error;
-        toast('Trabajo registrado (algunos campos no se guardaron — agrega columnas nuevas en Supabase)','info');
-      } else {
+        if(r2.error) throw r2.error;
+        toast('Trabajo registrado (parcial)','info');
+      }else{
         const neto=montoNum-material-instalador-descuento;
-        toast('Trabajo registrado: Ingreso +'+formatMoney(montoNum)+(material+instalador+descuento>0?' | Egresos -'+formatMoney(material+instalador+descuento)+' | Neto '+formatMoney(neto):''),'success');
+        toast('Trabajo registrado: +'+formatMoney(montoNum)+' | Neto '+formatMoney(neto),'success');
       }
-      /* Limpiar formulario */
-      document.getElementById('cx_concepto').value='';document.getElementById('cx_monto').value='';
-      document.getElementById('cx_vehiculo').value='';document.getElementById('cx_servicio').value='';
-      document.getElementById('cx_material').value='';document.getElementById('cx_instalador').value='';document.getElementById('cx_descuento').value='';
-      document.getElementById('cajaNetBox').style.display='none';
-      await loadCaja();
-    }catch(e){toast('Error: '+(e.message||e),'error');}
 
-  } else {
-    /* ── MODO EGRESO SIMPLE ── */
+      document.getElementById('cx_concepto').value='';
+      document.getElementById('cx_monto').value='';
+      document.getElementById('cx_vehiculo').value='';
+      document.getElementById('cx_servicio').value='';
+      document.getElementById('cx_material').value='';
+      document.getElementById('cx_instalador').value='';
+      document.getElementById('cx_descuento').value='';
+      document.getElementById('cajaNetBox').style.display='none';
+
+      await loadCaja();
+    }catch(e){
+      toast('Error: '+(e.message||e),'error');
+    }
+
+  }else{
     const concepto=document.getElementById('cx_egreso_concepto').value.trim();
     const montoRaw=document.getElementById('cx_egreso_monto').value.trim().replace(',','.');
     const vehiculo_id=document.getElementById('cx_egreso_vehiculo').value;
-    if(!concepto){toast('Ingresa un concepto','error');return;}
-    if(!montoRaw||Number(montoRaw)<=0){toast('Ingresa un monto','error');return;}
-    const payload={concepto,tipo:'egreso',monto:Number(montoRaw)};
-    if(vehiculo_id)payload.vehiculo_id=vehiculo_id;
+
+    if(!concepto){ toast('Ingresa un concepto','error'); return; }
+    if(!montoRaw || Number(montoRaw)<=0){ toast('Ingresa un monto','error'); return; }
+
+    const payload={concepto:concepto,tipo:'egreso',monto:Number(montoRaw)};
+    if(vehiculo_id) payload.vehiculo_id=vehiculo_id;
+
     try{
-      const{error}=await sb.from('caja').insert(payload);
-      if(error)throw error;
+      const res=await sb.from('caja').insert(payload);
+      if(res.error) throw res.error;
       toast('Egreso registrado','success');
-      document.getElementById('cx_egreso_concepto').value='';document.getElementById('cx_egreso_monto').value='';document.getElementById('cx_egreso_vehiculo').value='';
+
+      document.getElementById('cx_egreso_concepto').value='';
+      document.getElementById('cx_egreso_monto').value='';
+      document.getElementById('cx_egreso_vehiculo').value='';
+
       await loadCaja();
-    }catch(e){toast('Error: '+(e.message||e),'error');}
+    }catch(e){
+      toast('Error: '+(e.message||e),'error');
+    }
   }
 }
 
-function eliminarCaja(id){showModal('Eliminar movimiento','Se eliminara este registro.',async()=>{try{const{error}=await sb.from('caja').delete().eq('id',id);if(error)throw error;toast('Movimiento eliminado','success');await loadCaja();}catch(e){toast('Error: '+(e.message||e),'error');}});}
-function eliminarCajaGrupo(gid){showModal('Eliminar trabajo','Se eliminara el trabajo completo (ingreso + egresos).',async()=>{try{const{error}=await sb.from('caja').delete().eq('grupo_id',gid);if(error)throw error;toast('Trabajo eliminado','success');await loadCaja();}catch(e){toast('Error: '+(e.message||e),'error');}});}
+async function eliminarCaja(id){
+  showModal('Eliminar movimiento','Se eliminara este registro.',async function(){
+    try{
+      const res=await sb.from('caja').delete().eq('id',id);
+      if(res.error) throw res.error;
+      toast('Movimiento eliminado','success');
+      await loadCaja();
+    }catch(e){
+      toast('Error: '+(e.message||e),'error');
+    }
+  });
+}
 
-/* ═══════════════════════════════════════════
-   GARANTIA PPF — GENERAR CERTIFICADO
-   ═══════════════════════════════════════════ */
+async function eliminarCajaGrupo(gid){
+  showModal('Eliminar trabajo','Se eliminara el trabajo completo.',async function(){
+    try{
+      const res=await sb.from('caja').delete().eq('grupo_id',gid);
+      if(res.error) throw res.error;
+      toast('Trabajo eliminado','success');
+      await loadCaja();
+    }catch(e){
+      toast('Error: '+(e.message||e),'error');
+    }
+  });
+}
+
+// GARANTIA PPF - GENERAR CERTIFICADO
 async function generarCertificado(){
   const clienteId=document.getElementById('g_cliente').value;
   const vehiculoId=document.getElementById('g_vehiculo').value;
@@ -1171,21 +1734,21 @@ async function generarCertificado(){
   const aniosInstRaw=document.getElementById('g_anios_inst').value;
   const responsable=document.getElementById('g_responsable').value.trim();
 
-  if(!clienteId){toast('Selecciona un cliente','error');return;}
-  if(!vehiculoId){toast('Selecciona un vehiculo','error');return;}
-  if(!ppfIdx&&ppfIdx!=='0'){toast('Selecciona una marca de PPF','error');return;}
-  if(!fecha){toast('Ingresa la fecha de instalacion','error');return;}
-  if(!responsable){toast('Ingresa el responsable tecnico','error');return;}
+  if(!clienteId){ toast('Selecciona un cliente','error'); return; }
+  if(!vehiculoId){ toast('Selecciona un vehiculo','error'); return; }
+  if(!ppfIdx && ppfIdx!=='0'){ toast('Selecciona una marca de PPF','error'); return; }
+  if(!fecha){ toast('Ingresa la fecha de instalacion','error'); return; }
+  if(!responsable){ toast('Ingresa el responsable tecnico','error'); return; }
 
   const aniosProd=parseInt(aniosProdRaw)||10;
   const aniosInst=parseInt(aniosInstRaw)||1;
   const brand=ppfBrands[parseInt(ppfIdx)];
 
-  const cli=clientes.find(c=>c.id===clienteId);
+  const cli=clientes.find(function(c){ return c.id===clienteId; });
   const vehOpt=document.getElementById('g_vehiculo').selectedOptions[0];
-  const vehMarca=vehOpt?vehOpt.dataset.marca:'';
-  const vehModelo=vehOpt?vehOpt.dataset.modelo:'';
-  const vehPatente=vehOpt?vehOpt.dataset.patente:'';
+  const vehMarca=vehOpt ? vehOpt.dataset.marca : '';
+  const vehModelo=vehOpt ? vehOpt.dataset.modelo : '';
+  const vehPatente=vehOpt ? vehOpt.dataset.patente : '';
   const vehDesc=(vehMarca+' '+vehModelo).trim();
 
   const certNum='MON-GAR-'+Date.now().toString(36).toUpperCase();
@@ -1206,128 +1769,115 @@ async function generarCertificado(){
   };
 
   try{
-    const{error}=await sb.from('garantias').insert(payload);
-    if(error)console.warn('[garantias] No se guardo en BD:',error.message);
+    const res=await sb.from('garantias').insert(payload);
+    if(res.error) console.warn('[garantias] No se guardo:',res.error.message);
     else await loadGarantias();
-  }catch(e){console.warn('[garantias] Error BD:',e);}
+  }catch(e){
+    console.warn('[garantias] Error BD:',e);
+  }
 
   showCertificado({
-    certNum,clienteNombre:cli?.nombre||'',clienteTel:cli?.telefono||'',
-    vehDesc,vehPatente,ppfMarca:brand.name,codigo,fecha,
-    aniosProd,aniosInst,responsable
+    certNum:certNum,
+    clienteNombre:cli?.nombre||'',
+    clienteTel:cli?.telefono||'',
+    vehDesc:vehDesc,
+    vehPatente:vehPatente,
+    ppfMarca:brand.name,
+    codigo:codigo,
+    fecha:fecha,
+    aniosProd:aniosProd,
+    aniosInst:aniosInst,
+    responsable:responsable
   });
 
   toast('Certificado generado','success');
 }
 
-/* ═══ MOSTRAR CERTIFICADO ═══ */
+// MOSTRAR CERTIFICADO
 function showCertificado(d){
   const prodWord=numToWord(d.aniosProd);
   const instWord=numToWord(d.aniosInst);
   const fechaFormatted=formatDateShort(d.fecha);
 
   const fInst=new Date(d.fecha);
-  const vencProd=new Date(fInst);vencProd.setFullYear(vencProd.getFullYear()+d.aniosProd);
-  const vencInst=new Date(fInst);vencInst.setFullYear(vencInst.getFullYear()+d.aniosInst);
+  const vencProd=new Date(fInst);
+  vencProd.setFullYear(vencProd.getFullYear()+d.aniosProd);
+  const vencInst=new Date(fInst);
+  vencInst.setFullYear(vencInst.getFullYear()+d.aniosInst);
 
-  const html=`
-  <div class="cert-doc">
-    <div class="cert-header">
-      <div class="cert-logo-box">M</div>
-      <div class="cert-header-text">
-        <h1>M\u00d3NACO DETAILING</h1>
-        <p>Certificado de Garant\u00eda PPF</p>
-      </div>
-      <div class="cert-number">
-        <span>Certificado N\u00b0</span>
-        <strong>${esc(d.certNum)}</strong>
-      </div>
-    </div>
+  let html='<div class="cert-doc">';
+  html+='<div class="cert-header">';
+  html+='<div class="cert-logo-box">M</div>';
+  html+='<div class="cert-header-text">';
+  html+='<h1>MONACO DETAILING</h1>';
+  html+='<p>Certificado de Garantia PPF</p>';
+  html+='</div>';
+  html+='<div class="cert-number">';
+  html+='<span>Certificado N°</span>';
+  html+='<strong>'+esc(d.certNum)+'</strong>';
+  html+='</div></div>';
 
-    <p>Por el presente, <strong>M\u00d3NACO DETAILING</strong>, con domicilio comercial en Antonio Malaver 3545, Munro, Vicente Lopez, Provincia de Buenos Aires, garantiza al cliente abajo detallado la correcta calidad y aplicaci\u00f3n del Film de Protecci\u00f3n de Pintura (PPF \u2013 Paint Protection Film) instalado en el veh\u00edculo indicado, bajo las condiciones que se detallan a continuaci\u00f3n.</p>
+  html+='<p>Por el presente, <strong>MONACO DETAILING</strong>, con domicilio comercial en Antonio Malaver 3545, Munro, Vicente Lopez, Provincia de Buenos Aires, garantiza al cliente abajo detallado la correcta calidad y aplicacion del Film de Proteccion de Pintura (PPF - Paint Protection Film) instalado en el vehiculo indicado.</p>';
 
-    <h2>DATOS DEL CLIENTE Y DEL VEH\u00cdCULO</h2>
-    <table class="cert-data-table">
-      <tr><td>Nombre completo del cliente</td><td>${esc(d.clienteNombre)}</td></tr>
-      <tr><td>Tel\u00e9fono</td><td>${esc(d.clienteTel||'-')}</td></tr>
-      <tr><td>Veh\u00edculo</td><td>${esc(d.vehDesc)}</td></tr>
-      <tr><td>Patente</td><td>${esc(d.vehPatente||'-')}</td></tr>
-      <tr><td>Fecha de instalaci\u00f3n</td><td>${fechaFormatted}</td></tr>
-      <tr><td>Servicio</td><td>PPF \u2013 Paint Protection Film</td></tr>
-      <tr><td>Marca / Rollo de PPF</td><td>${esc(d.ppfMarca)}</td></tr>
-      <tr><td>C\u00f3digo del producto</td><td>${esc(d.codigo||'-')}</td></tr>
-    </table>
+  html+='<h2>DATOS DEL CLIENTE Y DEL VEHICULO</h2>';
+  html+='<table class="cert-data-table">';
+  html+='<tr><td>Nombre completo del cliente</td><td>'+esc(d.clienteNombre)+'</td></tr>';
+  html+='<tr><td>Telefono</td><td>'+esc(d.clienteTel||'-')+'</td></tr>';
+  html+='<tr><td>Vehiculo</td><td>'+esc(d.vehDesc)+'</td></tr>';
+  html+='<tr><td>Patente</td><td>'+esc(d.vehPatente||'-')+'</td></tr>';
+  html+='<tr><td>Fecha de instalacion</td><td>'+fechaFormatted+'</td></tr>';
+  html+='<tr><td>Servicio</td><td>PPF - Paint Protection Film</td></tr>';
+  html+='<tr><td>Marca / Rollo de PPF</td><td>'+esc(d.ppfMarca)+'</td></tr>';
+  html+='<tr><td>Codigo del producto</td><td>'+esc(d.codigo||'-')+'</td></tr>';
+  html+='</table>';
 
-    <h2>ALCANCE DE LA GARANT\u00cdA</h2>
+  html+='<h2>ALCANCE DE LA GARANTIA</h2>';
+  html+='<h3>Garantia por fallas del producto - '+prodWord+' ('+d.aniosProd+') anos</h3>';
+  html+='<p>Se otorga garantia de <strong>'+prodWord+' ('+d.aniosProd+') anos</strong> sobre el material PPF aplicado.</p>';
+  html+='<p style="font-size:11px;color:#666;">Vencimiento: <strong>'+formatDateShort(vencProd)+'</strong></p>';
 
-    <h3>Garant\u00eda por fallas del producto \u2013 ${prodWord} (${d.aniosProd}) a\u00f1os</h3>
-    <p>Se otorga garant\u00eda de <strong>${prodWord} (${d.aniosProd}) a\u00f1os</strong> sobre el material PPF aplicado, la cual cubre exclusivamente defectos de fabricaci\u00f3n del producto tales como:</p>
-    <ul class="cert-exclusions" style="margin-bottom:10px;">
-      <li>Amarilleo prematuro del film.</li>
-      <li>Agrietamiento o cuarteo del material.</li>
-      <li>Deslaminaci\u00f3n del film.</li>
-      <li>P\u00e9rdida anormal de propiedades del PPF atribuibles al fabricante.</li>
-    </ul>
-    <p>Esta garant\u00eda queda sujeta a las condiciones de uso y mantenimiento recomendadas por M\u00f3naco Detailing y por el fabricante del PPF.</p>
-    <p style="font-size:11px;color:#666;">Vencimiento garant\u00eda producto: <strong>${formatDateShort(vencProd)}</strong></p>
+  html+='<h3>Garantia por falla en la instalacion - '+instWord+' ('+d.aniosInst+') ano'+(d.aniosInst!==1 ? 's' : '')+'</h3>';
+  html+='<p>Se otorga garantia de <strong>'+instWord+' ('+d.aniosInst+') ano'+(d.aniosInst!==1 ? 's' : '')+'</strong> por defectos derivados de la instalacion.</p>';
+  html+='<p style="font-size:11px;color:#666;">Vencimiento: <strong>'+formatDateShort(vencInst)+'</strong></p>';
 
-    <h3>Garant\u00eda por falla en la instalaci\u00f3n \u2013 ${instWord} (${d.aniosInst}) a\u00f1o${d.aniosInst!==1?'s':''}</h3>
-    <p>Se otorga garant\u00eda de <strong>${instWord} (${d.aniosInst}) a\u00f1o${d.aniosInst!==1?'s':''}</strong> por defectos derivados de la instalaci\u00f3n del PPF, la cual cubre:</p>
-    <ul class="cert-exclusions" style="margin-bottom:10px;">
-      <li>Despegues del film atribuibles a una incorrecta aplicaci\u00f3n.</li>
-      <li>Levantamientos de bordes o burbujas generadas por la instalaci\u00f3n.</li>
-      <li>Fallas de adherencia no relacionadas con golpes, impactos o uso indebido.</li>
-    </ul>
-    <p style="font-size:11px;color:#666;">Vencimiento garant\u00eda instalaci\u00f3n: <strong>${formatDateShort(vencInst)}</strong></p>
+  html+='<h2>EXCLUSIONES DE LA GARANTIA</h2>';
+  html+='<p>La presente garantia NO cubre danos por golpes, rayones, impactos, vandalismo o accidentes.</p>';
 
-    <h2>EXCLUSIONES DE LA GARANT\u00cdA</h2>
-    <p>La presente garant\u00eda <strong>NO</strong> cubre:</p>
-    <ul class="cert-exclusions">
-      <li>Danos ocasionados por golpes, rayones, impactos, vandalismo o accidentes.</li>
-      <li>Danos provocados por lavado inadecuado o uso de productos abrasivos o corrosivos.</li>
-      <li>Danos derivados de condiciones extremas o uso indebido del veh\u00edculo.</li>
-      <li>Alteraciones, reparaciones o intervenciones sobre el PPF realizadas por terceros ajenos a M\u00f3naco Detailing.</li>
-      <li>Contaminaci\u00f3n qu\u00edmica, manchas por excremento de aves, savia de \u00e1rboles o agentes corrosivos no removidos a tiempo.</li>
-    </ul>
+  html+='<div class="cert-sig-area">';
+  html+='<div class="cert-sig-block">';
+  html+='<div class="cert-sig-label">Firma del responsable tecnico - Monaco Detailing</div>';
+  html+='<div class="cert-sig-line"></div>';
+  html+='<div class="cert-sig-name">'+esc(d.responsable)+'</div>';
+  html+='</div>';
+  html+='<div class="cert-sig-block">';
+  html+='<div class="cert-sig-label">Firma del cliente</div>';
+  html+='<div class="cert-sig-line"></div>';
+  html+='<div class="cert-sig-name">'+esc(d.clienteNombre)+'</div>';
+  html+='</div></div>';
 
-    <h2>CONDICIONES GENERALES</h2>
-    <p>La garant\u00eda es v\u00e1lida \u00fanicamente para el veh\u00edculo y el cliente indicados en este certificado y no es transferible.</p>
-
-    <div class="cert-sig-area">
-      <div class="cert-sig-block">
-        <div class="cert-sig-label">Firma del responsable t\u00e9cnico \u2013 M\u00f3naco Detailing</div>
-        <div class="cert-sig-line"></div>
-        <div class="cert-sig-name">${esc(d.responsable)}</div>
-        <div class="cert-sig-label">Aclaraci\u00f3n de la firma</div>
-      </div>
-      <div class="cert-sig-block">
-        <div class="cert-sig-label">Firma del cliente</div>
-        <div class="cert-sig-line"></div>
-        <div class="cert-sig-name">${esc(d.clienteNombre)}</div>
-        <div class="cert-sig-label">Aclaraci\u00f3n de la firma</div>
-      </div>
-    </div>
-
-    <div class="cert-footer-note">Documento emitido por M\u00f3naco Detailing \u2014 Antonio Malaver 3545, Munro, Vicente Lopez, Provincia de Buenos Aires.</div>
-  </div>`;
+  html+='<div class="cert-footer-note">Documento emitido por Monaco Detailing</div>';
+  html+='</div>';
 
   document.getElementById('certContent').innerHTML=html;
   document.getElementById('certOverlay').classList.add('show');
 }
 
-function closeCertificado(){document.getElementById('certOverlay').classList.remove('show');}
+function closeCertificado(){
+  document.getElementById('certOverlay').classList.remove('show');
+}
 
 function printCertificado(){
   const overlay=document.getElementById('certOverlay');
   const actions=overlay.querySelector('.cert-actions');
   actions.style.display='none';
   window.print();
-  setTimeout(()=>{actions.style.display='flex';},500);
+  setTimeout(function(){ actions.style.display='flex'; },500);
 }
 
 function reimprimirGarantia(id){
-  const g=garantias.find(x=>x.id===id);
-  if(!g){toast('Certificado no encontrado','error');return;}
+  const g=garantias.find(function(x){ return x.id===id; });
+  if(!g){ toast('Certificado no encontrado','error'); return; }
+  
   showCertificado({
     certNum:g.numero||'-',
     clienteNombre:g.cliente_nombre||'',
@@ -1343,31 +1893,37 @@ function reimprimirGarantia(id){
   });
 }
 
-function eliminarGarantia(id){
-  showModal('Eliminar certificado','Se eliminara este certificado de garantia.',async()=>{
-    try{const{error}=await sb.from('garantias').delete().eq('id',id);if(error)throw error;toast('Certificado eliminado','success');await loadGarantias();}catch(e){toast('Error: '+(e.message||e),'error');}
+async function eliminarGarantia(id){
+  showModal('Eliminar certificado','Se eliminara este certificado.',async function(){
+    try{
+      const res=await sb.from('garantias').delete().eq('id',id);
+      if(res.error) throw res.error;
+      toast('Certificado eliminado','success');
+      await loadGarantias();
+    }catch(e){
+      toast('Error: '+(e.message||e),'error');
+    }
   });
 }
 
-/* ═══════════════════════════════════════════
-   INICIALIZACION
-   ═══════════════════════════════════════════ */
+// INICIALIZACION
 (async function init(){
   const now=new Date();
   const dias=['Domingo','Lunes','Martes','Miercoles','Jueves','Viernes','Sabado'];
   const meses=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+  
   document.getElementById('topDate').textContent=dias[now.getDay()]+', '+now.getDate()+' de '+meses[now.getMonth()]+', '+now.getFullYear();
   document.getElementById('t_fecha').valueAsDate=now;
   document.getElementById('g_fecha').valueAsDate=now;
 
-  /* Reloj en tiempo real con zona horaria Argentina */
+  // Reloj Argentina
   function updateArgentinaClock(){
     const argTime=new Date().toLocaleString('es-AR',{timeZone:'America/Argentina/Buenos_Aires'});
     const d=new Date(argTime);
     const h=d.getHours().toString().padStart(2,'0');
     const m=d.getMinutes().toString().padStart(2,'0');
     const s=d.getSeconds().toString().padStart(2,'0');
-    document.getElementById('topClock').textContent='\uD83D\uDD50 '+h+':'+m+':'+s+' (AR)';
+    document.getElementById('topClock').textContent=h+':'+m+':'+s+' (AR)';
   }
   updateArgentinaClock();
   setInterval(updateArgentinaClock,1000);
@@ -1375,7 +1931,10 @@ function eliminarGarantia(id){
   populatePPFSelect();
 
   const tables=['caja','clientes','vehiculos','servicios','garantias'];
-  for(const t of tables){const cols=await detectColumns(t);if(cols)tableColumns[t]=cols;}
+  for(let ti=0;ti<tables.length;ti++){
+    const cols=await detectColumns(tables[ti]);
+    if(cols) tableColumns[tables[ti]]=cols;
+  }
 
   await refreshAll();
 })();
