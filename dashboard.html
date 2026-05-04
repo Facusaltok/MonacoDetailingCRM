@@ -60,43 +60,43 @@ body::after {
   display:flex;flex-direction:column;z-index:50;
   transition:transform 0.35s cubic-bezier(0.4,0,0.2,1);
 }
-.sidebar-logo {padding:28px 24px 24px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--border);}
+.sidebar-logo {padding:22px 24px 20px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--border);}
 .logo-icon {width:40px;height:40px;background:linear-gradient(135deg,var(--gold),#A07830);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;color:#000;font-weight:800;box-shadow:0 4px 20px rgba(200,168,80,0.25);}
 .logo-text {font-weight:700;font-size:15px;letter-spacing:-0.3px;}
 .logo-sub {font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:2px;font-weight:600;}
 
-.sidebar-nav {flex:1;padding:16px 12px;display:flex;flex-direction:column;gap:2px;overflow-y:auto;}
+.sidebar-nav {flex:1;padding:14px 12px;display:flex;flex-direction:column;gap:2px;overflow-y:auto;}
 .nav-item {
-  display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;cursor:pointer;
-  font-size:13.5px;font-weight:500;color:var(--text-secondary);transition:all 0.2s;position:relative;border:1px solid transparent;
+  display:flex;align-items:center;gap:12px;padding:10px 16px;border-radius:10px;cursor:pointer;
+  font-size:13px;font-weight:500;color:var(--text-secondary);transition:all 0.2s;position:relative;border:1px solid transparent;
 }
-.nav-item i {width:18px;text-align:center;font-size:14px;}
+.nav-item i {width:18px;text-align:center;font-size:13px;}
 .nav-item:hover {color:var(--text-primary);background:rgba(255,255,255,0.03);transform:translateX(3px);}
 .nav-item.active {color:var(--gold);background:var(--gold-soft);border-color:rgba(200,168,80,0.15);font-weight:600;}
-.nav-item.active::before {content:'';position:absolute;left:-12px;top:50%;transform:translateY(-50%);width:3px;height:24px;background:var(--gold);border-radius:0 4px 4px 0;}
+.nav-item.active::before {content:'';position:absolute;left:-12px;top:50%;transform:translateY(-50%);width:3px;height:22px;background:var(--gold);border-radius:0 4px 4px 0;}
 
-.sidebar-footer {padding:20px 24px;border-top:1px solid var(--border);display:flex;align-items:center;gap:10px;}
+.sidebar-footer {padding:18px 24px;border-top:1px solid var(--border);display:flex;align-items:center;gap:10px;}
 .avatar {width:34px;height:34px;background:linear-gradient(135deg,#1E3A5F,#0D1B2A);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--gold);border:1px solid rgba(200,168,80,0.2);}
 .sidebar-footer span {font-size:12px;color:var(--text-secondary);}
 .sidebar-footer small {font-size:10px;color:var(--text-muted);display:block;}
 
 .main-content {margin-left:260px;min-height:100vh;position:relative;z-index:1;}
 .top-bar {
-  position:sticky;top:0;z-index:40;padding:18px 32px;display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:40;padding:16px 32px;display:flex;align-items:center;justify-content:space-between;
   background:rgba(4,8,15,0.8);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);
 }
-.top-bar-left h1 {font-size:20px;font-weight:700;letter-spacing:-0.5px;}
-.top-bar-left p {font-size:12px;color:var(--text-muted);margin-top:2px;}
+.top-bar-left h1 {font-size:19px;font-weight:700;letter-spacing:-0.5px;}
+.top-bar-left p {font-size:12px;color:var(--text-muted);margin-top:1px;}
 .hamburger {display:none;background:none;border:none;color:var(--text-primary);font-size:20px;cursor:pointer;margin-right:12px;}
 
-.page-body {padding:28px 32px 40px;}
+.page-body {padding:24px 32px 40px;}
 
 .tab-section {display:none;}
-.tab-section.active {display:block;animation:fadeUp 0.35s ease;}
-@keyframes fadeUp {from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+.tab-section.active {display:block;animation:fadeUp 0.3s ease;}
+@keyframes fadeUp {from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
 
 .kpi-card {
-  background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:22px 24px;
+  background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:20px 22px;
   position:relative;overflow:hidden;transition:all 0.25s;
 }
 .kpi-card:hover {border-color:rgba(255,255,255,0.1);transform:translateY(-2px);box-shadow:0 8px 30px rgba(0,0,0,0.3);}
@@ -106,32 +106,32 @@ body::after {
 .kpi-card.kpi-gold::before {background:linear-gradient(90deg,var(--gold),transparent);}
 .kpi-card.kpi-amber::before {background:linear-gradient(90deg,var(--amber),transparent);}
 .kpi-card.kpi-rose::before {background:linear-gradient(90deg,var(--rose),transparent);}
-.kpi-icon {width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;margin-bottom:14px;}
+.kpi-icon {width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:15px;margin-bottom:12px;}
 .kpi-blue .kpi-icon {background:rgba(59,130,246,0.12);color:var(--blue);}
 .kpi-emerald .kpi-icon {background:rgba(16,185,129,0.12);color:var(--emerald);}
 .kpi-gold .kpi-icon {background:var(--gold-soft);color:var(--gold);}
 .kpi-amber .kpi-icon {background:rgba(245,158,11,0.12);color:var(--amber);}
 .kpi-rose .kpi-icon {background:rgba(244,63,94,0.12);color:var(--rose);}
-.kpi-value {font-size:28px;font-weight:800;letter-spacing:-1px;line-height:1;}
-.kpi-label {font-size:12px;color:var(--text-secondary);margin-top:6px;font-weight:500;}
+.kpi-value {font-size:26px;font-weight:800;letter-spacing:-1px;line-height:1;}
+.kpi-label {font-size:11.5px;color:var(--text-secondary);margin-top:5px;font-weight:500;}
 
 .card {background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:24px;transition:border-color 0.2s;}
 .card:hover {border-color:rgba(255,255,255,0.08);}
 .card-title {font-size:14px;font-weight:700;margin-bottom:18px;display:flex;align-items:center;gap:8px;}
 .card-title i {color:var(--gold);font-size:13px;}
 
-.form-group {margin-bottom:14px;}
-.form-label {display:block;font-size:11px;font-weight:600;color:var(--text-secondary);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px;}
+.form-group {margin-bottom:13px;}
+.form-label {display:block;font-size:11px;font-weight:600;color:var(--text-secondary);margin-bottom:5px;text-transform:uppercase;letter-spacing:0.5px;}
 .form-input {
-  width:100%;background:var(--bg-input);border:1px solid rgba(255,255,255,0.07);padding:11px 14px;
-  border-radius:9px;color:var(--text-primary);font-size:13.5px;font-family:inherit;transition:all 0.2s;outline:none;
+  width:100%;background:var(--bg-input);border:1px solid rgba(255,255,255,0.07);padding:10px 13px;
+  border-radius:9px;color:var(--text-primary);font-size:13px;font-family:inherit;transition:all 0.2s;outline:none;
 }
 .form-input:focus {border-color:var(--border-focus);box-shadow:0 0 0 3px rgba(200,168,80,0.08);}
 .form-input::placeholder {color:var(--text-muted);}
 select.form-input {cursor:pointer;appearance:auto;}
 
 .btn-gold {
-  background:linear-gradient(135deg,var(--gold),#A07830);color:#000;padding:11px 22px;border-radius:9px;border:none;
+  background:linear-gradient(135deg,var(--gold),#A07830);color:#000;padding:10px 20px;border-radius:9px;border:none;
   font-weight:700;font-size:13px;cursor:pointer;font-family:inherit;transition:all 0.2s;display:inline-flex;align-items:center;gap:8px;
 }
 .btn-gold:hover {transform:translateY(-1px);box-shadow:0 4px 20px var(--gold-glow);}
@@ -142,8 +142,8 @@ select.form-input {cursor:pointer;appearance:auto;}
 }
 .btn-ghost:hover {border-color:rgba(255,255,255,0.15);color:var(--text-primary);}
 .btn-sm {
-  padding:6px 12px;border-radius:7px;border:none;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;
-  transition:all 0.15s;display:inline-flex;align-items:center;gap:5px;
+  padding:5px 10px;border-radius:7px;border:none;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;
+  transition:all 0.15s;display:inline-flex;align-items:center;gap:4px;
 }
 .btn-blue {background:rgba(59,130,246,0.15);color:var(--blue);}
 .btn-blue:hover {background:rgba(59,130,246,0.25);}
@@ -154,8 +154,8 @@ select.form-input {cursor:pointer;appearance:auto;}
 .btn-rose {background:rgba(244,63,94,0.1);color:var(--rose);}
 .btn-rose:hover {background:rgba(244,63,94,0.2);}
 
-.kanban-col {background:var(--bg-sidebar);border:1px solid var(--border);border-radius:14px;padding:0;min-height:420px;display:flex;flex-direction:column;}
-.kanban-header {padding:16px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.kanban-col {background:var(--bg-sidebar);border:1px solid var(--border);border-radius:14px;padding:0;min-height:400px;display:flex;flex-direction:column;}
+.kanban-header {padding:14px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
 .kanban-header-left {display:flex;align-items:center;gap:10px;}
 .kanban-dot {width:8px;height:8px;border-radius:50%;}
 .kanban-dot.dot-amber {background:var(--amber);box-shadow:0 0 8px rgba(245,158,11,0.4);}
@@ -163,16 +163,16 @@ select.form-input {cursor:pointer;appearance:auto;}
 .kanban-dot.dot-emerald {background:var(--emerald);box-shadow:0 0 8px rgba(16,185,129,0.4);}
 .kanban-title {font-size:13px;font-weight:700;}
 .kanban-count {background:rgba(255,255,255,0.06);padding:2px 9px;border-radius:20px;font-size:11px;font-weight:600;color:var(--text-secondary);}
-.kanban-body {padding:12px;flex:1;display:flex;flex-direction:column;gap:10px;overflow-y:auto;}
+.kanban-body {padding:10px;flex:1;display:flex;flex-direction:column;gap:8px;overflow-y:auto;}
 
-.task-card {background:var(--bg-card);border:1px solid var(--border);border-radius:11px;padding:14px;transition:all 0.2s;}
+.task-card {background:var(--bg-card);border:1px solid var(--border);border-radius:11px;padding:13px;transition:all 0.2s;}
 .task-card:hover {border-color:rgba(255,255,255,0.1);transform:translateY(-1px);}
-.task-service {font-size:13px;font-weight:700;margin-bottom:8px;}
-.task-meta {font-size:11px;color:var(--text-muted);display:flex;align-items:center;gap:5px;margin-bottom:10px;}
+.task-service {font-size:13px;font-weight:700;margin-bottom:6px;}
+.task-meta {font-size:11px;color:var(--text-muted);display:flex;align-items:center;gap:5px;margin-bottom:8px;}
 .task-meta i {font-size:10px;}
-.task-actions {display:flex;gap:6px;}
+.task-actions {display:flex;gap:5px;}
 
-.list-item {display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--border);transition:background 0.15s;}
+.list-item {display:flex;align-items:center;justify-content:space-between;padding:11px 16px;border-bottom:1px solid var(--border);transition:background 0.15s;}
 .list-item:last-child {border-bottom:none;}
 .list-item:hover {background:rgba(255,255,255,0.02);}
 .list-item-left {display:flex;align-items:center;gap:12px;}
@@ -189,8 +189,8 @@ select.form-input {cursor:pointer;appearance:auto;}
 
 .toast-container {position:fixed;top:20px;right:20px;z-index:9999;display:flex;flex-direction:column;gap:10px;pointer-events:none;}
 .toast {
-  padding:14px 20px;border-radius:11px;font-size:13px;font-weight:500;display:flex;align-items:center;gap:10px;
-  animation:toastIn 0.35s ease;min-width:280px;max-width:450px;box-shadow:0 10px 40px rgba(0,0,0,0.5);
+  padding:13px 18px;border-radius:11px;font-size:13px;font-weight:500;display:flex;align-items:center;gap:10px;
+  animation:toastIn 0.35s ease;min-width:260px;max-width:420px;box-shadow:0 10px 40px rgba(0,0,0,0.5);
   border:1px solid var(--border);backdrop-filter:blur(12px);pointer-events:auto;
 }
 .toast-success {background:rgba(16,185,129,0.15);color:var(--emerald);border-color:rgba(16,185,129,0.2);}
@@ -211,31 +211,30 @@ select.form-input {cursor:pointer;appearance:auto;}
 .modal-box p {font-size:13px;color:var(--text-secondary);margin-bottom:20px;}
 .modal-actions {display:flex;gap:10px;justify-content:flex-end;}
 
-.empty-state {text-align:center;padding:40px 20px;color:var(--text-muted);}
-.empty-state i {font-size:32px;margin-bottom:12px;opacity:0.3;display:block;}
+.empty-state {text-align:center;padding:36px 20px;color:var(--text-muted);}
+.empty-state i {font-size:30px;margin-bottom:10px;opacity:0.3;display:block;}
 .empty-state p {font-size:13px;}
 
-.section-header {display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;}
-.section-header h2 {font-size:18px;font-weight:700;}
+.section-header {display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;}
+.section-header h2 {font-size:17px;font-weight:700;}
 .section-header-sub {font-size:12px;color:var(--text-muted);margin-top:2px;}
 
 .setup-banner {
-  background:rgba(200,168,80,0.06);border:1px solid rgba(200,168,80,0.2);border-radius:12px;padding:16px 20px;
-  margin-bottom:16px;font-size:12px;color:var(--gold);display:none;align-items:flex-start;gap:12px;line-height:1.6;
+  background:rgba(200,168,80,0.06);border:1px solid rgba(200,168,80,0.2);border-radius:12px;padding:14px 18px;
+  margin-bottom:14px;font-size:12px;color:var(--gold);display:none;align-items:flex-start;gap:10px;line-height:1.6;
 }
 .setup-banner.show {display:flex;}
 .setup-banner i {margin-top:2px;flex-shrink:0;}
 .setup-banner code {background:rgba(0,0,0,0.4);padding:1px 6px;border-radius:4px;font-size:11px;color:#fff;}
 
-/* ── PPF Brand Info Card ── */
 .ppf-info-card {
   background:rgba(200,168,80,0.05);border:1px solid rgba(200,168,80,0.15);border-radius:10px;
-  padding:14px 16px;margin-bottom:14px;display:none;
+  padding:13px 15px;margin-bottom:12px;display:none;
 }
 .ppf-info-card.show {display:block;}
-.ppf-info-card h4 {font-size:12px;color:var(--gold);font-weight:700;margin-bottom:6px;display:flex;align-items:center;gap:6px;}
+.ppf-info-card h4 {font-size:12px;color:var(--gold);font-weight:700;margin-bottom:5px;display:flex;align-items:center;gap:6px;}
 .ppf-info-card p {font-size:11px;color:var(--text-secondary);line-height:1.5;}
-.ppf-info-card .ppf-year-big {font-size:22px;font-weight:800;color:var(--gold);margin-right:4px;}
+.ppf-year-big {font-size:20px;font-weight:800;color:var(--gold);margin:0 2px;}
 
 /* ── Certificate Overlay ── */
 .cert-overlay {
@@ -244,79 +243,58 @@ select.form-input {cursor:pointer;appearance:auto;}
   padding:30px 20px;overflow-y:auto;opacity:0;pointer-events:none;transition:opacity 0.3s;
 }
 .cert-overlay.show {opacity:1;pointer-events:auto;}
-
 .cert-wrapper {max-width:800px;width:100%;}
-
-.cert-actions {
-  display:flex;gap:10px;justify-content:center;margin-bottom:20px;
-}
-.cert-actions button {padding:10px 24px;border-radius:9px;border:none;font-family:inherit;font-weight:700;font-size:13px;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:all 0.2s;}
+.cert-actions {display:flex;gap:10px;justify-content:center;margin-bottom:18px;}
+.cert-actions button {padding:10px 22px;border-radius:9px;border:none;font-family:inherit;font-weight:700;font-size:13px;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:all 0.2s;}
 .cert-btn-print {background:var(--gold);color:#000;}
 .cert-btn-print:hover {box-shadow:0 4px 20px var(--gold-glow);transform:translateY(-1px);}
 .cert-btn-close {background:rgba(255,255,255,0.08);color:var(--text-primary);}
 .cert-btn-close:hover {background:rgba(255,255,255,0.15);}
 
 .cert-doc {
-  background:#fff;color:#1a1a1a;border-radius:8px;padding:48px 52px;
-  box-shadow:0 20px 80px rgba(0,0,0,0.5);font-size:12.5px;line-height:1.65;position:relative;
+  background:#fff;color:#1a1a1a;border-radius:8px;padding:44px 48px;
+  box-shadow:0 20px 80px rgba(0,0,0,0.5);font-size:12px;line-height:1.65;position:relative;
 }
-.cert-doc::before {
-  content:'';position:absolute;top:0;left:0;right:0;height:4px;
-  background:linear-gradient(90deg,#C8A850,#A07830,#C8A850);
-  border-radius:8px 8px 0 0;
-}
-.cert-doc::after {
-  content:'';position:absolute;bottom:0;left:0;right:0;height:4px;
-  background:linear-gradient(90deg,#C8A850,#A07830,#C8A850);
-  border-radius:0 0 8px 8px;
-}
+.cert-doc::before {content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,#C8A850,#A07830,#C8A850);border-radius:8px 8px 0 0;}
+.cert-doc::after {content:'';position:absolute;bottom:0;left:0;right:0;height:4px;background:linear-gradient(90deg,#C8A850,#A07830,#C8A850);border-radius:0 0 8px 8px;}
 
-.cert-header {display:flex;align-items:center;gap:16px;margin-bottom:28px;padding-bottom:20px;border-bottom:2px solid #C8A850;}
-.cert-logo-box {
-  width:56px;height:56px;background:linear-gradient(135deg,#C8A850,#A07830);border-radius:12px;
-  display:flex;align-items:center;justify-content:center;font-size:24px;color:#000;font-weight:800;flex-shrink:0;
-}
-.cert-header-text h1 {font-size:20px;font-weight:800;color:#1a1a1a;letter-spacing:-0.5px;margin:0;}
-.cert-header-text p {font-size:10px;text-transform:uppercase;letter-spacing:3px;color:#666;font-weight:600;margin:2px 0 0;}
+.cert-header {display:flex;align-items:center;gap:14px;margin-bottom:24px;padding-bottom:18px;border-bottom:2px solid #C8A850;}
+.cert-logo-box {width:52px;height:52px;background:linear-gradient(135deg,#C8A850,#A07830);border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:22px;color:#000;font-weight:800;flex-shrink:0;}
+.cert-header-text h1 {font-size:19px;font-weight:800;color:#1a1a1a;letter-spacing:-0.5px;margin:0;}
+.cert-header-text p {font-size:9.5px;text-transform:uppercase;letter-spacing:3px;color:#666;font-weight:600;margin:2px 0 0;}
 .cert-number {margin-left:auto;text-align:right;}
 .cert-number span {display:block;font-size:9px;text-transform:uppercase;letter-spacing:1px;color:#999;font-weight:600;}
-.cert-number strong {font-size:14px;color:#C8A850;font-weight:800;}
+.cert-number strong {font-size:13px;color:#C8A850;font-weight:800;}
 
-.cert-doc h2 {font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;color:#C8A850;margin:24px 0 12px;padding-bottom:6px;border-bottom:1px solid #e8e0c8;}
-.cert-doc h3 {font-size:12px;font-weight:700;color:#1a1a1a;margin:16px 0 8px;}
-.cert-doc p {margin:0 0 10px;color:#333;}
+.cert-doc h2 {font-size:12.5px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;color:#C8A850;margin:22px 0 10px;padding-bottom:5px;border-bottom:1px solid #e8e0c8;}
+.cert-doc h3 {font-size:12px;font-weight:700;color:#1a1a1a;margin:14px 0 7px;}
+.cert-doc p {margin:0 0 8px;color:#333;}
 
-.cert-data-table {width:100%;border-collapse:collapse;margin:12px 0 20px;}
-.cert-data-table td {padding:9px 14px;border-bottom:1px solid #eee;font-size:12px;}
-.cert-data-table td:first-child {font-weight:600;color:#666;width:40%;background:#fafafa;}
+.cert-data-table {width:100%;border-collapse:collapse;margin:10px 0 18px;}
+.cert-data-table td {padding:8px 12px;border-bottom:1px solid #eee;font-size:11.5px;}
+.cert-data-table td:first-child {font-weight:600;color:#666;width:42%;background:#fafafa;}
 .cert-data-table td:last-child {color:#1a1a1a;font-weight:500;}
 
-.cert-exclusions {list-style:none;padding:0;margin:0 0 16px;}
-.cert-exclusions li {padding:6px 0 6px 20px;position:relative;font-size:12px;color:#333;}
-.cert-exclusions li::before {content:'\f00d';font-family:'Font Awesome 6 Free';font-weight:900;position:absolute;left:0;color:#c0392b;font-size:9px;top:8px;}
+.cert-exclusions {list-style:none;padding:0;margin:0 0 14px;}
+.cert-exclusions li {padding:5px 0 5px 18px;position:relative;font-size:11.5px;color:#333;}
+.cert-exclusions li::before {content:'\f00d';font-family:'Font Awesome 6 Free';font-weight:900;position:absolute;left:0;color:#c0392b;font-size:8px;top:7px;}
 
-.cert-sig-area {display:flex;gap:40px;margin-top:36px;padding-top:24px;border-top:1px solid #ddd;}
+.cert-sig-area {display:flex;gap:36px;margin-top:32px;padding-top:20px;border-top:1px solid #ddd;}
 .cert-sig-block {flex:1;text-align:center;}
-.cert-sig-line {height:1px;background:#999;margin:32px 0 8px;}
-.cert-sig-label {font-size:10px;color:#666;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;margin:4px 0 2px;}
-.cert-sig-name {font-size:12px;color:#1a1a1a;font-weight:600;}
+.cert-sig-line {height:1px;background:#999;margin:36px 0 7px;}
+.cert-sig-label {font-size:9.5px;color:#666;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;margin:3px 0 1px;}
+.cert-sig-name {font-size:11.5px;color:#1a1a1a;font-weight:600;}
 
-.cert-footer-note {margin-top:24px;padding-top:12px;border-top:1px solid #eee;font-size:9.5px;color:#999;text-align:center;font-style:italic;}
+.cert-footer-note {margin-top:20px;padding-top:10px;border-top:1px solid #eee;font-size:9px;color:#999;text-align:center;font-style:italic;}
 
-/* ── Garantia list items ── */
-.gar-list-item {
-  display:flex;align-items:center;gap:14px;padding:14px 16px;border-bottom:1px solid var(--border);transition:background 0.15s;
-}
+.gar-list-item {display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--border);transition:background 0.15s;}
 .gar-list-item:last-child {border-bottom:none;}
 .gar-list-item:hover {background:rgba(255,255,255,0.02);}
-.gar-list-icon {
-  width:40px;height:40px;border-radius:10px;background:var(--gold-soft);color:var(--gold);
-  display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;
-}
+.gar-list-icon {width:38px;height:38px;border-radius:10px;background:var(--gold-soft);color:var(--gold);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
 .gar-list-info {flex:1;min-width:0;}
 .gar-list-info h4 {font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.gar-list-info p {font-size:11px;color:var(--text-muted);margin-top:2px;}
-.gar-list-actions {display:flex;gap:6px;flex-shrink:0;}
+.gar-list-info p {font-size:11px;color:var(--text-muted);margin-top:1px;}
+.gar-list-actions {display:flex;gap:5px;flex-shrink:0;}
 
 @media(max-width:1024px){
   .sidebar {transform:translateX(-100%);}
@@ -325,17 +303,15 @@ select.form-input {cursor:pointer;appearance:auto;}
   .hamburger {display:block;}
 }
 @media(max-width:768px){
-  .page-body {padding:20px 16px 32px;}
-  .top-bar {padding:14px 16px;}
+  .page-body {padding:18px 14px 30px;}
+  .top-bar {padding:12px 14px;}
   .kpi-grid {grid-template-columns:1fr 1fr !important;}
   .kanban-grid {grid-template-columns:1fr !important;}
   .two-col {grid-template-columns:1fr !important;}
-  .cert-doc {padding:28px 24px;}
-  .cert-sig-area {flex-direction:column;gap:24px;}
+  .cert-doc {padding:24px 20px;}
+  .cert-sig-area {flex-direction:column;gap:20px;}
 }
-@media(max-width:480px){
-  .kpi-grid {grid-template-columns:1fr !important;}
-}
+@media(max-width:480px){.kpi-grid {grid-template-columns:1fr !important;}}
 
 @media print {
   body {background:#fff !important;}
@@ -344,14 +320,13 @@ select.form-input {cursor:pointer;appearance:auto;}
   .cert-overlay {position:static !important;background:none !important;padding:0 !important;backdrop-filter:none !important;opacity:1 !important;pointer-events:auto !important;}
   .cert-actions {display:none !important;}
   .cert-wrapper {max-width:100% !important;}
-  .cert-doc {box-shadow:none !important;border-radius:0 !important;padding:20px 24px !important;}
+  .cert-doc {box-shadow:none !important;border-radius:0 !important;padding:18px 22px !important;}
   .cert-doc::before, .cert-doc::after {display:none !important;}
 }
 
-::-webkit-scrollbar {width:6px;}
+::-webkit-scrollbar {width:5px;}
 ::-webkit-scrollbar-track {background:transparent;}
 ::-webkit-scrollbar-thumb {background:rgba(255,255,255,0.08);border-radius:10px;}
-::-webkit-scrollbar-thumb:hover {background:rgba(255,255,255,0.15);}
 </style>
 </head>
 
@@ -383,8 +358,8 @@ select.form-input {cursor:pointer;appearance:auto;}
       <button class="hamburger" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></button>
       <div class="top-bar-left"><h1 id="topTitle">Dashboard</h1><p id="topDate"></p></div>
     </div>
-    <div style="display:flex;align-items:center;gap:12px;">
-      <button class="btn-ghost" onclick="refreshAll()" title="Recargar datos"><i class="fa-solid fa-rotate"></i> Actualizar</button>
+    <div style="display:flex;align-items:center;gap:10px;">
+      <button class="btn-ghost" onclick="refreshAll()"><i class="fa-solid fa-rotate"></i> Actualizar</button>
     </div>
   </div>
 
@@ -392,19 +367,19 @@ select.form-input {cursor:pointer;appearance:auto;}
 
     <!-- DASHBOARD -->
     <div class="tab-section active" id="sec-dashboard">
-      <div class="kpi-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px;">
+      <div class="kpi-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px;">
         <div class="kpi-card kpi-blue"><div class="kpi-icon"><i class="fa-solid fa-wrench"></i></div><div class="kpi-value" id="kpi_proceso">0</div><div class="kpi-label">En Proceso</div></div>
         <div class="kpi-card kpi-emerald"><div class="kpi-icon"><i class="fa-solid fa-circle-check"></i></div><div class="kpi-value" id="kpi_terminado">0</div><div class="kpi-label">Terminados</div></div>
         <div class="kpi-card kpi-gold"><div class="kpi-icon"><i class="fa-solid fa-coins"></i></div><div class="kpi-value" id="kpi_facturacion">$0</div><div class="kpi-label">Facturacion Total</div></div>
         <div class="kpi-card kpi-amber"><div class="kpi-icon"><i class="fa-solid fa-users"></i></div><div class="kpi-value" id="kpi_clientes">0</div><div class="kpi-label">Clientes</div></div>
       </div>
-      <div class="two-col" style="display:grid;grid-template-columns:2fr 1fr;gap:20px;">
+      <div class="two-col" style="display:grid;grid-template-columns:2fr 1fr;gap:18px;">
         <div class="card"><div class="card-title"><i class="fa-solid fa-clock-rotate-left"></i> Servicios Recientes</div><div id="recentServices"><div class="empty-state"><i class="fa-solid fa-inbox"></i><p>Cargando...</p></div></div></div>
         <div class="card">
           <div class="card-title"><i class="fa-solid fa-chart-line"></i> Resumen Financiero</div>
-          <div style="margin-bottom:18px;"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;"><span style="font-size:12px;color:var(--text-secondary);">Ingresos</span><span style="font-size:14px;font-weight:700;color:var(--emerald);" id="dash_ingresos">$0</span></div><div style="height:6px;background:rgba(255,255,255,0.04);border-radius:10px;overflow:hidden;"><div id="bar_ingresos" style="height:100%;background:var(--emerald);border-radius:10px;width:0%;transition:width 0.8s ease;"></div></div></div>
-          <div style="margin-bottom:18px;"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;"><span style="font-size:12px;color:var(--text-secondary);">Egresos</span><span style="font-size:14px;font-weight:700;color:var(--rose);" id="dash_egresos">$0</span></div><div style="height:6px;background:rgba(255,255,255,0.04);border-radius:10px;overflow:hidden;"><div id="bar_egresos" style="height:100%;background:var(--rose);border-radius:10px;width:0%;transition:width 0.8s ease;"></div></div></div>
-          <div style="padding-top:14px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;"><span style="font-size:12px;color:var(--text-secondary);">Balance</span><span style="font-size:18px;font-weight:800;color:var(--gold);" id="dash_balance">$0</span></div>
+          <div style="margin-bottom:16px;"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:7px;"><span style="font-size:12px;color:var(--text-secondary);">Ingresos</span><span style="font-size:14px;font-weight:700;color:var(--emerald);" id="dash_ingresos">$0</span></div><div style="height:5px;background:rgba(255,255,255,0.04);border-radius:10px;overflow:hidden;"><div id="bar_ingresos" style="height:100%;background:var(--emerald);border-radius:10px;width:0%;transition:width 0.8s ease;"></div></div></div>
+          <div style="margin-bottom:16px;"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:7px;"><span style="font-size:12px;color:var(--text-secondary);">Egresos</span><span style="font-size:14px;font-weight:700;color:var(--rose);" id="dash_egresos">$0</span></div><div style="height:5px;background:rgba(255,255,255,0.04);border-radius:10px;overflow:hidden;"><div id="bar_egresos" style="height:100%;background:var(--rose);border-radius:10px;width:0%;transition:width 0.8s ease;"></div></div></div>
+          <div style="padding-top:12px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;"><span style="font-size:12px;color:var(--text-secondary);">Balance</span><span style="font-size:17px;font-weight:800;color:var(--gold);" id="dash_balance">$0</span></div>
         </div>
       </div>
     </div>
@@ -412,7 +387,7 @@ select.form-input {cursor:pointer;appearance:auto;}
     <!-- OPERACIONES -->
     <div class="tab-section" id="sec-operaciones">
       <div class="section-header"><div><h2>Tablero de Operaciones</h2><div class="section-header-sub">Gestiona el flujo de trabajos</div></div></div>
-      <div class="kanban-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;">
+      <div class="kanban-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;">
         <div class="kanban-col"><div class="kanban-header"><div class="kanban-header-left"><div class="kanban-dot dot-amber"></div><span class="kanban-title">Pendiente</span></div><span class="kanban-count" id="count_pendiente">0</span></div><div class="kanban-body" id="col_pendiente"></div></div>
         <div class="kanban-col"><div class="kanban-header"><div class="kanban-header-left"><div class="kanban-dot dot-blue"></div><span class="kanban-title">En Proceso</span></div><span class="kanban-count" id="count_proceso">0</span></div><div class="kanban-body" id="col_proceso"></div></div>
         <div class="kanban-col"><div class="kanban-header"><div class="kanban-header-left"><div class="kanban-dot dot-emerald"></div><span class="kanban-title">Terminado</span></div><span class="kanban-count" id="count_terminado">0</span></div><div class="kanban-body" id="col_terminado"></div></div>
@@ -422,7 +397,7 @@ select.form-input {cursor:pointer;appearance:auto;}
     <!-- TURNOS -->
     <div class="tab-section" id="sec-turnos">
       <div class="section-header"><div><h2>Nuevo Turno</h2><div class="section-header-sub">Registra un nuevo servicio</div></div></div>
-      <div class="two-col" style="display:grid;grid-template-columns:1fr 1.5fr;gap:20px;">
+      <div class="two-col" style="display:grid;grid-template-columns:1fr 1.5fr;gap:18px;">
         <div class="card">
           <div class="card-title"><i class="fa-solid fa-plus"></i> Crear Turno</div>
           <div class="form-group"><label class="form-label">Cliente</label><select id="t_cliente_sel" class="form-input" onchange="onClienteSelect()"><option value="">-- Seleccionar --</option><option value="__nuevo">+ Nuevo cliente</option></select></div>
@@ -436,7 +411,7 @@ select.form-input {cursor:pointer;appearance:auto;}
           </div>
           <div class="form-group"><label class="form-label">Servicio</label><select id="t_servicio" class="form-input"><option value="Lavado Exterior">Lavado Exterior</option><option value="Lavado Interior">Lavado Interior</option><option value="Detailing Completo">Detailing Completo</option><option value="Pulido de Pintura">Pulido de Pintura</option><option value="Proteccion Ceramica">Proteccion Ceramica</option><option value="Limpieza de Motor">Limpieza de Motor</option><option value="Polarizado">Polarizado</option><option value="Tratamiento de Cuero">Tratamiento de Cuero</option><option value="PPF">PPF (Paint Protection Film)</option></select></div>
           <div class="form-group"><label class="form-label">Fecha</label><input id="t_fecha" type="date" class="form-input"></div>
-          <button onclick="crearTurno()" class="btn-gold" style="width:100%;justify-content:center;margin-top:6px;"><i class="fa-solid fa-calendar-plus"></i> Crear Turno</button>
+          <button onclick="crearTurno()" class="btn-gold" style="width:100%;justify-content:center;margin-top:4px;"><i class="fa-solid fa-calendar-plus"></i> Crear Turno</button>
         </div>
         <div class="card"><div class="card-title"><i class="fa-solid fa-list-check"></i> Proximos Turnos</div><div id="listaTurnos"><div class="empty-state"><i class="fa-solid fa-calendar-xmark"></i><p>No hay turnos pendientes</p></div></div></div>
       </div>
@@ -445,7 +420,7 @@ select.form-input {cursor:pointer;appearance:auto;}
     <!-- CLIENTES -->
     <div class="tab-section" id="sec-clientes">
       <div class="section-header"><div><h2>Clientes</h2><div class="section-header-sub">Base de datos de clientes</div></div></div>
-      <div class="two-col" style="display:grid;grid-template-columns:1fr 1.5fr;gap:20px;">
+      <div class="two-col" style="display:grid;grid-template-columns:1fr 1.5fr;gap:18px;">
         <div class="card">
           <div class="card-title"><i class="fa-solid fa-user-plus"></i> <span id="clienteFormTitle">Agregar Cliente</span></div>
           <input type="hidden" id="c_edit_id" value="">
@@ -460,7 +435,7 @@ select.form-input {cursor:pointer;appearance:auto;}
     <!-- VEHICULOS -->
     <div class="tab-section" id="sec-vehiculos">
       <div class="section-header"><div><h2>Vehiculos</h2><div class="section-header-sub">Registro de vehiculos</div></div></div>
-      <div class="two-col" style="display:grid;grid-template-columns:1fr 1.5fr;gap:20px;">
+      <div class="two-col" style="display:grid;grid-template-columns:1fr 1.5fr;gap:18px;">
         <div class="card">
           <div class="card-title"><i class="fa-solid fa-car-side"></i> Agregar Vehiculo</div>
           <div class="form-group"><label class="form-label">Propietario</label><select id="v_cliente" class="form-input"><option value="">-- Seleccionar cliente --</option></select></div>
@@ -475,76 +450,27 @@ select.form-input {cursor:pointer;appearance:auto;}
     <!-- GARANTIA PPF -->
     <div class="tab-section" id="sec-garantia">
       <div class="section-header"><div><h2>Garantia PPF</h2><div class="section-header-sub">Genera certificados de garantia para Film de Proteccion de Pintura</div></div></div>
-
-      <div class="setup-banner" id="garSetupBanner">
-        <i class="fa-solid fa-triangle-exclamation"></i>
-        <div id="garSetupMsg">Para almacenar los certificados, crea la tabla <code>garantias</code> en Supabase con el SQL que aparece al hacer clic en "Generar Certificado".</div>
-      </div>
-
-      <div class="two-col" style="display:grid;grid-template-columns:1fr 1.5fr;gap:20px;">
+      <div class="setup-banner" id="garSetupBanner"><i class="fa-solid fa-triangle-exclamation"></i><div id="garSetupMsg">Para guardar certificados, crea la tabla <code>garantias</code> en Supabase. Mientras tanto, podes generar certificados para imprimir.</div></div>
+      <div class="two-col" style="display:grid;grid-template-columns:1fr 1.5fr;gap:18px;">
         <div class="card">
           <div class="card-title"><i class="fa-solid fa-file-shield"></i> Nuevo Certificado</div>
-
-          <div class="form-group">
-            <label class="form-label">Cliente *</label>
-            <select id="g_cliente" class="form-input" onchange="onGarClienteChange()">
-              <option value="">-- Seleccionar --</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Vehiculo *</label>
-            <select id="g_vehiculo" class="form-input" onchange="onGarVehiculoChange()">
-              <option value="">-- Seleccionar --</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">Marca / Rollo de PPF *</label>
-            <select id="g_ppf_marca" class="form-input" onchange="onPPFBrandChange()">
-              <option value="">-- Seleccionar marca --</option>
-            </select>
-          </div>
-
-          <!-- PPF Info Card -->
+          <div class="form-group"><label class="form-label">Cliente *</label><select id="g_cliente" class="form-input" onchange="onGarClienteChange()"><option value="">-- Seleccionar --</option></select></div>
+          <div class="form-group"><label class="form-label">Vehiculo *</label><select id="g_vehiculo" class="form-input" onchange="onGarVehiculoChange()"><option value="">-- Seleccionar cliente primero --</option></select></div>
+          <div class="form-group"><label class="form-label">Marca / Rollo de PPF *</label><select id="g_ppf_marca" class="form-input" onchange="onPPFBrandChange()"><option value="">-- Seleccionar marca --</option></select></div>
           <div class="ppf-info-card" id="ppfInfoCard">
             <h4><i class="fa-solid fa-circle-info"></i> <span id="ppfInfoName">-</span></h4>
-            <p>Garantia por fallas del producto: <span class="ppf-year-big" id="ppfInfoProdYears">-</span> anos &nbsp;|&nbsp; Garantia por instalacion: <span class="ppf-year-big" id="ppfInfoInstYears">-</span> ano(s)</p>
+            <p>Garantia producto: <span class="ppf-year-big" id="ppfInfoProdYears">-</span> anos &nbsp;|&nbsp; Garantia instalacion: <span class="ppf-year-big" id="ppfInfoInstYears">-</span> ano(s)</p>
           </div>
-
-          <div class="form-group">
-            <label class="form-label">Codigo del producto</label>
-            <input id="g_codigo" class="form-input" placeholder="Ej: XPEL-UP-2025">
-          </div>
-          <div class="form-group">
-            <label class="form-label">Fecha de instalacion *</label>
-            <input id="g_fecha" type="date" class="form-input">
-          </div>
-
+          <div class="form-group"><label class="form-label">Codigo del producto</label><input id="g_codigo" class="form-input" placeholder="Ej: XPEL-UP-2025"></div>
+          <div class="form-group"><label class="form-label">Fecha de instalacion *</label><input id="g_fecha" type="date" class="form-input"></div>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-            <div class="form-group">
-              <label class="form-label">Garantia producto (anos)</label>
-              <input id="g_anios_prod" type="number" min="1" max="30" class="form-input" placeholder="10">
-            </div>
-            <div class="form-group">
-              <label class="form-label">Garantia instalacion (anos)</label>
-              <input id="g_anios_inst" type="number" min="0" max="30" class="form-input" placeholder="1">
-            </div>
+            <div class="form-group"><label class="form-label">Garantia producto (anos)</label><input id="g_anios_prod" type="number" min="1" max="30" class="form-input" placeholder="10"></div>
+            <div class="form-group"><label class="form-label">Garantia instalacion (anos)</label><input id="g_anios_inst" type="number" min="0" max="30" class="form-input" placeholder="1"></div>
           </div>
-
-          <div class="form-group">
-            <label class="form-label">Responsable tecnico *</label>
-            <input id="g_responsable" class="form-input" placeholder="Nombre del responsable tecnico">
-          </div>
-
-          <button onclick="generarCertificado()" class="btn-gold" style="width:100%;justify-content:center;margin-top:6px;">
-            <i class="fa-solid fa-shield-halved"></i> Generar Certificado
-          </button>
+          <div class="form-group"><label class="form-label">Responsable tecnico *</label><input id="g_responsable" class="form-input" placeholder="Nombre del responsable tecnico"></div>
+          <button onclick="generarCertificado()" class="btn-gold" style="width:100%;justify-content:center;margin-top:4px;"><i class="fa-solid fa-shield-halved"></i> Generar Certificado</button>
         </div>
-
-        <div class="card">
-          <div class="card-title"><i class="fa-solid fa-scroll"></i> Certificados Generados</div>
-          <div id="listaGarantias"><div class="empty-state"><i class="fa-solid fa-shield-halved"></i><p>No hay certificados generados</p></div></div>
-        </div>
+        <div class="card"><div class="card-title"><i class="fa-solid fa-scroll"></i> Certificados Generados</div><div id="listaGarantias"><div class="empty-state"><i class="fa-solid fa-shield-halved"></i><p>No hay certificados generados</p></div></div></div>
       </div>
     </div>
 
@@ -552,12 +478,12 @@ select.form-input {cursor:pointer;appearance:auto;}
     <div class="tab-section" id="sec-caja">
       <div class="section-header"><div><h2>Caja</h2><div class="section-header-sub">Control de ingresos y egresos</div></div></div>
       <div class="setup-banner" id="cajaSetupBanner"><i class="fa-solid fa-triangle-exclamation"></i><div id="cajaSetupMsg"></div></div>
-      <div class="kpi-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:24px;">
+      <div class="kpi-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px;">
         <div class="kpi-card kpi-emerald"><div class="kpi-icon"><i class="fa-solid fa-arrow-trend-up"></i></div><div class="kpi-value" id="caja_ingresos">$0</div><div class="kpi-label">Total Ingresos</div></div>
         <div class="kpi-card kpi-rose"><div class="kpi-icon" style="background:rgba(244,63,94,0.12);color:var(--rose);"><i class="fa-solid fa-arrow-trend-down"></i></div><div class="kpi-value" id="caja_egresos">$0</div><div class="kpi-label">Total Egresos</div></div>
         <div class="kpi-card kpi-gold"><div class="kpi-icon"><i class="fa-solid fa-scale-balanced"></i></div><div class="kpi-value" id="caja_balance">$0</div><div class="kpi-label">Balance</div></div>
       </div>
-      <div class="two-col" style="display:grid;grid-template-columns:1fr 1.5fr;gap:20px;">
+      <div class="two-col" style="display:grid;grid-template-columns:1fr 1.5fr;gap:18px;">
         <div class="card">
           <div class="card-title"><i class="fa-solid fa-receipt"></i> Registrar Movimiento</div>
           <div class="form-group"><label class="form-label">Concepto</label><input id="cx_concepto" class="form-input" placeholder="Ej: Detailing Completo"></div>
@@ -574,7 +500,7 @@ select.form-input {cursor:pointer;appearance:auto;}
 
 <!-- MODAL -->
 <div class="modal-overlay" id="modalOverlay">
-  <div class="modal-box"><h3 id="modalTitle">Confirmar</h3><p id="modalMsg">Esta accion no se puede deshacer.</p><div class="modal-actions"><button class="btn-ghost" onclick="closeModal()">Cancelar</button><button class="btn-sm btn-rose" id="modalConfirmBtn" style="padding:10px 20px;font-size:13px;" onclick="confirmModal()">Eliminar</button></div></div>
+  <div class="modal-box"><h3 id="modalTitle">Confirmar</h3><p id="modalMsg"></p><div class="modal-actions"><button class="btn-ghost" onclick="closeModal()">Cancelar</button><button class="btn-sm btn-rose" id="modalConfirmBtn" style="padding:9px 18px;font-size:12px;" onclick="confirmModal()">Eliminar</button></div></div>
 </div>
 
 <!-- CERTIFICATE OVERLAY -->
@@ -591,9 +517,9 @@ select.form-input {cursor:pointer;appearance:auto;}
 <div class="toast-container" id="toastContainer"></div>
 
 <script>
-/* ═══════════════════════════════════════════════════════
+/* ═══════════════════════════════════════════
    SUPABASE
-   ═══════════════════════════════════════════════════════ */
+   ═══════════════════════════════════════════ */
 const sb = supabase.createClient(
   "https://wuewcawbpajdehquorfq.supabase.co",
   "sb_publishable_nzzOvYY0RYXDUavs-pFH6Q_pqnLU2tb"
@@ -606,12 +532,12 @@ let servicios = [];
 let movimientos = [];
 let garantias = [];
 let modalCallback = null;
-
 const tableColumns = { caja:null, clientes:null, vehiculos:null, servicios:null, garantias:null };
 
-/* ═══════════════════════════════════════════════════════
-   CONFIGURACION DE MARCAS PPF — AÑOS DE GARANTIA
-   ═══════════════════════════════════════════════════════ */
+/* ═══════════════════════════════════════════
+   CONFIG PPF — MARCAS Y AÑOS DE GARANTIA
+   Se puede modificar a gusto
+   ═══════════════════════════════════════════ */
 const ppfBrands = [
   { name:'XPEL Ultimate Plus',       prodYears:10, instYears:1, code:'XPEL-UP' },
   { name:'XPEL Stealth',             prodYears:10, instYears:1, code:'XPEL-ST' },
@@ -633,117 +559,498 @@ const ppfBrands = [
 /* ═══ UTILIDADES ═══ */
 function formatMoney(n){return '$'+Number(n||0).toLocaleString('es-AR');}
 function formatDate(d){if(!d)return'-';return new Date(d).toLocaleDateString('es-AR',{day:'2-digit',month:'short',year:'numeric'});}
-function formatDateLong(d){if(!d)return'-';return new Date(d).toLocaleDateString('es-AR',{day:'2-digit',month:'2-digit',year:'numeric'});}
-function timeAgo(d){if(!d)return'';const diff=Date.now()-new Date(d).getTime();const mins=Math.floor(diff/60000);if(mins<1)return'Ahora';if(mins<60)return mins+' min';const hrs=Math.floor(mins/60);if(hrs<24)return hrs+'h';return Math.floor(hrs/24)+'d';}
+function formatDateShort(d){if(!d)return'-';return new Date(d).toLocaleDateString('es-AR',{day:'2-digit',month:'2-digit',year:'numeric'});}
+function timeAgo(d){if(!d)return'';const diff=Date.now()-new Date(d).getTime();const m=Math.floor(diff/60000);if(m<1)return'Ahora';if(m<60)return m+' min';const h=Math.floor(m/60);if(h<24)return h+'h';return Math.floor(h/24)+'d';}
 function esc(s){const d=document.createElement('div');d.textContent=s||'';return d.innerHTML;}
-function animateValue(el,target,prefix,suffix){prefix=prefix||'';suffix=suffix||'';const start=parseInt(el.dataset.current||'0');const duration=600;const startTime=performance.now();function update(now){const elapsed=now-startTime;const progress=Math.min(elapsed/duration,1);const ease=1-Math.pow(1-progress,3);const current=Math.round(start+(target-start)*ease);el.textContent=prefix+current.toLocaleString('es-AR')+suffix;if(progress<1)requestAnimationFrame(update);else el.dataset.current=target;}requestAnimationFrame(update);}
-
-/* Numero a palabras en espanol */
-function numberToSpanish(n){
-  const w=['cero','uno','dos','tres','cuatro','cinco','seis','siete','ocho','nueve','diez','once','doce','trece','catorce','quince','dieciseis','diecisiete','dieciocho','diecinueve','veinte','veintiuno','veintidos','veintitres','veinticuatro','veinticinco','veintiseis','veintisiete','veintiocho','veintinueve','treinta'];
-  if(n>=0&&n<=30) return w[n];
-  return n.toString();
-}
+function animateValue(el,target,prefix,suffix){prefix=prefix||'';suffix=suffix||'';const start=parseInt(el.dataset.current||'0');const dur=600;const st=performance.now();function up(now){const p=Math.min((now-st)/dur,1);const e=1-Math.pow(1-p,3);const c=Math.round(start+(target-start)*e);el.textContent=prefix+c.toLocaleString('es-AR')+suffix;if(p<1)requestAnimationFrame(up);else el.dataset.current=target;}requestAnimationFrame(up);}
+function numToWord(n){const w=['cero','uno','dos','tres','cuatro','cinco','seis','siete','ocho','nueve','diez','once','doce','trece','catorce','quince','dieciseis','diecisiete','dieciocho','diecinueve','veinte','veintiuno','veintidos','veintitres','veinticuatro','veinticinco','veintiseis','veintisiete','veintiocho','veintinueve','treinta'];if(n>=0&&n<=30)return w[n];return n.toString();}
 
 /* ═══ TOASTS ═══ */
-function toast(msg,type){type=type||'info';const icons={success:'fa-circle-check',error:'fa-circle-xmark',info:'fa-circle-info'};const el=document.createElement('div');el.className='toast toast-'+type;el.innerHTML='<i class="fa-solid '+icons[type]+'"></i> <span>'+msg+'</span>';document.getElementById('toastContainer').appendChild(el);setTimeout(()=>{el.classList.add('toast-out');setTimeout(()=>el.remove(),300);},4500);}
+function toast(msg,type){type=type||'info';const ic={success:'fa-circle-check',error:'fa-circle-xmark',info:'fa-circle-info'};const el=document.createElement('div');el.className='toast toast-'+type;el.innerHTML='<i class="fa-solid '+ic[type]+'"></i> <span>'+msg+'</span>';document.getElementById('toastContainer').appendChild(el);setTimeout(()=>{el.classList.add('toast-out');setTimeout(()=>el.remove(),300);},4500);}
 
 /* ═══ MODAL ═══ */
-function showModal(title,msg,onConfirm){document.getElementById('modalTitle').textContent=title;document.getElementById('modalMsg').textContent=msg;modalCallback=onConfirm;document.getElementById('modalOverlay').classList.add('show');}
+function showModal(title,msg,cb){document.getElementById('modalTitle').textContent=title;document.getElementById('modalMsg').textContent=msg;modalCallback=cb;document.getElementById('modalOverlay').classList.add('show');}
 function closeModal(){document.getElementById('modalOverlay').classList.remove('show');modalCallback=null;}
 function confirmModal(){if(modalCallback)modalCallback();closeModal();}
 
-/* ═══════════════════════════════════════════════════════
+/* ═══════════════════════════════════════════
    NAVEGACION
-   ═══════════════════════════════════════════════════════ */
+   ═══════════════════════════════════════════ */
 const tabNames={dashboard:'Dashboard',operaciones:'Operaciones',turnos:'Turnos',clientes:'Clientes',vehiculos:'Vehiculos',garantia:'Garantia PPF',caja:'Caja'};
 function switchTab(id,el){document.querySelectorAll('.tab-section').forEach(s=>s.classList.remove('active'));document.getElementById('sec-'+id).classList.add('active');document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));el.classList.add('active');document.getElementById('topTitle').textContent=tabNames[id]||id;document.getElementById('sidebar').classList.remove('open');}
 function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');}
-document.addEventListener('click',(e)=>{const sidebarEl=document.getElementById('sidebar');const hamburger=document.querySelector('.hamburger');if(window.innerWidth<=1024&&sidebarEl.classList.contains('open')&&!sidebarEl.contains(e.target)&&!hamburger.contains(e.target)){sidebarEl.classList.remove('open');}});
+document.addEventListener('click',e=>{const sb2=document.getElementById('sidebar');const hm=document.querySelector('.hamburger');if(window.innerWidth<=1024&&sb2.classList.contains('open')&&!sb2.contains(e.target)&&!hm.contains(e.target)){sb2.classList.remove('open');}});
 
-/* ═══════════════════════════════════════════════════════
+/* ═══════════════════════════════════════════
    DETECCION DE COLUMNAS
-   ═══════════════════════════════════════════════════════ */
-async function detectColumns(tableName){try{const{data,error}=await sb.from(tableName).select('*').limit(1);if(error){console.warn('[detectColumns] Error en '+tableName+':',error.message);return null;}if(data&&data.length>0){const cols=Object.keys(data[0]);console.log('[detectColumns] '+tableName+':',cols.join(', '));return cols;}console.log('[detectColumns] '+tableName+' vacia');return null;}catch(e){console.warn('[detectColumns] Excepcion:',e);return null;}}
-function maybeOrder(query,tableName,col,ascending){const known=tableColumns[tableName];if(known&&known.includes(col)){return query.order(col,{ascending:!!ascending});}return query;}
+   ═══════════════════════════════════════════ */
+async function detectColumns(tn){try{const{data,error}=await sb.from(tn).select('*').limit(1);if(error){console.warn('[detectColumns]',tn,error.message);return null;}if(data&&data.length>0){const c=Object.keys(data[0]);console.log('[detectColumns]',tn,c.join(', '));return c;}return null;}catch(e){return null;}}
+function maybeOrder(q,tn,col,asc){const k=tableColumns[tn];if(k&&k.includes(col))return q.order(col,{ascending:!!asc});return q;}
 
-/* ═══════════════════════════════════════════════════════
+/* ═══════════════════════════════════════════
    CARGA DE DATOS
-   ═══════════════════════════════════════════════════════ */
-async function loadClientes(){try{let q=sb.from('clientes').select('*');q=maybeOrder(q,'clientes','created_at',false);const{data,error}=await q;if(error){const fb=await sb.from('clientes').select('*');if(fb.error)throw fb.error;clientes=fb.data||[];}else{clientes=data||[];}if(!tableColumns['clientes']&&clientes.length>0)tableColumns['clientes']=Object.keys(clientes[0]);}catch(e){console.error('loadClientes:',e);clientes=[];}renderClientes();populateClienteSelects();}
+   ═══════════════════════════════════════════ */
+async function loadClientes(){
+  try{let q=sb.from('clientes').select('*');q=maybeOrder(q,'clientes','created_at',false);const{data,error}=await q;if(error){const fb=await sb.from('clientes').select('*');if(fb.error)throw fb.error;clientes=fb.data||[];}else{clientes=data||[];}if(!tableColumns['clientes']&&clientes.length>0)tableColumns['clientes']=Object.keys(clientes[0]);}
+  catch(e){console.error('loadClientes',e);clientes=[];}
+  renderClientes();populateClienteSelects();
+}
 
-async function loadVehiculos(){try{let q=sb.from('vehiculos').select('*, clientes(nombre)');q=maybeOrder(q,'vehiculos','created_at',false);const{data,error}=await q;if(error){const fb=await sb.from('vehiculos').select('*, clientes(nombre)');if(fb.error)throw fb.error;vehiculos=fb.data||[];}else{vehiculos=data||[];}if(!tableColumns['vehiculos']&&vehiculos.length>0)tableColumns['vehiculos']=Object.keys(vehiculos[0]);}catch(e){console.error('loadVehiculos:',e);vehiculos=[];}renderVehiculos();}
+async function loadVehiculos(){
+  try{let q=sb.from('vehiculos').select('*, clientes(nombre)');q=maybeOrder(q,'vehiculos','created_at',false);const{data,error}=await q;if(error){const fb=await sb.from('vehiculos').select('*, clientes(nombre)');if(fb.error)throw fb.error;vehiculos=fb.data||[];}else{vehiculos=data||[];}if(!tableColumns['vehiculos']&&vehiculos.length>0)tableColumns['vehiculos']=Object.keys(vehiculos[0]);}
+  catch(e){console.error('loadVehiculos',e);vehiculos=[];}
+  renderVehiculos();
+}
 
-async function loadServicios(){try{let q=sb.from('servicios').select('id,tipo,estado,created_at,vehiculos(id,marca,modelo,clientes(id,nombre,telefono))');q=maybeOrder(q,'servicios','created_at',false);const{data,error}=await q;if(error){const fb=await sb.from('servicios').select('id,tipo,estado,created_at,vehiculos(id,marca,modelo,clientes(id,nombre,telefono))');if(fb.error)throw fb.error;servicios=fb.data||[];}else{servicios=data||[];}if(!tableColumns['servicios']&&servicios.length>0)tableColumns['servicios']=Object.keys(servicios[0]);}catch(e){console.error('loadServicios:',e);servicios=[];}renderKanban();renderRecentServices();renderTurnos();updateKPIs();}
+async function loadServicios(){
+  try{let q=sb.from('servicios').select('id,tipo,estado,created_at,vehiculos(id,marca,modelo,clientes(id,nombre,telefono))');q=maybeOrder(q,'servicios','created_at',false);const{data,error}=await q;if(error){const fb=await sb.from('servicios').select('id,tipo,estado,created_at,vehiculos(id,marca,modelo,clientes(id,nombre,telefono))');if(fb.error)throw fb.error;servicios=fb.data||[];}else{servicios=data||[];}if(!tableColumns['servicios']&&servicios.length>0)tableColumns['servicios']=Object.keys(servicios[0]);}
+  catch(e){console.error('loadServicios',e);servicios=[];}
+  renderKanban();renderRecentServices();renderTurnos();updateKPIs();
+}
 
-async function loadCaja(){try{let q=sb.from('caja').select('*');q=maybeOrder(q,'caja','created_at',false);let{data,error}=await q;if(error){const fb=await sb.from('caja').select('*');if(fb.error)throw fb.error;data=fb.data;showCajaSetupBanner();}else{document.getElementById('cajaSetupBanner').classList.remove('show');}movimientos=data||[];if(!tableColumns['caja']&&movimientos.length>0){tableColumns['caja']=Object.keys(movimientos[0]);}}catch(e){console.error('loadCaja:',e);movimientos=[];showCajaSetupBanner(e.message);}renderCaja();updateKPIs();}
+async function loadCaja(){
+  try{let q=sb.from('caja').select('*');q=maybeOrder(q,'caja','created_at',false);let{data,error}=await q;if(error){const fb=await sb.from('caja').select('*');if(fb.error)throw fb.error;data=fb.data;showCajaBanner();}else{document.getElementById('cajaSetupBanner').classList.remove('show');}movimientos=data||[];if(!tableColumns['caja']&&movimientos.length>0)tableColumns['caja']=Object.keys(movimientos[0]);}
+  catch(e){console.error('loadCaja',e);movimientos=[];showCajaBanner(e.message);}
+  renderCaja();updateKPIs();
+}
+function showCajaBanner(err){const b=document.getElementById('cajaSetupBanner');const m=document.getElementById('cajaSetupMsg');m.innerHTML=err?'Error: <code>'+esc(err)+'</code>':'La tabla <code>caja</code> necesita la columna <code>created_at</code>. Ejecuta: <code>ALTER TABLE caja ADD COLUMN created_at TIMESTAMPTZ DEFAULT NOW();</code>';b.classList.add('show');}
 
-function showCajaSetupBanner(errMsg){const b=document.getElementById('cajaSetupBanner');const m=document.getElementById('cajaSetupMsg');m.innerHTML=errMsg?'Error: <code>'+esc(errMsg)+'</code>':'La tabla <code>caja</code> necesita la columna <code>created_at</code>. Ejecuta:<br><code>ALTER TABLE caja ADD COLUMN created_at TIMESTAMPTZ DEFAULT NOW();</code>';b.classList.add('show');}
-
-async function loadGarantias(){try{let q=sb.from('garantias').select('*');q=maybeOrder(q,'garantias','created_at',false);const{data,error}=await q;if(error){console.warn('[loadGarantias] Tabla no disponible:',error.message);garantias=[];document.getElementById('garSetupBanner').classList.add('show');document.getElementById('garSetupMsg').innerHTML='Para guardar certificados en la base de datos, crea la tabla <code>garantias</code> ejecutando el SQL del boton abajo en tu panel de Supabase. Mientras tanto, podes generar certificados que se abriran para imprimir.';}else{garantias=data||[];if(!tableColumns['garantias']&&garantias.length>0)tableColumns['garantias']=Object.keys(garantias[0]);document.getElementById('garSetupBanner').classList.remove('show');}}catch(e){console.error('loadGarantias:',e);garantias=[];}renderGarantias();}
+async function loadGarantias(){
+  try{let q=sb.from('garantias').select('*');q=maybeOrder(q,'garantias','created_at',false);const{data,error}=await q;if(error){console.warn('[loadGarantias]',error.message);garantias=[];document.getElementById('garSetupBanner').classList.add('show');}else{garantias=data||[];if(!tableColumns['garantias']&&garantias.length>0)tableColumns['garantias']=Object.keys(garantias[0]);document.getElementById('garSetupBanner').classList.remove('show');}}
+  catch(e){console.error('loadGarantias',e);garantias=[];}
+  renderGarantias();
+}
 
 async function refreshAll(){await Promise.all([loadClientes(),loadVehiculos(),loadServicios(),loadCaja(),loadGarantias()]);toast('Datos actualizados','success');}
 
 /* ═══ KPIs ═══ */
-function updateKPIs(){const enProceso=servicios.filter(s=>s.estado==='proceso').length;const terminados=servicios.filter(s=>s.estado==='terminado').length;const ingresos=movimientos.filter(m=>m.tipo==='ingreso').reduce((a,m)=>a+Number(m.monto||0),0);const egresos=movimientos.filter(m=>m.tipo==='egreso').reduce((a,m)=>a+Number(m.monto||0),0);animateValue(document.getElementById('kpi_proceso'),enProceso);animateValue(document.getElementById('kpi_terminado'),terminados);animateValue(document.getElementById('kpi_facturacion'),ingresos,'$');animateValue(document.getElementById('kpi_clientes'),clientes.length);document.getElementById('dash_ingresos').textContent=formatMoney(ingresos);document.getElementById('dash_egresos').textContent=formatMoney(egresos);document.getElementById('dash_balance').textContent=formatMoney(ingresos-egresos);const maxVal=Math.max(ingresos,egresos,1);setTimeout(()=>{document.getElementById('bar_ingresos').style.width=(ingresos/maxVal*100)+'%';document.getElementById('bar_egresos').style.width=(egresos/maxVal*100)+'%';},100);animateValue(document.getElementById('caja_ingresos'),ingresos,'$');animateValue(document.getElementById('caja_egresos'),egresos,'$');animateValue(document.getElementById('caja_balance'),ingresos-egresos,'$');}
+function updateKPIs(){
+  const ep=servicios.filter(s=>s.estado==='proceso').length;
+  const et=servicios.filter(s=>s.estado==='terminado').length;
+  const ing=movimientos.filter(m=>m.tipo==='ingreso').reduce((a,m)=>a+Number(m.monto||0),0);
+  const egr=movimientos.filter(m=>m.tipo==='egreso').reduce((a,m)=>a+Number(m.monto||0),0);
+  animateValue(document.getElementById('kpi_proceso'),ep);
+  animateValue(document.getElementById('kpi_terminado'),et);
+  animateValue(document.getElementById('kpi_facturacion'),ing,'$');
+  animateValue(document.getElementById('kpi_clientes'),clientes.length);
+  document.getElementById('dash_ingresos').textContent=formatMoney(ing);
+  document.getElementById('dash_egresos').textContent=formatMoney(egr);
+  document.getElementById('dash_balance').textContent=formatMoney(ing-egr);
+  const mx=Math.max(ing,egr,1);
+  setTimeout(()=>{document.getElementById('bar_ingresos').style.width=(ing/mx*100)+'%';document.getElementById('bar_egresos').style.width=(egr/mx*100)+'%';},100);
+  animateValue(document.getElementById('caja_ingresos'),ing,'$');
+  animateValue(document.getElementById('caja_egresos'),egr,'$');
+  animateValue(document.getElementById('caja_balance'),ing-egr,'$');
+}
 
-/* ═══════════════════════════════════════════════════════
+/* ═══════════════════════════════════════════
    RENDER: CLIENTES
-   ═══════════════════════════════════════════════════════ */
-function renderClientes(){const el=document.getElementById('listaClientes');if(!clientes.length){el.innerHTML='<div class="empty-state"><i class="fa-solid fa-user-slash"></i><p>No hay clientes</p></div>';return;}el.innerHTML=clientes.map(c=>{const vCount=vehiculos.filter(v=>v.cliente_id===c.id).length;return`<div class="list-item"><div class="list-item-left"><div class="list-icon" style="background:var(--gold-soft);color:var(--gold);"><i class="fa-solid fa-user"></i></div><div class="list-item-info"><h4>${esc(c.nombre)}</h4><p><i class="fa-solid fa-phone" style="font-size:9px;margin-right:3px;"></i>${esc(c.telefono||'-')} &middot; ${vCount} veh.</p></div></div><div style="display:flex;gap:6px;"><button class="btn-sm btn-amber" onclick="editarCliente('${c.id}')"><i class="fa-solid fa-pen"></i></button><button class="btn-sm btn-rose" onclick="eliminarCliente('${c.id}')"><i class="fa-solid fa-trash"></i></button></div></div>`;}).join('');}
+   ═══════════════════════════════════════════ */
+function renderClientes(){
+  const el=document.getElementById('listaClientes');
+  if(!clientes.length){el.innerHTML='<div class="empty-state"><i class="fa-solid fa-user-slash"></i><p>No hay clientes</p></div>';return;}
+  el.innerHTML=clientes.map(c=>{const vc=vehiculos.filter(v=>v.cliente_id===c.id).length;return`<div class="list-item"><div class="list-item-left"><div class="list-icon" style="background:var(--gold-soft);color:var(--gold);"><i class="fa-solid fa-user"></i></div><div class="list-item-info"><h4>${esc(c.nombre)}</h4><p><i class="fa-solid fa-phone" style="font-size:9px;margin-right:3px;"></i>${esc(c.telefono||'-')} &middot; ${vc} veh.</p></div></div><div style="display:flex;gap:5px;"><button class="btn-sm btn-amber" onclick="editarCliente('${c.id}')"><i class="fa-solid fa-pen"></i></button><button class="btn-sm btn-rose" onclick="eliminarCliente('${c.id}')"><i class="fa-solid fa-trash"></i></button></div></div>`;}).join('');
+}
 
 /* ═══ RENDER: VEHICULOS ═══ */
-function renderVehiculos(){const el=document.getElementById('listaVehiculos');if(!vehiculos.length){el.innerHTML='<div class="empty-state"><i class="fa-solid fa-car-burst"></i><p>No hay vehiculos</p></div>';return;}el.innerHTML=vehiculos.map(v=>`<div class="list-item"><div class="list-item-left"><div class="list-icon" style="background:rgba(59,130,246,0.1);color:var(--blue);"><i class="fa-solid fa-car"></i></div><div class="list-item-info"><h4>${esc(v.marca)} ${esc(v.modelo||'')}</h4><p><i class="fa-solid fa-user" style="font-size:9px;margin-right:3px;"></i>${esc(v.clientes?.nombre||'-')} ${v.patente?'&middot; '+esc(v.patente):''}</p></div></div><button class="btn-sm btn-rose" onclick="eliminarVehiculo('${v.id}')"><i class="fa-solid fa-trash"></i></button></div>`).join('');}
+function renderVehiculos(){
+  const el=document.getElementById('listaVehiculos');
+  if(!vehiculos.length){el.innerHTML='<div class="empty-state"><i class="fa-solid fa-car-burst"></i><p>No hay vehiculos</p></div>';return;}
+  el.innerHTML=vehiculos.map(v=>`<div class="list-item"><div class="list-item-left"><div class="list-icon" style="background:rgba(59,130,246,0.1);color:var(--blue);"><i class="fa-solid fa-car"></i></div><div class="list-item-info"><h4>${esc(v.marca)} ${esc(v.modelo||'')}</h4><p><i class="fa-solid fa-user" style="font-size:9px;margin-right:3px;"></i>${esc(v.clientes?.nombre||'-')} ${v.patente?'&middot; '+esc(v.patente):''}</p></div></div><button class="btn-sm btn-rose" onclick="eliminarVehiculo('${v.id}')"><i class="fa-solid fa-trash"></i></button></div>`).join('');
+}
 
 /* ═══ RENDER: KANBAN ═══ */
-function renderKanban(){['pendiente','proceso','terminado'].forEach(est=>{const col=document.getElementById('col_'+est);const items=servicios.filter(s=>s.estado===est);document.getElementById('count_'+est).textContent=items.length;if(!items.length){col.innerHTML='<div class="empty-state" style="padding:30px 10px;"><i class="fa-solid fa-inbox"></i><p>Sin servicios</p></div>';return;}col.innerHTML=items.map(s=>{const cl=s.vehiculos?.clientes?.nombre||'Sin cliente';const vh=s.vehiculos?(s.vehiculos.marca+' '+(s.vehiculos.modelo||'')):'';let actions='';if(est==='pendiente')actions=`<button class="btn-sm btn-blue" onclick="moverServicio('${s.id}','proceso')"><i class="fa-solid fa-play"></i> Iniciar</button>`;else if(est==='proceso')actions=`<button class="btn-sm btn-emerald" onclick="moverServicio('${s.id}','terminado')"><i class="fa-solid fa-check"></i> Completar</button>`;else actions=`<button class="btn-sm btn-amber" onclick="moverServicio('${s.id}','pendiente')"><i class="fa-solid fa-rotate-left"></i> Reabrir</button>`;actions+=` <button class="btn-sm btn-rose" onclick="eliminarServicio('${s.id}')"><i class="fa-solid fa-trash"></i></button>`;return`<div class="task-card"><div class="task-service">${esc(s.tipo)}</div><div class="task-meta"><i class="fa-solid fa-user"></i> ${esc(cl)}</div>${vh?`<div class="task-meta"><i class="fa-solid fa-car"></i> ${esc(vh)}</div>`:''}<div class="task-meta"><i class="fa-regular fa-clock"></i> ${timeAgo(s.created_at)}</div><div class="task-actions">${actions}</div></div>`;}).join('');});}
+function renderKanban(){
+  ['pendiente','proceso','terminado'].forEach(est=>{
+    const col=document.getElementById('col_'+est);
+    const items=servicios.filter(s=>s.estado===est);
+    document.getElementById('count_'+est).textContent=items.length;
+    if(!items.length){col.innerHTML='<div class="empty-state" style="padding:28px 10px;"><i class="fa-solid fa-inbox"></i><p>Sin servicios</p></div>';return;}
+    col.innerHTML=items.map(s=>{
+      const cl=s.vehiculos?.clientes?.nombre||'Sin cliente';
+      const vh=s.vehiculos?(s.vehiculos.marca+' '+(s.vehiculos.modelo||'')):'';
+      let ac='';
+      if(est==='pendiente')ac=`<button class="btn-sm btn-blue" onclick="moverServicio('${s.id}','proceso')"><i class="fa-solid fa-play"></i> Iniciar</button>`;
+      else if(est==='proceso')ac=`<button class="btn-sm btn-emerald" onclick="moverServicio('${s.id}','terminado')"><i class="fa-solid fa-check"></i> Completar</button>`;
+      else ac=`<button class="btn-sm btn-amber" onclick="moverServicio('${s.id}','pendiente')"><i class="fa-solid fa-rotate-left"></i> Reabrir</button>`;
+      ac+=` <button class="btn-sm btn-rose" onclick="eliminarServicio('${s.id}')"><i class="fa-solid fa-trash"></i></button>`;
+      return`<div class="task-card"><div class="task-service">${esc(s.tipo)}</div><div class="task-meta"><i class="fa-solid fa-user"></i> ${esc(cl)}</div>${vh?`<div class="task-meta"><i class="fa-solid fa-car"></i> ${esc(vh)}</div>`:''}<div class="task-meta"><i class="fa-regular fa-clock"></i> ${timeAgo(s.created_at)}</div><div class="task-actions">${ac}</div></div>`;
+    }).join('');
+  });
+}
 
 /* ═══ RENDER: SERVICIOS RECIENTES ═══ */
-function renderRecentServices(){const el=document.getElementById('recentServices');const recent=servicios.slice(0,8);if(!recent.length){el.innerHTML='<div class="empty-state"><i class="fa-solid fa-inbox"></i><p>No hay servicios</p></div>';return;}el.innerHTML=recent.map(s=>{const bc='badge-'+s.estado;const el2=s.estado==='proceso'?'En proceso':s.estado.charAt(0).toUpperCase()+s.estado.slice(1);const cl=s.vehiculos?.clientes?.nombre||'-';return`<div class="list-item"><div class="list-item-left"><div class="list-icon" style="background:rgba(200,168,80,0.08);color:var(--gold);font-size:12px;"><i class="fa-solid fa-spray-can-sparkles"></i></div><div class="list-item-info"><h4>${esc(s.tipo)}</h4><p>${esc(cl)} &middot; ${timeAgo(s.created_at)}</p></div></div><span class="badge ${bc}">${el2}</span></div>`;}).join('');}
+function renderRecentServices(){
+  const el=document.getElementById('recentServices');
+  const rec=servicios.slice(0,8);
+  if(!rec.length){el.innerHTML='<div class="empty-state"><i class="fa-solid fa-inbox"></i><p>No hay servicios</p></div>';return;}
+  el.innerHTML=rec.map(s=>{const bc='badge-'+s.estado;const lb=s.estado==='proceso'?'En proceso':s.estado.charAt(0).toUpperCase()+s.estado.slice(1);const cl=s.vehiculos?.clientes?.nombre||'-';return`<div class="list-item"><div class="list-item-left"><div class="list-icon" style="background:rgba(200,168,80,0.08);color:var(--gold);font-size:12px;"><i class="fa-solid fa-spray-can-sparkles"></i></div><div class="list-item-info"><h4>${esc(s.tipo)}</h4><p>${esc(cl)} &middot; ${timeAgo(s.created_at)}</p></div></div><span class="badge ${bc}">${lb}</span></div>`;}).join('');
+}
 
 /* ═══ RENDER: TURNOS ═══ */
-function renderTurnos(){const el=document.getElementById('listaTurnos');const pend=servicios.filter(s=>s.estado==='pendiente');if(!pend.length){el.innerHTML='<div class="empty-state"><i class="fa-solid fa-calendar-xmark"></i><p>No hay turnos pendientes</p></div>';return;}el.innerHTML=pend.map(s=>{const cl=s.vehiculos?.clientes?.nombre||'-';const vh=s.vehiculos?(s.vehiculos.marca+' '+(s.vehiculos.modelo||'')):'';return`<div class="list-item"><div class="list-item-left"><div class="list-icon" style="background:rgba(245,158,11,0.1);color:var(--amber);"><i class="fa-solid fa-clock"></i></div><div class="list-item-info"><h4>${esc(s.tipo)}</h4><p>${esc(cl)} ${vh?'&middot; '+esc(vh):''} &middot; ${timeAgo(s.created_at)}</p></div></div><div style="display:flex;gap:6px;"><button class="btn-sm btn-blue" onclick="moverServicio('${s.id}','proceso')"><i class="fa-solid fa-play"></i></button><button class="btn-sm btn-rose" onclick="eliminarServicio('${s.id}')"><i class="fa-solid fa-trash"></i></button></div></div>`;}).join('');}
+function renderTurnos(){
+  const el=document.getElementById('listaTurnos');
+  const pend=servicios.filter(s=>s.estado==='pendiente');
+  if(!pend.length){el.innerHTML='<div class="empty-state"><i class="fa-solid fa-calendar-xmark"></i><p>No hay turnos pendientes</p></div>';return;}
+  el.innerHTML=pend.map(s=>{const cl=s.vehiculos?.clientes?.nombre||'-';const vh=s.vehiculos?(s.vehiculos.marca+' '+(s.vehiculos.modelo||'')):'';return`<div class="list-item"><div class="list-item-left"><div class="list-icon" style="background:rgba(245,158,11,0.1);color:var(--amber);"><i class="fa-solid fa-clock"></i></div><div class="list-item-info"><h4>${esc(s.tipo)}</h4><p>${esc(cl)} ${vh?'&middot; '+esc(vh):''} &middot; ${timeAgo(s.created_at)}</p></div></div><div style="display:flex;gap:5px;"><button class="btn-sm btn-blue" onclick="moverServicio('${s.id}','proceso')"><i class="fa-solid fa-play"></i></button><button class="btn-sm btn-rose" onclick="eliminarServicio('${s.id}')"><i class="fa-solid fa-trash"></i></button></div></div>`;}).join('');
+}
 
 /* ═══ RENDER: CAJA ═══ */
-function renderCaja(){const el=document.getElementById('listaCaja');if(!movimientos.length){el.innerHTML='<div class="empty-state"><i class="fa-solid fa-receipt"></i><p>No hay movimientos</p></div>';return;}el.innerHTML=movimientos.map(m=>{const isIn=m.tipo==='ingreso';const fd=m.created_at||m.fecha||m.date;const fs=fd?formatDate(fd):'';return`<div class="list-item"><div class="list-item-left"><div class="list-icon" style="background:${isIn?'rgba(16,185,129,0.1)':'rgba(244,63,94,0.1)'};color:${isIn?'var(--emerald)':'var(--rose)'};"><i class="fa-solid ${isIn?'fa-arrow-up':'fa-arrow-down'}"></i></div><div class="list-item-info"><h4>${esc(m.concepto)}</h4><p>${fs||'Sin fecha'}</p></div></div><div style="display:flex;align-items:center;gap:10px;"><span style="font-weight:700;color:${isIn?'var(--emerald)':'var(--rose)'};">${isIn?'+':'-'}${formatMoney(m.monto)}</span><button class="btn-sm btn-rose" onclick="eliminarCaja('${m.id}')"><i class="fa-solid fa-trash"></i></button></div></div>`;}).join('');}
+function renderCaja(){
+  const el=document.getElementById('listaCaja');
+  if(!movimientos.length){el.innerHTML='<div class="empty-state"><i class="fa-solid fa-receipt"></i><p>No hay movimientos</p></div>';return;}
+  el.innerHTML=movimientos.map(m=>{const isIn=m.tipo==='ingreso';const fd=m.created_at||m.fecha||m.date;const fs=fd?formatDate(fd):'';return`<div class="list-item"><div class="list-item-left"><div class="list-icon" style="background:${isIn?'rgba(16,185,129,0.1)':'rgba(244,63,94,0.1)'};color:${isIn?'var(--emerald)':'var(--rose)'};"><i class="fa-solid ${isIn?'fa-arrow-up':'fa-arrow-down'}"></i></div><div class="list-item-info"><h4>${esc(m.concepto)}</h4><p>${fs||'Sin fecha'}</p></div></div><div style="display:flex;align-items:center;gap:8px;"><span style="font-weight:700;color:${isIn?'var(--emerald)':'var(--rose)'};">${isIn?'+':'-'}${formatMoney(m.monto)}</span><button class="btn-sm btn-rose" onclick="eliminarCaja('${m.id}')"><i class="fa-solid fa-trash"></i></button></div></div>`;}).join('');
+}
 
-/* ═══════════════════════════════════════════════════════
-   RENDER: GARANTIAS
-   ═══════════════════════════════════════════════════════ */
-function renderGarantias(){const el=document.getElementById('listaGarantias');if(!garantias.length){el.innerHTML='<div class="empty-state"><i class="fa-solid fa-shield-halved"></i><p>No hay certificados generados</p></div>';return;}el.innerHTML=garantias.map(g=>{const fd=g.fecha_instalacion||g.created_at||'';return`<div class="gar-list-item"><div class="gar-list-icon"><i class="fa-solid fa-shield-halved"></i></div><div class="gar-list-info"><h4>${esc(g.ppf_marca||'PPF')} — ${esc(g.cliente_nombre||g.vehiculo_desc||'-')}</h4><p>N\u00b0 ${esc(g.numero||'-')} &middot; ${fd?formatDate(fd):'Sin fecha'} &middot; Prod: ${g.garantia_producto_anios||'?'}a / Inst: ${g.garantia_instalacion_anios||'?'}a</p></div><div class="gar-list-actions"><button class="btn-sm btn-blue" onclick="reimprimirGarantia('${g.id}')"><i class="fa-solid fa-print"></i></button><button class="btn-sm btn-rose" onclick="eliminarGarantia('${g.id}')"><i class="fa-solid fa-trash"></i></button></div></div>`;}).join('');}
+/* ═══ RENDER: GARANTIAS ═══ */
+function renderGarantias(){
+  const el=document.getElementById('listaGarantias');
+  if(!garantias.length){el.innerHTML='<div class="empty-state"><i class="fa-solid fa-shield-halved"></i><p>No hay certificados generados</p></div>';return;}
+  el.innerHTML=garantias.map(g=>{const fd=g.fecha_instalacion||g.created_at||'';return`<div class="gar-list-item"><div class="gar-list-icon"><i class="fa-solid fa-shield-halved"></i></div><div class="gar-list-info"><h4>${esc(g.ppf_marca||'PPF')} — ${esc(g.cliente_nombre||g.vehiculo_desc||'-')}</h4><p>N\u00b0 ${esc(g.numero||'-')} &middot; ${fd?formatDate(fd):'Sin fecha'} &middot; Prod: ${g.garantia_producto_anios||'?'}a / Inst: ${g.garantia_instalacion_anios||'?'}a</p></div><div class="gar-list-actions"><button class="btn-sm btn-blue" onclick="reimprimirGarantia('${g.id}')"><i class="fa-solid fa-print"></i></button><button class="btn-sm btn-rose" onclick="eliminarGarantia('${g.id}')"><i class="fa-solid fa-trash"></i></button></div></div>`;}).join('');
+}
 
-/* ═══ SELECTORES ═══ */
-function populateClienteSelects(){['t_cliente_sel','v_cliente','g_cliente'].forEach(id=>{const sel=document.getElementById(id);if(!sel)return;const val=sel.value;const first=sel.querySelector('option:first-child');const nuevoOpt=id==='t_cliente_sel'?'<option value="__nuevo">+ Nuevo cliente</option>':'';sel.innerHTML=(first?first.outerHTML:'')+nuevoOpt;clientes.forEach(c=>{sel.innerHTML+=`<option value="${c.id}">${esc(c.nombre)}</option>`;});sel.value=val;});}
+/* ═══════════════════════════════════════════
+   SELECTORES
+   ═══════════════════════════════════════════ */
+function populateClienteSelects(){
+  ['t_cliente_sel','v_cliente','g_cliente'].forEach(id=>{
+    const sel=document.getElementById(id);if(!sel)return;
+    const val=sel.value;
+    const first=sel.querySelector('option:first-child');
+    const nuevoOpt=id==='t_cliente_sel'?'<option value="__nuevo">+ Nuevo cliente</option>':'';
+    sel.innerHTML=(first?first.outerHTML:'')+nuevoOpt;
+    clientes.forEach(c=>{sel.innerHTML+=`<option value="${c.id}">${esc(c.nombre)}</option>`;});
+    sel.value=val;
+  });
+}
 
-function onClienteSelect(){const val=document.getElementById('t_cliente_sel').value;const nf=document.getElementById('t_nuevo_cliente_fields');const vf=document.getElementById('t_vehiculo_fields');if(val==='__nuevo'){nf.style.display='block';vf.style.display='none';}else if(val){nf.style.display='none';vf.style.display='block';populateVehiculoSelect(val);}else{nf.style.display='none';vf.style.display='block';populateVehiculoSelect('');}}
+function onClienteSelect(){
+  const val=document.getElementById('t_cliente_sel').value;
+  const nf=document.getElementById('t_nuevo_cliente_fields');
+  const vf=document.getElementById('t_vehiculo_fields');
+  if(val==='__nuevo'){nf.style.display='block';vf.style.display='none';}
+  else if(val){nf.style.display='none';vf.style.display='block';populateVehiculoSelect(val);}
+  else{nf.style.display='none';vf.style.display='block';populateVehiculoSelect('');}
+}
 
-function populateVehiculoSelect(clienteId){const sel=document.getElementById('t_vehiculo_sel');sel.innerHTML='<option value="">-- Seleccionar --</option><option value="__nuevo">+ Nuevo vehiculo</option>';const filtered=clienteId?vehiculos.filter(v=>v.cliente_id===clienteId):vehiculos;filtered.forEach(v=>{sel.innerHTML+=`<option value="${v.id}">${esc(v.marca)} ${esc(v.modelo||'')}</option>`;});}
+function populateVehiculoSelect(cid){
+  const sel=document.getElementById('t_vehiculo_sel');
+  sel.innerHTML='<option value="">-- Seleccionar --</option><option value="__nuevo">+ Nuevo vehiculo</option>';
+  (cid?vehiculos.filter(v=>v.cliente_id===cid):vehiculos).forEach(v=>{sel.innerHTML+=`<option value="${v.id}">${esc(v.marca)} ${esc(v.modelo||'')}</option>`;});
+}
 
 function onVehiculoSelect(){document.getElementById('t_nuevo_vehiculo_fields').style.display=document.getElementById('t_vehiculo_sel').value==='__nuevo'?'block':'none';}
 
 /* Garantia selectors */
-function onGarClienteChange(){const cid=document.getElementById('g_cliente').value;const vSel=document.getElementById('g_vehiculo');vSel.innerHTML='<option value="">-- Seleccionar --</option>';if(!cid)return;const filtered=vehiculos.filter(v=>v.cliente_id===cid);filtered.forEach(v=>{vSel.innerHTML+=`<option value="${v.id}" data-marca="${esc(v.marca)}" data-modelo="${esc(v.modelo||'')}" data-patente="${esc(v.patente||'')}">${esc(v.marca)} ${esc(v.modelo||'')} ${v.patente?'('+esc(v.patente)+')':''}</option>`;});}
-
-function onGarVehiculoChange(){/* No-op por ahora */}
+function onGarClienteChange(){
+  const cid=document.getElementById('g_cliente').value;
+  const vSel=document.getElementById('g_vehiculo');
+  vSel.innerHTML='<option value="">-- Seleccionar --</option>';
+  if(!cid)return;
+  vehiculos.filter(v=>v.cliente_id===cid).forEach(v=>{
+    vSel.innerHTML+=`<option value="${v.id}" data-marca="${esc(v.marca)}" data-modelo="${esc(v.modelo||'')}" data-patente="${esc(v.patente||'')}">${esc(v.marca)} ${esc(v.modelo||'')} ${v.patente?'('+esc(v.patente)+')':''}</option>`;
+  });
+}
+function onGarVehiculoChange(){}
 
 /* PPF brand selector */
-function populatePPFSelect(){const sel=document.getElementById('g_ppf_marca');sel.innerHTML='<option value="">-- Seleccionar marca --</option>';ppfBrands.forEach((b,i)=>{sel.innerHTML+=`<option value="${i}">${esc(b.name)}</option>`;});}
+function populatePPFSelect(){
+  const sel=document.getElementById('g_ppf_marca');
+  sel.innerHTML='<option value="">-- Seleccionar marca --</option>';
+  ppfBrands.forEach((b,i)=>{sel.innerHTML+=`<option value="${i}">${esc(b.name)}</option>`;});
+}
 
-function onPPFBrandChange(){const sel=document.getElementById('g_ppf_marca');const idx=parseInt(sel.value);const card=document.getElementById('ppfInfoCard');if(isNaN(idx)){card.classList.remove('show');document.getElementById('g_anios_prod').value='';document.getElementById('g_anios_inst').value='';document.getElementById('g_codigo').value='';return;}const brand=ppfBrands[idx];card.classList.add('show');document.getElementById('ppfInfoName').textContent=brand.name;document.getElementById('ppfInfoProdYears').textContent=brand.prodYears>0?brand.prodYears:'?';document.getElementById('ppfInfoInstYears').textContent=brand.instYears;document.getElementById('g_anios_prod').value=brand.prodYears>0?brand.prodYears:'';document.getElementById('g_anios_inst').value=brand.instYears;if(brand.code)document.getElementById('g_codigo').value=brand.code;}
+function onPPFBrandChange(){
+  const idx=parseInt(document.getElementById('g_ppf_marca').value);
+  const card=document.getElementById('ppfInfoCard');
+  if(isNaN(idx)){card.classList.remove('show');document.getElementById('g_anios_prod').value='';document.getElementById('g_anios_inst').value='';document.getElementById('g_codigo').value='';return;}
+  const brand=ppfBrands[idx];
+  card.classList.add('show');
+  document.getElementById('ppfInfoName').textContent=brand.name;
+  document.getElementById('ppfInfoProdYears').textContent=brand.prodYears>0?brand.prodYears:'?';
+  document.getElementById('ppfInfoInstYears').textContent=brand.instYears;
+  document.getElementById('g_anios_prod').value=brand.prodYears>0?brand.prodYears:'';
+  document.getElementById('g_anios_inst').value=brand.instYears;
+  if(brand.code)document.getElementById('g_codigo').value=brand.code;
+}
 
-/* ═══════════════════════════════════════════════════════
+/* ═══════════════════════════════════════════
    CRUD: CLIENTES
-   ═══════════════════════════════════════════════════════ */
-async function guardarCliente(){const editId=document.getElementById('c_edit_id').value;const nombre=document.getElementById('c_nombre').value.trim();const telefono=document.getElementById('c_tel').value.trim();if(!nombre){toast('Ingresa el nombre','error');return;}try{let error;if(editId){({error}=await sb.from('clientes').update({nombre,telefono}).eq('id',editId));if(error)throw error;toast('Cliente actualizado','success');}else{({error}=await sb.from('clientes').insert({nombre,telefono}));if(error)throw error;toast('Cliente creado','success');}document.getElementById('c_nombre').value='';document.getElementById('c_tel').value='';document.getElementById('c_edit_id').value='';document.getElementById('clienteFormTitle').textContent='Agregar Cliente';document.getElementById('clienteBtnText').textContent='Guardar';document.getElementById('btnCancelEdit').style.display='none';await loadClientes();}catch(e){toast('Error: '+(e.message||e),'error');}}
+   ═══════════════════════════════════════════ */
+async function guardarCliente(){
+  const editId=document.getElementById('c_edit_id').value;
+  const nombre=document.getElementById('c_nombre').value.trim();
+  const telefono=document.getElementById('c_tel').value.trim();
+  if(!nombre){toast('Ingresa el nombre','error');return;}
+  try{
+    let error;
+    if(editId){({error}=await sb.from('clientes').update({nombre,telefono}).eq('id',editId));if(error)throw error;toast('Cliente actualizado','success');}
+    else{({error}=await sb.from('clientes').insert({nombre,telefono}));if(error)throw error;toast('Cliente creado','success');}
+    document.getElementById('c_nombre').value='';document.getElementById('c_tel').value='';document.getElementById('c_edit_id').value='';
+    document.getElementById('clienteFormTitle').textContent='Agregar Cliente';document.getElementById('clienteBtnText').textContent='Guardar';document.getElementById('btnCancelEdit').style.display='none';
+    await loadClientes();
+  }catch(e){toast('Error: '+(e.message||e),'error');}
+}
 function editarCliente(id){const c=clientes.find(x=>x.id===id);if(!c)return;document.getElementById('c_edit_id').value=c.id;document.getElementById('c_nombre').value=c.nombre||'';document.getElementById('c_tel').value=c.telefono||'';document.getElementById('clienteFormTitle').textContent='Editar Cliente';document.getElementById('clienteBtnText').textContent='Actualizar';document.getElementById('btnCancelEdit').style.display='inline-flex';document.getElementById('c_nombre').focus();}
 function cancelarEditCliente(){document.getElementById('c_edit_id').value='';document.getElementById('c_nombre').value='';document.getElementById('c_tel').value='';document.getElementById('clienteFormTitle').textContent='Agregar Cliente';document.getElementById('clienteBtnText').textContent='Guardar';document.getElementById('btnCancelEdit').style.display='none';}
-function eliminarCliente(id){const c=clientes.find(x=>x.id===id);showModal('Eliminar cliente','Se eliminara '+(c?.nombre||'el cliente')+'. Esta accion no se puede deshacer.',async()=>{try{const{error}=await sb.from('clientes').delete().eq('id',id);if(error)throw error;toast('Cliente eliminado','success');await loadClientes();}catch(e){toast('Error: '+(e.message||e),'error');}});}
+function eliminarCliente(id){const c=clientes.find(x=>x.id===id);showModal('Eliminar cliente','Se eliminara '+(c?.nombre||'el cliente')+'.',async()=>{try{const{error}=await sb.from('clientes').delete().eq('id',id);if(error)throw error;toast('Cliente eliminado','success');await loadClientes();}catch(e){toast('Error: '+(e.message||e),'error');}});}
 
 /* ═══ CRUD: VEHICULOS ═══ */
 async function crearVehiculo(){const cliente_id=document.getElementById('v_cliente').value;const marca=document.getElementById('v_marca').value.trim();const modelo=document.getElementById('v_modelo').value.trim();const patente=document.getElementById('v_patente').value.trim();if(!cliente_id){toast('Selecciona un propietario','error');return;}if(!marca){toast('Ingresa la marca','error');return;}try{const{error}=await sb.from('vehiculos').insert({cliente_id,marca,modelo,patente});if(error)throw error;toast('Vehiculo registrado','success');document.getElementById('v_marca').value='';document.getElementById('v_modelo').value='';document.getElementById('v_patente').value='';await loadVehiculos();}catch(e){toast('Error: '+(e.message||e),'error');}}
 function eliminarVehiculo(id){showModal('Eliminar vehiculo','Se eliminara el vehiculo.',async()=>{try{const{error}=await sb.from('vehiculos').delete().eq('id',id);if(error)throw error;toast('Vehiculo eliminado','success');await loadVehiculos();}catch(e){toast('Error: '+(e.message||e),'error');}});}
 
 /* ═══ CRUD: TURNOS / SERVICIOS ═══ */
-async function crearTurno(){const clienteSel=document.getElementById('t_cliente_sel').value;const servicio=document.getElementById('t_servicio').value;const fecha=document.getElementById('t_fecha').value;if(!servicio){toast('Selecciona un servicio','error');return;}try{let clienteId;if(clienteSel==='__nuevo'){const nombre=document.getElementById('t_nombre').value.trim();const telefono=document.getElementById('t_tel').value.trim();if(!nombre){toast('Ingresa el nombre','error');return;}const{data,error}=await sb.from('clientes').insert({nombre,telefono}).select();if(error)throw error;clienteId=data[0].id;}else if(clienteSel){clienteId=clienteSel;}else{toast('Selecciona o crea un cliente','error');return;}let vehiculoId;const vehiculoSel=document.getElementById('t_vehiculo_sel').value;if(clienteSel==='__nuevo'||vehiculoSel==='__nuevo'){const marca=document.getElementById('t_marca').value.trim()||'Sin marca';const modelo=document.getElementById('t_modelo').value.trim()||'';const{data,error}=await sb.from('vehiculos').insert({cliente_id:clienteId,marca,modelo}).select();if(error)throw error;vehiculoId=data[0].id;}else if(vehiculoSel){vehiculoId=vehiculoSel;}else{const{data,error}=await sb.from('vehiculos').insert({cliente_id:clienteId,marca:'Auto',modelo:''}).select();if(error)throw error;vehiculoId=data[0].id;}const servicioData={vehiculo_id:vehiculoId,tipo:servicio,estado:'pendiente'};if(fecha)servicioData.fecha=fecha;const{error}=await sb.from('servicios').insert(servicioData);if(error)throw error;toast('Turno creado','success');document.getElementById('t_cliente_sel').value='';document.getElementById('t_nombre').value='';document.getElementById('t_tel').value='';document.getElementById('t_vehiculo_sel').value='';document.getElementById('t_marca').value='';document.getElementById('t_modelo').value='';document.getElementById('t_nuevo_cliente_fields').style.display='none';document.getElementById('t_nuevo_vehiculo_fields').style.display='none';await Promise.all([loadClientes(),loadVehiculos(),loadServicios()]);}catch(e){toast('Error: '+(e.message||e),'error');}}
-async function moverServicio(id,nuevoEstado){try{const{error}=await sb.from('servicios').update({estado:nuevoEstado}).eq('id',id);if(error)throw error;const labels={pendiente:'Pendiente',proceso:'En proceso',terminado:'Completado'};toast('Servicio movido a '+labels[nuevoEstado],'success');await loadServicios();}catch(e){toast('Error: '+(e.message||e),'error');}}
+async function crearTurno(){
+  const clienteSel=document.getElementById('t_cliente_sel').value;const servicio=document.getElementById('t_servicio').value;const fecha=document.getElementById('t_fecha').value;
+  if(!servicio){toast('Selecciona un servicio','error');return;}
+  try{
+    let clienteId;
+    if(clienteSel==='__nuevo'){const nombre=document.getElementById('t_nombre').value.trim();const telefono=document.getElementById('t_tel').value.trim();if(!nombre){toast('Ingresa el nombre','error');return;}const{data,error}=await sb.from('clientes').insert({nombre,telefono}).select();if(error)throw error;clienteId=data[0].id;}
+    else if(clienteSel){clienteId=clienteSel;}else{toast('Selecciona o crea un cliente','error');return;}
+    let vehiculoId;const vehiculoSel=document.getElementById('t_vehiculo_sel').value;
+    if(clienteSel==='__nuevo'||vehiculoSel==='__nuevo'){const marca=document.getElementById('t_marca').value.trim()||'Sin marca';const modelo=document.getElementById('t_modelo').value.trim()||'';const{data,error}=await sb.from('vehiculos').insert({cliente_id:clienteId,marca,modelo}).select();if(error)throw error;vehiculoId=data[0].id;}
+    else if(vehiculoSel){vehiculoId=vehiculoSel;}else{const{data,error}=await sb.from('vehiculos').insert({cliente_id:clienteId,marca:'Auto',modelo:''}).select();if(error)throw error;vehiculoId=data[0].id;}
+    const sd={vehiculo_id:vehiculoId,tipo:servicio,estado:'pendiente'};if(fecha)sd.fecha=fecha;
+    const{error}=await sb.from('servicios').insert(sd);if(error)throw error;
+    toast('Turno creado','success');
+    document.getElementById('t_cliente_sel').value='';document.getElementById('t_nombre').value='';document.getElementById('t_tel').value='';document.getElementById('t_vehiculo_sel').value='';document.getElementById('t_marca').value='';document.getElementById('t_modelo').value='';
+    document.getElementById('t_nuevo_cliente_fields').style.display='none';document.getElementById('t_nuevo_vehiculo_fields').style.display='none';
+    await Promise.all([loadClientes(),loadVehiculos(),loadServicios()]);
+  }catch(e){toast('Error: '+(e.message||e),'error');}
+}
+async function moverServicio(id,ne){try{const{error}=await sb.from('servicios').update({estado:ne}).eq('id',id);if(error)throw error;const lb={pendiente:'Pendiente',proceso:'En proceso',terminado:'Completado'};toast('Servicio movido a '+lb[ne],'success');await loadServicios();}catch(e){toast('Error: '+(e.message||e),'error');}}
 function eliminarServicio(id){showModal('Eliminar servicio','Se eliminara este servicio.',async()=>{try{const{error}=await sb.from('servicios').delete().eq('id',id);if(error)throw error;toast('Servicio eliminado','success');await loadServicios();}catch(e){toast('Error: '+(e.message||e),'error');}});}
+
+/* ═══ CRUD: CAJA ═══ */
+async function crearCaja(){
+  const concepto=document.getElementById('cx_concepto').value.trim();const montoRaw=document.getElementById('cx_monto').value.trim().replace(',','.');const tipo=document.getElementById('cx_tipo').value;
+  if(!concepto){toast('Ingresa un concepto','error');return;}
+  if(!montoRaw){toast('Ingresa un monto','error');return;}
+  const montoNum=Number(montoRaw);if(isNaN(montoNum)||montoNum<=0){toast('El monto debe ser mayor a 0','error');return;}
+  try{const{data,error}=await sb.from('caja').insert({concepto,monto:montoNum,tipo}).select();if(error){const r2=await sb.from('caja').insert({concepto,monto:montoRaw,tipo}).select();if(r2.error)throw r2.error;}toast((tipo==='ingreso'?'Ingreso':'Egreso')+' registrado','success');document.getElementById('cx_concepto').value='';document.getElementById('cx_monto').value='';await loadCaja();}catch(e){toast('Error: '+(e.message||e),'error');}
+}
+function eliminarCaja(id){showModal('Eliminar movimiento','Se eliminara este registro.',async()=>{try{const{error}=await sb.from('caja').delete().eq('id',id);if(error)throw error;toast('Movimiento eliminado','success');await loadCaja();}catch(e){toast('Error: '+(e.message||e),'error');}});}
+
+/* ═══════════════════════════════════════════
+   GARANTIA PPF — GENERAR CERTIFICADO
+   ═══════════════════════════════════════════ */
+async function generarCertificado(){
+  const clienteId=document.getElementById('g_cliente').value;
+  const vehiculoId=document.getElementById('g_vehiculo').value;
+  const ppfIdx=document.getElementById('g_ppf_marca').value;
+  const codigo=document.getElementById('g_codigo').value.trim();
+  const fecha=document.getElementById('g_fecha').value;
+  const aniosProdRaw=document.getElementById('g_anios_prod').value;
+  const aniosInstRaw=document.getElementById('g_anios_inst').value;
+  const responsable=document.getElementById('g_responsable').value.trim();
+
+  if(!clienteId){toast('Selecciona un cliente','error');return;}
+  if(!vehiculoId){toast('Selecciona un vehiculo','error');return;}
+  if(!ppfIdx&&ppfIdx!=='0'){toast('Selecciona una marca de PPF','error');return;}
+  if(!fecha){toast('Ingresa la fecha de instalacion','error');return;}
+  if(!responsable){toast('Ingresa el responsable tecnico','error');return;}
+
+  const aniosProd=parseInt(aniosProdRaw)||10;
+  const aniosInst=parseInt(aniosInstRaw)||1;
+  const brand=ppfBrands[parseInt(ppfIdx)];
+
+  /* Obtener datos del cliente y vehiculo */
+  const cli=clientes.find(c=>c.id===clienteId);
+  const vehOpt=document.getElementById('g_vehiculo').selectedOptions[0];
+  const vehMarca=vehOpt?vehOpt.dataset.marca:'';
+  const vehModelo=vehOpt?vehOpt.dataset.modelo:'';
+  const vehPatente=vehOpt?vehOpt.dataset.patente:'';
+  const vehDesc=(vehMarca+' '+vehModelo).trim();
+
+  /* Numero de certificado */
+  const certNum='MON-GAR-'+Date.now().toString(36).toUpperCase();
+
+  /* Guardar en Supabase si la tabla existe */
+  const payload={
+    numero:certNum,
+    cliente_id:clienteId,
+    cliente_nombre:cli?.nombre||'',
+    vehiculo_id:vehiculoId,
+    vehiculo_desc:vehDesc,
+    vehiculo_patente:vehPatente,
+    ppf_marca:brand.name,
+    ppf_codigo:codigo,
+    fecha_instalacion:fecha,
+    garantia_producto_anios:aniosProd,
+    garantia_instalacion_anios:aniosInst,
+    responsable_tecnico:responsable
+  };
+
+  try{
+    const{error}=await sb.from('garantias').insert(payload);
+    if(error)console.warn('[garantias] No se guardo en BD:',error.message);
+    else await loadGarantias();
+  }catch(e){console.warn('[garantias] Error BD:',e);}
+
+  /* Generar certificado visual */
+  showCertificado({
+    certNum,clienteNombre:cli?.nombre||'',clienteTel:cli?.telefono||'',
+    vehDesc,vehPatente,ppfMarca:brand.name,codigo,fecha,
+    aniosProd,aniosInst,responsable
+  });
+
+  toast('Certificado generado','success');
+}
+
+/* ═══ MOSTRAR CERTIFICADO ═══ */
+function showCertificado(d){
+  const prodWord=numToWord(d.aniosProd);
+  const instWord=numToWord(d.aniosInst);
+  const fechaFormatted=formatDateShort(d.fecha);
+
+  /* Calcular fecha de vencimiento producto */
+  const fInst=new Date(d.fecha);
+  const vencProd=new Date(fInst);vencProd.setFullYear(vencProd.getFullYear()+d.aniosProd);
+  const vencInst=new Date(fInst);vencInst.setFullYear(vencInst.getFullYear()+d.aniosInst);
+
+  const html=`
+  <div class="cert-doc">
+    <div class="cert-header">
+      <div class="cert-logo-box">M</div>
+      <div class="cert-header-text">
+        <h1>M\u00d3NACO DETAILING</h1>
+        <p>Certificado de Garant\u00eda PPF</p>
+      </div>
+      <div class="cert-number">
+        <span>Certificado N\u00b0</span>
+        <strong>${esc(d.certNum)}</strong>
+      </div>
+    </div>
+
+    <p>Por el presente, <strong>M\u00d3NACO DETAILING</strong>, con domicilio comercial en Carlos Francisco Melo 3682, Florida Oeste, Vicente L\u00f3pez, Provincia de Buenos Aires, garantiza al cliente abajo detallado la correcta calidad y aplicaci\u00f3n del Film de Protecci\u00f3n de Pintura (PPF \u2013 Paint Protection Film) instalado en el veh\u00edculo indicado, bajo las condiciones que se detallan a continuaci\u00f3n.</p>
+
+    <h2>DATOS DEL CLIENTE Y DEL VEH\u00cdCULO</h2>
+    <table class="cert-data-table">
+      <tr><td>Nombre completo del cliente</td><td>${esc(d.clienteNombre)}</td></tr>
+      <tr><td>Tel\u00e9fono</td><td>${esc(d.clienteTel||'-')}</td></tr>
+      <tr><td>Veh\u00edculo</td><td>${esc(d.vehDesc)}</td></tr>
+      <tr><td>Patente</td><td>${esc(d.vehPatente||'-')}</td></tr>
+      <tr><td>Fecha de instalaci\u00f3n</td><td>${fechaFormatted}</td></tr>
+      <tr><td>Servicio</td><td>PPF \u2013 Paint Protection Film</td></tr>
+      <tr><td>Marca / Rollo de PPF</td><td>${esc(d.ppfMarca)}</td></tr>
+      <tr><td>C\u00f3digo del producto</td><td>${esc(d.codigo||'-')}</td></tr>
+    </table>
+
+    <h2>ALCANCE DE LA GARANT\u00cdA</h2>
+
+    <h3>Garant\u00eda por fallas del producto \u2013 ${prodWord} (${d.aniosProd}) a\u00f1os</h3>
+    <p>Se otorga garant\u00eda de <strong>${prodWord} (${d.aniosProd}) a\u00f1os</strong> sobre el material PPF aplicado, la cual cubre exclusivamente defectos de fabricaci\u00f3n del producto tales como:</p>
+    <ul class="cert-exclusions" style="margin-bottom:10px;">
+      <li>Amarilleo prematuro del film.</li>
+      <li>Agrietamiento o cuarteo del material.</li>
+      <li>Deslaminaci\u00f3n del film.</li>
+      <li>P\u00e9rdida anormal de propiedades del PPF atribuibles al fabricante.</li>
+    </ul>
+    <p>Esta garant\u00eda queda sujeta a las condiciones de uso y mantenimiento recomendadas por M\u00f3naco Detailing y por el fabricante del PPF.</p>
+    <p style="font-size:11px;color:#666;">Vencimiento garant\u00eda producto: <strong>${formatDateShort(vencProd)}</strong></p>
+
+    <h3>Garant\u00eda por falla en la instalaci\u00f3n \u2013 ${instWord} (${d.aniosInst}) a\u00f1o${d.aniosInst!==1?'s':''}</h3>
+    <p>Se otorga garant\u00eda de <strong>${instWord} (${d.aniosInst}) a\u00f1o${d.aniosInst!==1?'s':''}</strong> por defectos derivados de la instalaci\u00f3n del PPF, la cual cubre:</p>
+    <ul class="cert-exclusions" style="margin-bottom:10px;">
+      <li>Despegues del film atribuibles a una incorrecta aplicaci\u00f3n.</li>
+      <li>Levantamientos de bordes o burbujas generadas por la instalaci\u00f3n.</li>
+      <li>Fallas de adherencia no relacionadas con golpes, impactos o uso indebido.</li>
+    </ul>
+    <p style="font-size:11px;color:#666;">Vencimiento garant\u00eda instalaci\u00f3n: <strong>${formatDateShort(vencInst)}</strong></p>
+
+    <h2>EXCLUSIONES DE LA GARANT\u00cdA</h2>
+    <p>La presente garant\u00eda <strong>NO</strong> cubre:</p>
+    <ul class="cert-exclusions">
+      <li>Danos ocasionados por golpes, rayones, impactos, vandalismo o accidentes.</li>
+      <li>Danos provocados por lavado inadecuado o uso de productos abrasivos o corrosivos.</li>
+      <li>Danos derivados de condiciones extremas o uso indebido del veh\u00edculo.</li>
+      <li>Alteraciones, reparaciones o intervenciones sobre el PPF realizadas por terceros ajenos a M\u00f3naco Detailing.</li>
+      <li>Contaminaci\u00f3n qu\u00edmica, manchas por excremento de aves, savia de \u00e1rboles o agentes corrosivos no removidos a tiempo.</li>
+    </ul>
+
+    <h2>CONDICIONES GENERALES</h2>
+    <p>La garant\u00eda es v\u00e1lida \u00fanicamente para el veh\u00edculo y el cliente indicados en este certificado y no es transferible.</p>
+
+    <div class="cert-sig-area">
+      <div class="cert-sig-block">
+        <div class="cert-sig-label">Firma del responsable t\u00e9cnico \u2013 M\u00f3naco Detailing</div>
+        <div class="cert-sig-line"></div>
+        <div class="cert-sig-name">${esc(d.responsable)}</div>
+        <div class="cert-sig-label">Aclaraci\u00f3n de la firma</div>
+      </div>
+      <div class="cert-sig-block">
+        <div class="cert-sig-label">Firma del cliente</div>
+        <div class="cert-sig-line"></div>
+        <div class="cert-sig-name">${esc(d.clienteNombre)}</div>
+        <div class="cert-sig-label">Aclaraci\u00f3n de la firma</div>
+      </div>
+    </div>
+
+    <div class="cert-footer-note">Nota: Los campos marcados con * son obligatorios para generar el certificado. Documento emitido por M\u00f3naco Detailing \u2014 Carlos Francisco Melo 3682, Florida Oeste, Vicente L\u00f3pez, Buenos Aires.</div>
+  </div>`;
+
+  document.getElementById('certContent').innerHTML=html;
+  document.getElementById('certOverlay').classList.add('show');
+}
+
+function closeCertificado(){document.getElementById('certOverlay').classList.remove('show');}
+
+function printCertificado(){
+  const overlay=document.getElementById('certOverlay');
+  const actions=overlay.querySelector('.cert-actions');
+  actions.style.display='none';
+  window.print();
+  setTimeout(()=>{actions.style.display='flex';},500);
+}
+
+/* Reimprimir garantia existente */
+function reimprimirGarantia(id){
+  const g=garantias.find(x=>x.id===id);
+  if(!g){toast('Certificado no encontrado','error');return;}
+  showCertificado({
+    certNum:g.numero||'-',
+    clienteNombre:g.cliente_nombre||'',
+    clienteTel:'',
+    vehDesc:g.vehiculo_desc||'',
+    vehPatente:g.vehiculo_patente||'',
+    ppfMarca:g.ppf_marca||'',
+    codigo:g.ppf_codigo||'',
+    fecha:g.fecha_instalacion||'',
+    aniosProd:g.garantia_producto_anios||10,
+    aniosInst:g.garantia_instalacion_anios||1,
+    responsable:g.responsable_tecnico||''
+  });
+}
+
+function eliminarGarantia(id){
+  showModal('Eliminar certificado','Se eliminara este certificado de garantia.',async()=>{
+    try{const{error}=await sb.from('garantias').delete().eq('id',id);if(error)throw error;toast('Certificado eliminado','success');await loadGarantias();}catch(e){toast('Error: '+(e.message||e),'error');}
+  });
+}
+
+/* ═══════════════════════════════════════════
+   INICIALIZACION
+   ═══════════════════════════════════════════ */
+(async function init(){
+  /* Fecha en top bar */
+  const now=new Date();
+  const dias=['Domingo','Lunes','Martes','Miercoles','Jueves','Viernes','Sabado'];
+  const meses=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+  document.getElementById('topDate').textContent=dias[now.getDay()]+', '+now.getDate()+' de '+meses[now.getMonth()]+', '+now.getFullYear();
+  document.getElementById('t_fecha').valueAsDate=now;
+  document.getElementById('g_fecha').valueAsDate=now;
+
+  /* Poblar marcas PPF */
+  populatePPFSelect();
+
+  /* Detectar columnas */
+  const tables=['caja','clientes','vehiculos','servicios','garantias'];
+  for(const t of tables){const cols=await detectColumns(t);if(cols)tableColumns[t]=cols;}
+
+  /* Cargar datos */
+  await refreshAll();
+})();
+</script>
+
+</body>
+</html>
