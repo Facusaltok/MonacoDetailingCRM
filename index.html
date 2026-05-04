@@ -3,85 +3,484 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Monaco Detailing CRM</title>
+<title>Monaco Detailing CRM - Login</title>
 
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
 <style>
-:root{
-  --green:#00c853;
+:root {
+  --bg-base: #040A0F;
+  --bg-sidebar: #051012;
+  --bg-card: #0A1614;
+  --bg-input: #061210;
+  --border: rgba(255,255,255,0.05);
+  --primary: #10B981;
+  --primary-soft: rgba(16,185,129,0.12);
+  --primary-glow: rgba(16,185,129,0.25);
+  --text-primary: #F1F5F9;
+  --text-secondary: #7A8BA8;
+  --text-muted: #3E4F6A;
 }
-body{
-  background:#020617;
-  font-family:Inter,sans-serif;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
-.card{
-  background:#0f172a;
-  border-radius:20px;
-  padding:30px;
+
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background: var(--bg-base);
+  color: var(--text-primary);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
 }
-.btn{
-  background:var(--green);
-  padding:12px;
-  border-radius:10px;
+
+/* Efectos de fondo iguales al dashboard */
+body::before {
+  content: '';
+  position: fixed;
+  top: -30%;
+  left: -10%;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(16,185,129,0.04) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  animation: floatOrb 20s ease-in-out infinite;
+  z-index: 0;
 }
-.input{
-  background:#020617;
-  border:1px solid #1e293b;
-  color:white;
+
+body::after {
+  content: '';
+  position: fixed;
+  bottom: -20%;
+  right: -5%;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(16,185,129,0.03) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  animation: floatOrb 25s ease-in-out infinite reverse;
+  z-index: 0;
+}
+
+@keyframes floatOrb {
+  0%,100% { transform: translate(0,0) scale(1); }
+  33% { transform: translate(40px,-30px) scale(1.05); }
+  66% { transform: translate(-20px,40px) scale(0.95); }
+}
+
+/* Card principal */
+.login-container {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 420px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 48px 40px;
+  box-shadow: 0 25px 80px rgba(0,0,0,0.5), 0 0 60px rgba(16,185,129,0.08);
+  transition: all 0.3s ease;
+}
+
+.login-container:hover {
+  border-color: rgba(255,255,255,0.1);
+  box-shadow: 0 30px 90px rgba(0,0,0,0.6), 0 0 80px rgba(16,185,129,0.12);
+  transform: translateY(-4px);
+}
+
+/* Logo */
+.logo-icon {
+  width: 64px;
+  height: 64px;
+  background: linear-gradient(135deg, var(--primary), #059669);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  color: #000;
+  font-weight: 800;
+  margin: 0 auto 24px;
+  box-shadow: 0 8px 32px rgba(16,185,129,0.3);
+  animation: pulse-glow 3s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 8px 32px rgba(16,185,129,0.3); }
+  50% { box-shadow: 0 8px 48px rgba(16,185,129,0.5); }
+}
+
+/* Título */
+.login-title {
+  font-size: 28px;
+  font-weight: 800;
+  text-align: center;
+  letter-spacing: -0.5px;
+  margin-bottom: 8px;
+  color: var(--text-primary);
+}
+
+.login-subtitle {
+  font-size: 13px;
+  color: var(--text-secondary);
+  text-align: center;
+  margin-bottom: 32px;
+  font-weight: 500;
+}
+
+/* Mensaje de error */
+.error-msg {
+  background: rgba(244,63,94,0.1);
+  border: 1px solid rgba(244,63,94,0.2);
+  color: #F43F5E;
+  padding: 12px 16px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 20px;
+  display: none;
+  align-items: center;
+  gap: 10px;
+  animation: shake 0.5s ease;
+}
+
+.error-msg.show {
+  display: flex;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-8px); }
+  75% { transform: translateX(8px); }
+}
+
+/* Inputs */
+.form-group {
+  margin-bottom: 18px;
+}
+
+.form-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.input-field {
+  width: 100%;
+  background: var(--bg-input);
+  border: 1px solid rgba(255,255,255,0.07);
+  padding: 14px 16px;
+  border-radius: 10px;
+  color: var(--text-primary);
+  font-size: 14px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  transition: all 0.2s ease;
+  outline: none;
+}
+
+.input-field:focus {
+  border-color: rgba(16,185,129,0.5);
+  box-shadow: 0 0 0 3px rgba(16,185,129,0.08);
+}
+
+.input-field::placeholder {
+  color: var(--text-muted);
+}
+
+.input-icon {
+  position: relative;
+}
+
+.input-icon i {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  font-size: 14px;
+  pointer-events: none;
+}
+
+.input-icon .input-field {
+  padding-left: 44px;
+}
+
+/* Botón */
+.btn-login {
+  width: 100%;
+  background: linear-gradient(135deg, var(--primary), #059669);
+  color: #000;
+  padding: 15px;
+  border-radius: 10px;
+  border: none;
+  font-size: 15px;
+  font-weight: 700;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 8px;
+  box-shadow: 0 4px 20px rgba(16,185,129,0.2);
+}
+
+.btn-login:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(16,185,129,0.35);
+}
+
+.btn-login:active {
+  transform: translateY(0);
+}
+
+.btn-login:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Loading spinner */
+.spinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid transparent;
+  border-top-color: #000;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  display: none;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.btn-login.loading .spinner {
+  display: block;
+}
+
+.btn-login.loading .btn-text {
+  display: none;
+}
+
+/* Footer info */
+.login-footer {
+  margin-top: 28px;
+  text-align: center;
+  font-size: 11px;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.login-footer a {
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.login-footer a:hover {
+  color: #34D399;
+  text-decoration: underline;
+}
+
+/* Decorative elements */
+.deco-circle {
+  position: absolute;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(16,185,129,0.1), transparent);
+  pointer-events: none;
+}
+
+.deco-circle-1 {
+  width: 200px;
+  height: 200px;
+  top: -100px;
+  right: -100px;
+}
+
+.deco-circle-2 {
+  width: 150px;
+  height: 150px;
+  bottom: -75px;
+  left: -75px;
 }
 </style>
 </head>
 
-<body class="flex items-center justify-center h-screen">
+<body>
 
-<div class="card w-full max-w-md text-white">
+<div class="login-container">
+  
+  <!-- Elementos decorativos -->
+  <div class="deco-circle deco-circle-1"></div>
+  <div class="deco-circle deco-circle-2"></div>
 
-<h1 class="text-2xl font-bold mb-6 text-center">Monaco Detailing</h1>
+  <!-- Logo -->
+  <div class="logo-icon">M</div>
 
-<div id="msg" class="text-red-400 mb-3 hidden"></div>
+  <!-- Título -->
+  <h1 class="login-title">Monaco Detailing</h1>
+  <p class="login-subtitle">CRM Pro - Sistema de Gestión</p>
 
-<form id="loginForm">
+  <!-- Mensaje de Error -->
+  <div id="msg" class="error-msg">
+    <i class="fa-solid fa-circle-exclamation"></i>
+    <span id="errorMsg"></span>
+  </div>
 
-<input id="email" type="email" placeholder="Correo" class="input w-full p-3 mb-3" required>
-<input id="password" type="password" placeholder="Contraseña" class="input w-full p-3 mb-5" required>
+  <!-- Formulario -->
+  <form id="loginForm">
 
-<button class="btn w-full">Ingresar</button>
+    <div class="form-group input-icon">
+      <i class="fa-solid fa-envelope"></i>
+      <input 
+        id="email" 
+        type="email" 
+        placeholder="Correo electrónico" 
+        class="input-field" 
+        required 
+        autocomplete="email"
+      >
+    </div>
 
-</form>
+    <div class="form-group input-icon">
+      <i class="fa-solid fa-lock"></i>
+      <input 
+        id="password" 
+        type="password" 
+        placeholder="Contraseña" 
+        class="input-field" 
+        required 
+        autocomplete="current-password"
+      >
+    </div>
+
+    <button type="submit" id="submitBtn" class="btn-login">
+      <span class="btn-text">
+        <i class="fa-solid fa-right-to-bracket"></i> 
+        Ingresar al Sistema
+      </span>
+      <div class="spinner"></div>
+    </button>
+
+  </form>
+
+  <!-- Footer -->
+  <div class="login-footer">
+    <p>Sistema desarrollado para <strong style="color:var(--primary);">Monaco Detailing</strong></p>
+    <p style="margin-top: 6px;">
+      ¿Problemas? <a href="#">Contactar soporte</a>
+    </p>
+  </div>
 
 </div>
 
 <script>
-<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-
-<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-
-<script>
+// Configuración Supabase
 const SUPABASE_URL = "https://wuewcawbpajdehquorfq.supabase.co";
-
 const SUPABASE_KEY = "sb_publishable_nzzOvYY0RYXDUavs-pFH6Q_pqnLU2tb";
 
+// Crear cliente Supabase
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// Elementos DOM
 const loginForm = document.getElementById("loginForm");
-const email = document.getElementById("email");
-const password = document.getElementById("password");
-const msg = document.getElementById("msg");
+const emailInput = document.getElementById("email");
+const passwordInput = document.getElementById("password");
+const msgDiv = document.getElementById("msg");
+const errorMsg = document.getElementById("errorMsg");
+const submitBtn = document.getElementById("submitBtn");
 
-loginForm.addEventListener("submit", async(e)=>{
+// Manejar envío del formulario
+loginForm.addEventListener("submit", async function(e){
   e.preventDefault();
+  
+  // Validación básica
+  if(!emailInput.value || !passwordInput.value){
+    showError("Por favor completa todos los campos");
+    return;
+  }
 
-  const {error} = await sb.auth.signInWithPassword({
-    email: email.value,
-    password: password.value
-  });
+  // Mostrar loading
+  submitBtn.classList.add('loading');
+  submitBtn.disabled = true;
 
-  if(error){
-    msg.innerText = error.message;
-    msg.classList.remove("hidden");
-  } else {
-    location.href="dashboard.html";
+  try {
+    // Intentar login
+    const { data, error } = await sb.auth.signInWithPassword({
+      email: emailInput.value,
+      password: passwordInput.value
+    });
+
+    if(error){
+      showError(error.message);
+      submitBtn.classList.remove('loading');
+      submitBtn.disabled = false;
+    } else {
+      // Éxito - redirigir al dashboard
+      msgDiv.classList.remove('show');
+      
+      // Pequeña delay para efecto visual
+      setTimeout(function(){
+        window.location.href = "dashboard.html";
+      }, 300);
+    }
+
+  } catch(err) {
+    showError("Error de conexión. Intenta nuevamente.");
+    submitBtn.classList.remove('loading');
+    submitBtn.disabled = false;
+  }
+});
+
+// Función para mostrar errores
+function showError(message){
+  errorMsg.textContent = message;
+  msgDiv.classList.add('show');
+  
+  // Ocultar después de 5 segundos
+  setTimeout(function(){
+    msgDiv.classList.remove('show');
+  }, 5000);
+}
+
+// Limpiar error al escribir
+emailInput.addEventListener('input', function(){
+  if(msgDiv.classList.contains('show')){
+    msgDiv.classList.remove('show');
+  }
+});
+
+passwordInput.addEventListener('input', function(){
+  if(msgDiv.classList.contains('show')){
+    msgDiv.classList.remove('show');
+  }
+});
+
+// Permitir Enter en inputs
+document.addEventListener('keypress', function(e){
+  if(e.key === 'Enter' && e.target.tagName !== 'BUTTON'){
+    loginForm.dispatchEvent(new Event('submit'));
   }
 });
 </script>
+
+</body>
+</html>
