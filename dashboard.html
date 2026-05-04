@@ -725,7 +725,7 @@ function showCajaBanner(err){
 }
 
 async function loadGarantias(){
-  try{let q=sb.from('garantias').select('*');q=maybeOrder(q,'garantias','created_at',false);const{data,error}=await q;if(error){console.warn('[loadGarantias]',error.message);garantias=[];document.getElementById('garSetupBanner').classList.add('show');}else{garantias=data||[];if(!tableColumns['garantias']&&garantias.length>0)tableColumns['garantias']=Object.keys(garantias[0]);document.getElementById('garSetupBanner').remove('show');}}
+  try{let q=sb.from('garantias').select('*');q=maybeOrder(q,'garantias','created_at',false);const{data,error}=await q;if(error){console.warn('[loadGarantias]',error.message);garantias=[];document.getElementById('garSetupBanner').classList.add('show');}else{garantias=data||[];if(!tableColumns['garantias']&&garantias.length>0)tableColumns['garantias']=Object.keys(garantias[0]);document.getElementById('garSetupBanner').classList.remove('show');}}
   catch(e){console.error('loadGarantias',e);garantias=[];}
   renderGarantias();
 }
@@ -929,11 +929,11 @@ function populateCajaVehiculoSelects(){
   ['cx_vehiculo','cx_egreso_vehiculo'].forEach(sid=>{
     const sel=document.getElementById(sid);if(!sel)return;const val=sel.value;
     sel.innerHTML='<option value="">-- Sin vehiculo --</option>';
-    vehiculos.forEach(v=>{const owner=v.clientes?.nombre||'';const label=esc(v.marca)+' '+(v.modelo?esc(v.modelo):'')+(v.patente?' ('+esc(v.patente)+')':'')+(owner?' — '+esc(owner):'');sel.innerHTML+=`<option value="${v.id}">${label}</option>`;});
+    vehiculos.forEach(v=>{const owner=v.clientes?.nombre||'';const label=esc(v.marca)+' '+(v.modelo?esc(v.modelo):'')+(v.patente?(' ('+esc(v.patente)+')'):'')+(owner?' — '+esc(owner):'');sel.innerHTML+=`<option value="${v.id}">${label}</option>`;});
     sel.value=val;
   });
   const filt=document.getElementById('cx_filtro_vehiculo');
-  if(filt){const val=filt.value;filt.innerHTML='<option value="">Todos los vehiculos</option>';vehiculos.forEach(v=>{const label=esc(v.marca)+' '+(v.modelo?esc(v.modelo):'')+(v.patente?' ('+esc(v.patente)+')':'');filt.innerHTML+=`<option value="${v.id}">${label}</option>`;});filt.value=val;}
+  if(filt){const val=filt.value;filt.innerHTML='<option value="">Todos los vehiculos</option>';vehiculos.forEach(v=>{const label=esc(v.marca)+' '+(v.modelo?esc(v.modelo):'')+(v.patente?(' ('+esc(v.patente)+')'):'');filt.innerHTML+=`<option value="${v.id}">${label}</option>`;});filt.value=val;}
 }
 
 function onClienteSelect(){
@@ -1047,7 +1047,7 @@ async function moverServicio(id,ne){try{const{error}=await sb.from('servicios').
           else telLimpio='549'+telLimpio;
         }
         
-        const mensaje=encodeURIComponent(`¡Hola ${clienteNombre}! 🚗\\n\\nTu ${vehiculo} esta listo para retirar.\\n\\nGracias por confiar en Monaco Detailing. ¡Te esperamos!`);
+        const mensaje=encodeURIComponent(`¡Hola ${clienteNombre}! 🚗\n\nTu ${vehiculo} esta listo para retirar.\n\nGracias por confiar en Monaco Detailing. ¡Te esperamos!`);
         const url=`https://wa.me/${telLimpio}?text=${mensaje}`;
         
         toast('Abriendo WhatsApp para notificar al cliente...','success');
@@ -1367,7 +1367,7 @@ function eliminarGarantia(id){
     const h=d.getHours().toString().padStart(2,'0');
     const m=d.getMinutes().toString().padStart(2,'0');
     const s=d.getSeconds().toString().padStart(2,'0');
-    document.getElementById('topClock').textContent='🕐 '+h+':'+m+':'+s+' (AR)';
+    document.getElementById('topClock').textContent='\uD83D\uDD50 '+h+':'+m+':'+s+' (AR)';
   }
   updateArgentinaClock();
   setInterval(updateArgentinaClock,1000);
