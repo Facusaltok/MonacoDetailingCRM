@@ -2,23 +2,78 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Monaco CRM PRO</title>
+<title>Monaco Detailing CRM</title>
 
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 
 <style>
-body{margin:0;background:#020617;color:white;font-family:Inter;}
-.sidebar{width:260px;height:100vh;position:fixed;background:#020617;border-right:1px solid #111827;padding:20px;}
-.menu-item{padding:12px;border-radius:10px;cursor:pointer;margin-bottom:5px;}
+body{
+  margin:0;
+  font-family:Inter;
+  background:#020617;
+  color:white;
+}
+
+/* SIDEBAR */
+.sidebar{
+  width:260px;
+  height:100vh;
+  position:fixed;
+  background:#020617;
+  border-right:1px solid #111827;
+  padding:20px;
+}
+
+.menu-item{
+  padding:12px;
+  border-radius:10px;
+  cursor:pointer;
+  margin-bottom:5px;
+}
 .menu-item:hover{background:#0f172a;}
 .active{background:#00c853;color:black;}
-.content{margin-left:260px;padding:30px;}
-.card{background:#0f172a;padding:20px;border-radius:14px;}
-.input{background:#020617;border:1px solid #1e293b;padding:10px;border-radius:8px;width:100%;margin-bottom:10px;}
-.btn{background:#00c853;padding:10px;border-radius:8px;font-weight:600;}
-.column{background:#020617;padding:15px;border-radius:14px;border:1px solid #1e293b;min-height:400px;}
-.task{background:#0f172a;padding:12px;border-radius:10px;margin-bottom:10px;}
+
+.content{
+  margin-left:260px;
+  padding:30px;
+}
+
+/* UI */
+.card{
+  background:#0f172a;
+  padding:20px;
+  border-radius:14px;
+}
+.input{
+  background:#020617;
+  border:1px solid #1e293b;
+  padding:10px;
+  border-radius:8px;
+  width:100%;
+  margin-bottom:10px;
+}
+.btn{
+  background:#00c853;
+  padding:10px;
+  border-radius:8px;
+  width:100%;
+  font-weight:600;
+}
+.column{
+  background:#020617;
+  padding:15px;
+  border-radius:14px;
+  border:1px solid #1e293b;
+  min-height:400px;
+}
+.task{
+  background:#0f172a;
+  padding:12px;
+  border-radius:10px;
+  margin-bottom:10px;
+}
 </style>
 </head>
 
@@ -35,6 +90,7 @@ body{margin:0;background:#020617;color:white;font-family:Inter;}
 <div class="menu-item" onclick="tab('turnos',this)">Turnos</div>
 <div class="menu-item" onclick="tab('clientes',this)">Clientes</div>
 <div class="menu-item" onclick="tab('vehiculos',this)">Vehículos</div>
+
 </div>
 
 <div class="content">
@@ -42,52 +98,83 @@ body{margin:0;background:#020617;color:white;font-family:Inter;}
 <!-- DASHBOARD -->
 <div id="dashboard">
 <div class="grid grid-cols-4 gap-4">
-<div class="card"><p>En proceso</p><h2 id="kpi_proceso">0</h2></div>
-<div class="card"><p>Terminados</p><h2 id="kpi_terminado">0</h2></div>
-<div class="card"><p>Facturación</p><h2 id="kpi_facturacion">$0</h2></div>
-<div class="card"><p>Clientes</p><h2 id="kpi_clientes">0</h2></div>
+
+<div class="card">
+<p>En proceso</p>
+<h2 id="kpi_proceso">0</h2>
+</div>
+
+<div class="card">
+<p>Terminados</p>
+<h2 id="kpi_terminado">0</h2>
+</div>
+
+<div class="card">
+<p>Facturación</p>
+<h2 id="kpi_facturacion">$0</h2>
+</div>
+
+<div class="card">
+<p>Clientes</p>
+<h2 id="kpi_clientes">0</h2>
+</div>
+
 </div>
 </div>
 
 <!-- KANBAN -->
 <div id="kanban" style="display:none">
 <div class="grid grid-cols-3 gap-4">
+
 <div class="column" id="pendiente"><h3>Pendiente</h3></div>
 <div class="column" id="proceso"><h3>Proceso</h3></div>
 <div class="column" id="terminado"><h3>Terminado</h3></div>
+
 </div>
 </div>
 
 <!-- TURNOS -->
 <div id="turnos" style="display:none">
-<div class="card">
+<div class="card max-w-xl">
+
 <input id="turno_cliente" placeholder="Cliente" class="input">
 <input id="turno_tel" placeholder="Teléfono" class="input">
 <input id="turno_servicio" placeholder="Servicio" class="input">
 <input id="turno_fecha" type="date" class="input">
-<button onclick="crearTurno()" class="btn w-full">Crear turno</button>
-<ul id="listaTurnos"></ul>
+
+<button onclick="crearTurno()" class="btn">Crear turno</button>
+
+<ul id="listaTurnos" class="mt-4"></ul>
+
 </div>
 </div>
 
 <!-- CLIENTES -->
 <div id="clientes" style="display:none">
-<div class="card">
+<div class="card max-w-xl">
+
 <input id="cliente_nombre" placeholder="Nombre" class="input">
 <input id="cliente_tel" placeholder="Teléfono" class="input">
-<button onclick="guardarCliente()" class="btn w-full">Guardar</button>
-<ul id="listaClientes"></ul>
+
+<button onclick="guardarCliente()" class="btn">Guardar</button>
+
+<ul id="listaClientes" class="mt-4"></ul>
+
 </div>
 </div>
 
 <!-- VEHICULOS -->
 <div id="vehiculos" style="display:none">
-<div class="card">
+<div class="card max-w-xl">
+
 <select id="vehiculo_cliente" class="input"></select>
 <input id="vehiculo_marca" placeholder="Marca" class="input">
 <input id="vehiculo_modelo" placeholder="Modelo" class="input">
-<button onclick="guardarVehiculo()" class="btn w-full">Guardar</button>
-<ul id="listaVehiculos"></ul>
+
+<button onclick="guardarVehiculo()" class="btn">Guardar</button>
+
+<ul id="listaVehiculos" class="mt-4"></ul>
+
 </div>
 </div>
 
@@ -99,7 +186,7 @@ const sb = supabase.createClient(
 "sb_publishable_nzzOvYY0RYXDUavs-pFH6Q_pqnLU2tb"
 );
 
-// TABS
+// TAB
 function tab(id,el){
 ["dashboard","kanban","turnos","clientes","vehiculos"].forEach(t=>{
 document.getElementById(t).style.display="none";
@@ -152,6 +239,7 @@ telefono:cliente_tel.value
 cliente_nombre.value="";
 cliente_tel.value="";
 cargarClientes();
+cargarKPIs();
 }
 
 async function eliminarCliente(id){
@@ -165,6 +253,7 @@ let vehiculoEdit=null;
 async function cargarVehiculos(){
 const {data}=await sb.from("vehiculos").select("*");
 listaVehiculos.innerHTML="";
+
 data.forEach(v=>{
 listaVehiculos.innerHTML+=`
 <li class="flex justify-between">
@@ -213,9 +302,7 @@ cargarVehiculos();
 async function crearTurno(){
 
 let {data:cliente} = await sb.from("clientes")
-.select("*")
-.eq("nombre",turno_cliente.value)
-.single();
+.select("*").eq("nombre",turno_cliente.value).single();
 
 if(!cliente){
 const res = await sb.from("clientes").insert({
@@ -237,16 +324,20 @@ tipo:turno_servicio.value,
 estado:"pendiente"
 });
 
+// 🔥 APARECE EN OPERACIONES
+cargarServicios();
+
 await sb.from("turnos").insert({
 cliente:turno_cliente.value,
 servicio:turno_servicio.value,
 fecha:turno_fecha.value
 });
 
-const msg = `Hola ${turno_cliente.value}, tu turno fue agendado correctamente 📅`;
-window.open(`https://wa.me/54${turno_tel.value}?text=${encodeURIComponent(msg)}`);
+turno_cliente.value="";
+turno_tel.value="";
+turno_servicio.value="";
+turno_fecha.value="";
 
-cargarServicios();
 cargarTurnos();
 }
 
@@ -266,7 +357,7 @@ el.className="task";
 
 el.innerHTML=`
 <div>${s.tipo}</div>
-<div>${s.vehiculos?.marca}</div>
+<div class="text-sm text-gray-400">${s.vehiculos?.marca}</div>
 
 <div class="flex gap-2 mt-2">
 <button onclick="mover('${s.id}','proceso')" class="btn">▶</button>
@@ -282,6 +373,7 @@ document.getElementById(s.estado).appendChild(el);
 async function mover(id,estado){
 await sb.from("servicios").update({estado}).eq("id",id);
 cargarServicios();
+cargarKPIs();
 }
 
 async function eliminarServicio(id){
@@ -293,21 +385,18 @@ async function finalizarServicio(s){
 
 await sb.from("servicios").update({estado:"terminado"}).eq("id",s.id);
 
-const tel = s.vehiculos?.clientes?.telefono || "";
+const tel = s.vehiculos?.clientes?.telefono?.replace(/[^0-9]/g,"");
 
 const msg = `Hola ${s.vehiculos?.clientes?.nombre},
-tu ${s.vehiculos?.marca} ${s.vehiculos?.modelo} ya está listo 🙌
-
-Servicio: ${s.tipo}
-
-Monaco Detailing 🚗✨`;
+tu ${s.vehiculos?.marca} ${s.vehiculos?.modelo} ya está listo 🙌`;
 
 window.open(`https://wa.me/54${tel}?text=${encodeURIComponent(msg)}`);
 
 cargarServicios();
+cargarKPIs();
 }
 
-// ================= TURNOS LISTA =================
+// ================= TURNOS =================
 async function cargarTurnos(){
 const {data}=await sb.from("turnos").select("*");
 listaTurnos.innerHTML="";
