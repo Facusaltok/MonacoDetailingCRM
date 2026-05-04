@@ -6,13 +6,13 @@
 
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 
 <style>
 body{
+  margin:0;
+  font-family:Inter;
   background: radial-gradient(circle at top,#0f172a,#020617);
-  font-family: Inter;
   color:white;
 }
 
@@ -21,27 +21,21 @@ body{
   width:260px;
   height:100vh;
   position:fixed;
-  background:rgba(2,6,23,0.8);
-  backdrop-filter: blur(20px);
-  border-right:1px solid rgba(255,255,255,.05);
+  background:#020617;
+  border-right:1px solid #111827;
   padding:20px;
 }
 
 /* MENU */
 .menu-item{
   padding:12px;
-  border-radius:12px;
+  border-radius:10px;
   cursor:pointer;
   margin-bottom:5px;
   transition:.2s;
 }
-.menu-item:hover{
-  background:#0f172a;
-}
-.active{
-  background:linear-gradient(135deg,#00c853,#009624);
-  color:black;
-}
+.menu-item:hover{background:#0f172a;}
+.active{background:#00c853;color:black;}
 
 /* CONTENT */
 .content{
@@ -49,31 +43,30 @@ body{
   padding:30px;
 }
 
-/* CARDS */
+/* CARD */
 .card{
-  background:rgba(15,23,42,.6);
-  border-radius:20px;
+  background:rgba(15,23,42,.8);
   padding:20px;
-  backdrop-filter: blur(15px);
+  border-radius:16px;
   border:1px solid rgba(255,255,255,.05);
-  box-shadow:0 20px 50px rgba(0,0,0,.4);
+  box-shadow:0 10px 30px rgba(0,0,0,.4);
 }
 
 /* INPUT */
 .input{
   background:#020617;
   border:1px solid #1e293b;
-  padding:12px;
-  border-radius:10px;
+  padding:10px;
+  border-radius:8px;
   width:100%;
   margin-bottom:10px;
 }
 
 /* BTN */
 .btn{
-  background:linear-gradient(135deg,#00c853,#009624);
-  padding:12px;
-  border-radius:10px;
+  background:#00c853;
+  padding:10px;
+  border-radius:8px;
   font-weight:600;
 }
 
@@ -81,14 +74,14 @@ body{
 .column{
   background:#020617;
   padding:15px;
-  border-radius:20px;
+  border-radius:15px;
   border:1px solid #1e293b;
   min-height:400px;
 }
 .task{
   background:#0f172a;
   padding:12px;
-  border-radius:12px;
+  border-radius:10px;
   margin-bottom:10px;
 }
 </style>
@@ -104,45 +97,96 @@ body{
   <div class="text-xs text-gray-400">Detailing CRM</div>
 </div>
 
-<div class="menu-item active" onclick="tab('kanban',this)">Operaciones</div>
-<div class="menu-item" onclick="tab('crear',this)">Nuevo Servicio</div>
+<div class="menu-item active" onclick="tab('dashboard',this)">Dashboard</div>
+<div class="menu-item" onclick="tab('kanban',this)">Operaciones</div>
+<div class="menu-item" onclick="tab('clientes',this)">Clientes</div>
+<div class="menu-item" onclick="tab('vehiculos',this)">Vehículos</div>
+<div class="menu-item" onclick="tab('servicios',this)">Servicios</div>
+<div class="menu-item" onclick="tab('turnos',this)">Turnos</div>
+<div class="menu-item" onclick="tab('caja',this)">Caja</div>
 
 </div>
 
 <!-- CONTENT -->
 <div class="content">
 
-<!-- TABLERO -->
-<div id="kanban">
+<!-- DASHBOARD -->
+<div id="dashboard">
+<div class="grid grid-cols-4 gap-4">
+
+<div class="card"><p>En proceso</p><h2 id="kpi_proceso">0</h2></div>
+<div class="card"><p>Terminados</p><h2 id="kpi_terminado">0</h2></div>
+<div class="card"><p>Facturación</p><h2 id="kpi_facturacion">$0</h2></div>
+<div class="card"><p>Clientes</p><h2 id="kpi_clientes">0</h2></div>
+
+</div>
+</div>
+
+<!-- KANBAN -->
+<div id="kanban" style="display:none">
 <div class="grid grid-cols-3 gap-4">
 
-<div class="column" id="pendiente"></div>
-<div class="column" id="proceso"></div>
-<div class="column" id="terminado"></div>
+<div class="column" id="pendiente"><h3>Pendiente</h3></div>
+<div class="column" id="proceso"><h3>Proceso</h3></div>
+<div class="column" id="terminado"><h3>Terminado</h3></div>
 
 </div>
 </div>
 
-<!-- CREAR -->
-<div id="crear" style="display:none">
-
+<!-- CLIENTES -->
+<div id="clientes" style="display:none">
 <div class="card">
+<input id="cliente_nombre" placeholder="Nombre" class="input">
+<input id="cliente_tel" placeholder="Teléfono" class="input">
+<button onclick="crearCliente()" class="btn w-full">Guardar</button>
+<ul id="listaClientes"></ul>
+</div>
+</div>
 
-<select id="cliente_select" class="input"></select>
+<!-- VEHICULOS -->
+<div id="vehiculos" style="display:none">
+<div class="card">
+<select id="vehiculo_cliente" class="input"></select>
+<input id="vehiculo_marca" placeholder="Marca" class="input">
+<input id="vehiculo_modelo" placeholder="Modelo" class="input">
+<button onclick="crearVehiculo()" class="btn w-full">Guardar</button>
+<ul id="listaVehiculos"></ul>
+</div>
+</div>
 
-<input id="marca" placeholder="Marca" class="input">
-<input id="modelo" placeholder="Modelo" class="input">
-
-<select id="tipo" class="input">
+<!-- SERVICIOS -->
+<div id="servicios" style="display:none">
+<div class="card">
+<select id="servicio_vehiculo" class="input"></select>
+<select id="servicio_tipo" class="input">
 <option>PPF</option>
 <option>Cerámico</option>
 <option>Interior</option>
+<option>Pulido</option>
 </select>
-
-<button onclick="crearServicio()" class="btn w-full">Crear servicio</button>
-
+<button onclick="crearServicioManual()" class="btn w-full">Crear servicio</button>
+</div>
 </div>
 
+<!-- TURNOS -->
+<div id="turnos" style="display:none">
+<div class="card">
+<input id="turno_cliente" placeholder="Cliente" class="input">
+<input id="turno_servicio" placeholder="Servicio" class="input">
+<input id="turno_fecha" type="date" class="input">
+<button onclick="crearTurno()" class="btn w-full">Guardar</button>
+<ul id="listaTurnos"></ul>
+</div>
+</div>
+
+<!-- CAJA -->
+<div id="caja" style="display:none">
+<div class="card">
+<input id="concepto" placeholder="Concepto" class="input">
+<input id="monto" placeholder="Monto" class="input">
+<button onclick="agregarCaja()" class="btn w-full">Guardar</button>
+<ul id="listaCaja"></ul>
+</div>
 </div>
 
 </div>
@@ -153,10 +197,11 @@ const sb = supabase.createClient(
 "sb_publishable_nzzOvYY0RYXDUavs-pFH6Q_pqnLU2tb"
 );
 
-// TAB
+// TABS
 function tab(id,el){
-document.getElementById("kanban").style.display="none";
-document.getElementById("crear").style.display="none";
+["dashboard","kanban","clientes","vehiculos","servicios","turnos","caja"].forEach(t=>{
+document.getElementById(t).style.display="none";
+});
 document.getElementById(id).style.display="block";
 
 document.querySelectorAll(".menu-item").forEach(e=>e.classList.remove("active"));
@@ -164,63 +209,74 @@ el.classList.add("active");
 }
 
 // CLIENTES
+async function crearCliente(){
+await sb.from("clientes").insert({
+nombre:cliente_nombre.value,
+telefono:cliente_tel.value
+});
+cargarClientes();
+}
+
 async function cargarClientes(){
 const {data}=await sb.from("clientes").select("*");
-cliente_select.innerHTML="";
+listaClientes.innerHTML="";
+vehiculo_cliente.innerHTML="";
 data.forEach(c=>{
-cliente_select.innerHTML+=`<option value="${c.id}">${c.nombre}</option>`;
+listaClientes.innerHTML+=`<li>${c.nombre}</li>`;
+vehiculo_cliente.innerHTML+=`<option value="${c.id}">${c.nombre}</option>`;
 });
 }
 
-// CREAR SERVICIO COMPLETO
-async function crearServicio(){
+// VEHICULOS
+async function crearVehiculo(){
+await sb.from("vehiculos").insert({
+cliente_id:vehiculo_cliente.value,
+marca:vehiculo_marca.value,
+modelo:vehiculo_modelo.value
+});
+cargarVehiculos();
+}
 
-// 1 crear vehículo
-const {data:vehiculo} = await sb.from("vehiculos").insert({
-cliente_id:cliente_select.value,
-marca:marca.value,
-modelo:modelo.value
-}).select().single();
+async function cargarVehiculos(){
+const {data}=await sb.from("vehiculos").select("*");
+listaVehiculos.innerHTML="";
+servicio_vehiculo.innerHTML="";
+data.forEach(v=>{
+listaVehiculos.innerHTML+=`<li>${v.marca} ${v.modelo}</li>`;
+servicio_vehiculo.innerHTML+=`<option value="${v.id}">${v.marca}</option>`;
+});
+}
 
-// 2 crear servicio
+// SERVICIOS
+async function crearServicioManual(){
 await sb.from("servicios").insert({
-vehiculo_id:vehiculo.id,
-tipo:tipo.value,
+vehiculo_id:servicio_vehiculo.value,
+tipo:servicio_tipo.value,
 estado:"pendiente"
 });
-
 cargarServicios();
-tab("kanban", document.querySelector(".menu-item"));
 }
 
-// CARGAR SERVICIOS
+// KANBAN
 async function cargarServicios(){
-
 const {data}=await sb.from("servicios")
-.select(`id,tipo,estado,vehiculos(marca,modelo,clientes(nombre))`);
+.select(`id,tipo,estado,vehiculos(marca,clientes(nombre))`);
 
 ["pendiente","proceso","terminado"].forEach(c=>{
-document.getElementById(c).innerHTML=`<h3 class="mb-4 capitalize">${c}</h3>`;
+document.getElementById(c).innerHTML=`<h3>${c}</h3>`;
 });
 
 data.forEach(s=>{
-
 let el=document.createElement("div");
 el.className="task";
-
 el.innerHTML=`
-<div class="font-semibold">${s.tipo}</div>
-<div class="text-sm text-gray-400">${s.vehiculos?.marca} ${s.vehiculos?.modelo}</div>
-<div class="text-xs">${s.vehiculos?.clientes?.nombre}</div>
-<div class="mt-2 flex gap-2">
+<div>${s.tipo}</div>
+<div>${s.vehiculos?.marca}</div>
 <button onclick="mover('${s.id}','proceso')" class="btn">▶</button>
 <button onclick="mover('${s.id}','terminado')" class="btn">✔</button>
-</div>
 `;
-
 document.getElementById(s.estado).appendChild(el);
 });
-
 }
 
 // MOVER
@@ -229,10 +285,22 @@ await sb.from("servicios").update({estado}).eq("id",id);
 cargarServicios();
 }
 
+// KPI
+async function cargarKPIs(){
+const {data:s}=await sb.from("servicios").select("*");
+const {data:c}=await sb.from("clientes").select("*");
+
+kpi_proceso.innerText=s.filter(x=>x.estado==="proceso").length;
+kpi_terminado.innerText=s.filter(x=>x.estado==="terminado").length;
+kpi_facturacion.innerText="$"+s.reduce((a,b)=>a+(b.precio||0),0);
+kpi_clientes.innerText=c.length;
+}
+
 // INIT
 cargarClientes();
+cargarVehiculos();
 cargarServicios();
-
+cargarKPIs();
 </script>
 
 </body>
