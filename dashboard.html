@@ -6,79 +6,78 @@
 
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 
 <style>
 body{
-  margin:0;
-  font-family:Inter;
   background: radial-gradient(circle at top,#0f172a,#020617);
+  font-family: Inter;
   color:white;
 }
 
+/* SIDEBAR */
 .sidebar{
   width:260px;
   height:100vh;
   position:fixed;
-  background:#020617;
-  border-right:1px solid #111827;
+  background:rgba(2,6,23,0.8);
+  backdrop-filter: blur(20px);
+  border-right:1px solid rgba(255,255,255,.05);
   padding:20px;
 }
 
+/* MENU */
 .menu-item{
   padding:12px;
-  border-radius:10px;
+  border-radius:12px;
   cursor:pointer;
   margin-bottom:5px;
   transition:.2s;
 }
-.menu-item:hover{background:#0f172a;}
-.active{background:#00c853;color:black;}
+.menu-item:hover{
+  background:#0f172a;
+}
+.active{
+  background:linear-gradient(135deg,#00c853,#009624);
+  color:black;
+}
 
+/* CONTENT */
 .content{
   margin-left:260px;
   padding:30px;
 }
 
+/* CARDS */
 .card{
-  background:rgba(15,23,42,.7);
+  background:rgba(15,23,42,.6);
   border-radius:20px;
   padding:20px;
-  border:1px solid rgba(0,255,100,.1);
+  backdrop-filter: blur(15px);
+  border:1px solid rgba(255,255,255,.05);
+  box-shadow:0 20px 50px rgba(0,0,0,.4);
 }
 
+/* INPUT */
+.input{
+  background:#020617;
+  border:1px solid #1e293b;
+  padding:12px;
+  border-radius:10px;
+  width:100%;
+  margin-bottom:10px;
+}
+
+/* BTN */
 .btn{
   background:linear-gradient(135deg,#00c853,#009624);
-  color:black;
-  padding:10px;
+  padding:12px;
   border-radius:10px;
   font-weight:600;
 }
 
-.input{
-  background:#020617;
-  border:1px solid #1e293b;
-  padding:10px;
-  border-radius:8px;
-  width:100%;
-  color:white;
-  margin-bottom:10px;
-}
-
-.logo-container{
-  width:46px;
-  height:46px;
-  border-radius:12px;
-  background:linear-gradient(135deg,#00c853,#009624);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
-.logo-container img{
-  width:28px;
-  filter:brightness(0) invert(1);
-}
-
+/* KANBAN */
 .column{
   background:#020617;
   padding:15px;
@@ -89,118 +88,61 @@ body{
 .task{
   background:#0f172a;
   padding:12px;
-  border-radius:10px;
+  border-radius:12px;
   margin-bottom:10px;
-  cursor:grab;
 }
 </style>
 </head>
 
 <body>
 
+<!-- SIDEBAR -->
 <div class="sidebar">
 
-<div class="flex items-center gap-3 mb-8">
-  <div class="logo-container">
-    <img src="logo.png">
-  </div>
-  <div>
-    <div class="font-semibold">Monaco</div>
-    <div class="text-xs text-gray-400">Detailing CRM</div>
-  </div>
+<div class="mb-8">
+  <div class="text-lg font-bold">Monaco</div>
+  <div class="text-xs text-gray-400">Detailing CRM</div>
 </div>
 
-<div class="menu-item active" onclick="tab('dashboard',this)">Dashboard</div>
-<div class="menu-item" onclick="tab('kanban',this)">Operaciones</div>
-<div class="menu-item" onclick="tab('clientes',this)">Clientes</div>
-<div class="menu-item" onclick="tab('vehiculos',this)">Vehículos</div>
-<div class="menu-item" onclick="tab('turnos',this)">Turnos</div>
-<div class="menu-item" onclick="tab('caja',this)">Caja</div>
+<div class="menu-item active" onclick="tab('kanban',this)">Operaciones</div>
+<div class="menu-item" onclick="tab('crear',this)">Nuevo Servicio</div>
 
 </div>
 
+<!-- CONTENT -->
 <div class="content">
 
-<!-- DASHBOARD -->
-<div id="dashboard">
-<div class="grid grid-cols-4 gap-4">
-
-<div class="card"><p>Proceso</p><h2 id="kpi_proceso">0</h2></div>
-<div class="card"><p>Terminados</p><h2 id="kpi_terminado">0</h2></div>
-<div class="card"><p>Facturación</p><h2 id="kpi_facturacion">$0</h2></div>
-<div class="card"><p>Clientes</p><h2 id="kpi_clientes">0</h2></div>
-
-</div>
-</div>
-
-<!-- KANBAN -->
-<div id="kanban" style="display:none">
+<!-- TABLERO -->
+<div id="kanban">
 <div class="grid grid-cols-3 gap-4">
 
-<div class="column" ondrop="drop(event,'pendiente')" ondragover="allowDrop(event)">
-<h3>Pendiente</h3><div id="pendiente"></div></div>
-
-<div class="column" ondrop="drop(event,'proceso')" ondragover="allowDrop(event)">
-<h3>Proceso</h3><div id="proceso"></div></div>
-
-<div class="column" ondrop="drop(event,'terminado')" ondragover="allowDrop(event)">
-<h3>Terminado</h3><div id="terminado"></div></div>
+<div class="column" id="pendiente"></div>
+<div class="column" id="proceso"></div>
+<div class="column" id="terminado"></div>
 
 </div>
 </div>
 
-<!-- CLIENTES -->
-<div id="clientes" style="display:none">
+<!-- CREAR -->
+<div id="crear" style="display:none">
+
 <div class="card">
 
-<input id="cliente_nombre" placeholder="Nombre" class="input">
-<input id="cliente_tel" placeholder="Teléfono" class="input">
-<button onclick="guardarCliente()" class="btn w-full">Guardar</button>
+<select id="cliente_select" class="input"></select>
 
-<table class="w-full mt-4"><tbody id="tablaClientes"></tbody></table>
+<input id="marca" placeholder="Marca" class="input">
+<input id="modelo" placeholder="Modelo" class="input">
 
-</div>
-</div>
+<select id="tipo" class="input">
+<option>PPF</option>
+<option>Cerámico</option>
+<option>Interior</option>
+</select>
 
-<!-- VEHICULOS -->
-<div id="vehiculos" style="display:none">
-<div class="card">
-
-<select id="vehiculo_cliente" class="input"></select>
-<input id="vehiculo_marca" placeholder="Marca" class="input">
-<input id="vehiculo_modelo" placeholder="Modelo" class="input">
-<button onclick="crearVehiculo()" class="btn w-full">Guardar</button>
-
-<ul id="listaVehiculos"></ul>
+<button onclick="crearServicio()" class="btn w-full">Crear servicio</button>
 
 </div>
-</div>
 
-<!-- TURNOS -->
-<div id="turnos" style="display:none">
-<div class="card">
-
-<input id="turno_cliente" placeholder="Cliente" class="input">
-<input id="turno_servicio" placeholder="Servicio" class="input">
-<input id="turno_fecha" type="date" class="input">
-<button onclick="crearTurno()" class="btn w-full">Guardar</button>
-
-<ul id="listaTurnos"></ul>
-
-</div>
-</div>
-
-<!-- CAJA -->
-<div id="caja" style="display:none">
-<div class="card">
-
-<input id="concepto" placeholder="Concepto" class="input">
-<input id="monto" placeholder="Monto" class="input">
-<button onclick="agregarCaja()" class="btn w-full">Guardar</button>
-
-<ul id="listaCaja"></ul>
-
-</div>
 </div>
 
 </div>
@@ -211,180 +153,85 @@ const sb = supabase.createClient(
 "sb_publishable_nzzOvYY0RYXDUavs-pFH6Q_pqnLU2tb"
 );
 
-// TABS
+// TAB
 function tab(id,el){
-["dashboard","kanban","clientes","vehiculos","turnos","caja"].forEach(t=>{
-document.getElementById(t).style.display="none";
-});
+document.getElementById("kanban").style.display="none";
+document.getElementById("crear").style.display="none";
 document.getElementById(id).style.display="block";
 
 document.querySelectorAll(".menu-item").forEach(e=>e.classList.remove("active"));
 el.classList.add("active");
 }
 
-// CLIENTES CRUD
-let editando=null;
-
+// CLIENTES
 async function cargarClientes(){
 const {data}=await sb.from("clientes").select("*");
-tablaClientes.innerHTML="";
-vehiculo_cliente.innerHTML="";
+cliente_select.innerHTML="";
 data.forEach(c=>{
-tablaClientes.innerHTML+=`
-<tr>
-<td>${c.nombre}</td>
-<td>${c.telefono}</td>
-<td>
-<button onclick='editar(${JSON.stringify(c)})'>✏️</button>
-<button onclick="borrar('${c.id}')">❌</button>
-</td>
-</tr>`;
-vehiculo_cliente.innerHTML+=`<option value="${c.id}">${c.nombre}</option>`;
+cliente_select.innerHTML+=`<option value="${c.id}">${c.nombre}</option>`;
 });
 }
 
-function editar(c){
-cliente_nombre.value=c.nombre;
-cliente_tel.value=c.telefono;
-editando=c.id;
-}
+// CREAR SERVICIO COMPLETO
+async function crearServicio(){
 
-async function guardarCliente(){
-if(editando){
-await sb.from("clientes").update({
-nombre:cliente_nombre.value,
-telefono:cliente_tel.value
-}).eq("id",editando);
-editando=null;
-}else{
-await sb.from("clientes").insert({
-nombre:cliente_nombre.value,
-telefono:cliente_tel.value
+// 1 crear vehículo
+const {data:vehiculo} = await sb.from("vehiculos").insert({
+cliente_id:cliente_select.value,
+marca:marca.value,
+modelo:modelo.value
+}).select().single();
+
+// 2 crear servicio
+await sb.from("servicios").insert({
+vehiculo_id:vehiculo.id,
+tipo:tipo.value,
+estado:"pendiente"
 });
-}
-cliente_nombre.value="";
-cliente_tel.value="";
-cargarClientes();
+
+cargarServicios();
+tab("kanban", document.querySelector(".menu-item"));
 }
 
-async function borrar(id){
-await sb.from("clientes").delete().eq("id",id);
-cargarClientes();
-}
-
-// VEHICULOS
-async function crearVehiculo(){
-await sb.from("vehiculos").insert({
-cliente_id:vehiculo_cliente.value,
-marca:vehiculo_marca.value,
-modelo:vehiculo_modelo.value
-});
-cargarVehiculos();
-}
-
-async function cargarVehiculos(){
-const {data}=await sb.from("vehiculos").select("*");
-listaVehiculos.innerHTML="";
-data.forEach(v=>{
-listaVehiculos.innerHTML+=`<li>${v.marca} ${v.modelo}</li>`;
-});
-}
-
-// TURNOS
-async function crearTurno(){
-await sb.from("turnos").insert({
-cliente:turno_cliente.value,
-servicio:turno_servicio.value,
-fecha:turno_fecha.value
-});
-cargarTurnos();
-}
-
-async function cargarTurnos(){
-const {data}=await sb.from("turnos").select("*");
-listaTurnos.innerHTML="";
-data.forEach(t=>{
-listaTurnos.innerHTML+=`<li>${t.fecha} - ${t.cliente}</li>`;
-});
-}
-
-// CAJA
-async function agregarCaja(){
-await sb.from("caja").insert({
-concepto:concepto.value,
-monto:monto.value
-});
-cargarCaja();
-}
-
-async function cargarCaja(){
-const {data}=await sb.from("caja").select("*");
-listaCaja.innerHTML="";
-data.forEach(c=>{
-listaCaja.innerHTML+=`<li>$${c.monto} - ${c.concepto}</li>`;
-});
-}
-
-// KANBAN
+// CARGAR SERVICIOS
 async function cargarServicios(){
+
 const {data}=await sb.from("servicios")
-.select(`id,tipo,estado,vehiculos(marca,clientes(nombre,telefono))`);
+.select(`id,tipo,estado,vehiculos(marca,modelo,clientes(nombre))`);
 
 ["pendiente","proceso","terminado"].forEach(c=>{
-document.getElementById(c).innerHTML="";
+document.getElementById(c).innerHTML=`<h3 class="mb-4 capitalize">${c}</h3>`;
 });
 
 data.forEach(s=>{
+
 let el=document.createElement("div");
 el.className="task";
-el.draggable=true;
-el.id=s.id;
 
 el.innerHTML=`
-<div>${s.tipo}</div>
-<div>${s.vehiculos?.marca}</div>
-<button onclick='whatsapp(${JSON.stringify(s)})' class="btn mt-2">WA</button>
+<div class="font-semibold">${s.tipo}</div>
+<div class="text-sm text-gray-400">${s.vehiculos?.marca} ${s.vehiculos?.modelo}</div>
+<div class="text-xs">${s.vehiculos?.clientes?.nombre}</div>
+<div class="mt-2 flex gap-2">
+<button onclick="mover('${s.id}','proceso')" class="btn">▶</button>
+<button onclick="mover('${s.id}','terminado')" class="btn">✔</button>
+</div>
 `;
 
-el.ondragstart=drag;
 document.getElementById(s.estado).appendChild(el);
 });
+
 }
 
-function allowDrop(ev){ev.preventDefault();}
-function drag(ev){ev.dataTransfer.setData("id",ev.target.id);}
-
-async function drop(ev,estado){
-ev.preventDefault();
-let id=ev.dataTransfer.getData("id");
+// MOVER
+async function mover(id,estado){
 await sb.from("servicios").update({estado}).eq("id",id);
 cargarServicios();
 }
 
-// KPIs
-async function cargarKPIs(){
-const {data:servicios}=await sb.from("servicios").select("*");
-const {data:clientes}=await sb.from("clientes").select("*");
-
-kpi_proceso.innerText=servicios.filter(s=>s.estado==="proceso").length;
-kpi_terminado.innerText=servicios.filter(s=>s.estado==="terminado").length;
-kpi_facturacion.innerText="$"+servicios.reduce((a,s)=>a+(s.precio||0),0);
-kpi_clientes.innerText=clientes.length;
-}
-
-// WA
-function whatsapp(s){
-const tel=s.vehiculos?.clientes?.telefono?.replace(/[^0-9]/g,"");
-window.open(`https://wa.me/54${tel}`);
-}
-
 // INIT
 cargarClientes();
-cargarVehiculos();
-cargarTurnos();
-cargarCaja();
 cargarServicios();
-cargarKPIs();
 
 </script>
 
