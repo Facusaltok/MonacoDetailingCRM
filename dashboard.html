@@ -388,7 +388,7 @@ select.form-input { cursor:pointer; appearance:auto; }
   display:flex; align-items:center; gap:10px;
   animation:toastIn 0.35s ease;
   min-width:280px;
-  max-width:420px;
+  max-width:450px;
   box-shadow:0 10px 40px rgba(0,0,0,0.5);
   border:1px solid var(--border);
   backdrop-filter:blur(12px);
@@ -438,26 +438,27 @@ select.form-input { cursor:pointer; appearance:auto; }
 .section-header h2 { font-size:18px; font-weight:700; }
 .section-header-sub { font-size:12px; color:var(--text-muted); margin-top:2px; }
 
-/* Debug banner */
-.debug-banner {
-  background:rgba(244,63,94,0.08);
-  border:1px solid rgba(244,63,94,0.2);
-  border-radius:10px;
-  padding:14px 18px;
+.setup-banner {
+  background:rgba(200,168,80,0.06);
+  border:1px solid rgba(200,168,80,0.2);
+  border-radius:12px;
+  padding:16px 20px;
   margin-bottom:16px;
   font-size:12px;
-  color:var(--rose);
+  color:var(--gold);
   display:none;
-  align-items:center;
-  gap:10px;
+  align-items:flex-start;
+  gap:12px;
+  line-height:1.6;
 }
-.debug-banner.show { display:flex; }
-.debug-banner code {
-  background:rgba(0,0,0,0.3);
-  padding:2px 8px;
+.setup-banner.show { display:flex; }
+.setup-banner i { margin-top:2px; flex-shrink:0; }
+.setup-banner code {
+  background:rgba(0,0,0,0.4);
+  padding:1px 6px;
   border-radius:4px;
   font-size:11px;
-  word-break:break-all;
+  color:#fff;
 }
 
 @media(max-width:1024px){
@@ -802,10 +803,12 @@ select.form-input { cursor:pointer; appearance:auto; }
         </div>
       </div>
 
-      <!-- Banner de debug — visible solo si hay error de conexion -->
-      <div class="debug-banner" id="cajaDebugBanner">
+      <!-- Banner de configuracion — visible si falta created_at -->
+      <div class="setup-banner" id="cajaSetupBanner">
         <i class="fa-solid fa-triangle-exclamation"></i>
-        <span id="cajaDebugMsg">Error de conexion</span>
+        <div id="cajaSetupMsg">
+          La tabla <code>caja</code> necesita la columna <code>created_at</code>. Ejecuta este SQL en tu panel de Supabase:
+        </div>
       </div>
 
       <div class="kpi-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:24px;">
@@ -889,6 +892,14 @@ let servicios = [];
 let movimientos = [];
 let modalCallback = null;
 
+/* Columnas detectadas por tabla (para evitar pedir columnas que no existen) */
+const tableColumns = {
+  caja: null,       // Se detecta automaticamente
+  clientes: null,
+  vehiculos: null,
+  servicios: null
+};
+
 /* ═══════════════════════════════════════════════
    UTILIDADES
    ═══════════════════════════════════════════════ */
@@ -940,7 +951,7 @@ function toast(msg, type) {
   el.className = 'toast toast-' + type;
   el.innerHTML = '<i class="fa-solid ' + icons[type] + '"></i> <span>' + msg + '</span>';
   document.getElementById('toastContainer').appendChild(el);
-  setTimeout(() => { el.classList.add('toast-out'); setTimeout(() => el.remove(), 300); }, 4000);
+  setTimeout(() => { el.classList.add('toast-out'); setTimeout(() => el.remove(), 300); }, 4500);
 }
 
 /* ═══ MODAL ═══ */
@@ -973,24 +984,78 @@ function switchTab(id, el) {
 }
 function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); }
 document.addEventListener('click', (e) => {
-  const sb = document.getElementById('sidebar');
+  const sidebarEl = document.getElementById('sidebar');
   const hamburger = document.querySelector('.hamburger');
-  if (window.innerWidth <= 1024 && sb.classList.contains('open') && !sb.contains(e.target) && !hamburger.contains(e.target)) {
-    sb.classList.remove('open');
+  if (window.innerWidth <= 1024 && sidebarEl.classList.contains('open') && !sidebarEl.contains(e.target) && !hamburger.contains(e.target)) {
+    sidebarEl.classList.remove('open');
   }
 });
 
 /* ═══════════════════════════════════════════════
-   CARGA DE DATOS — con manejo robusto de errores
+   DETECCION DE COLUMNAS — consulta segura
+   sin .order() para evitar errores
+   ═══════════════════════════════════════════════ */
+async function detectColumns(tableName) {
+  try {
+    /* Hacemos un SELECT * LIMIT 1 sin ordenar */
+    const { data, error } = await sb.from(tableName).select('*').limit(1);
+    if (error) {
+      console.warn('[detectColumns] Error en ' + tableName + ':', error.message);
+      return null;
+    }
+    if (data && data.length > 0) {
+      const cols = Object.keys(data[0]);
+      console.log('[detectColumns] ' + tableName + ' columnas:', cols.join(', '));
+      return cols;
+    }
+    /* Tabla vacia — no podemos detectar columnas, asumimos las estandar */
+    console.log('[detectColumns] ' + tableName + ' esta vacia, usando columnas por defecto');
+    return null;
+  } catch (e) {
+    console.warn('[detectColumns] Excepcion en ' + tableName + ':', e);
+    return null;
+  }
+}
+
+/* Construir query seguro: solo pide columnas que sabemos que existen */
+function buildSelect(tableName, wantedCols) {
+  const known = tableColumns[tableName];
+  if (!known) return '*';  // No sabemos, pedimos todo
+  return wantedCols.filter(c => known.includes(c)).join(',') || '*';
+}
+
+/* Ordenar si la columna existe */
+function maybeOrder(query, tableName, col, ascending) {
+  const known = tableColumns[tableName];
+  if (known && known.includes(col)) {
+    return query.order(col, { ascending: !!ascending });
+  }
+  return query;
+}
+
+/* ═══════════════════════════════════════════════
+   CARGA DE DATOS — robusta contra columnas faltantes
    ═══════════════════════════════════════════════ */
 async function loadClientes() {
   try {
-    const { data, error } = await sb.from('clientes').select('*').order('created_at', { ascending: false });
-    if (error) { console.error('Error clientes SELECT:', error); throw error; }
-    clientes = data || [];
+    let query = sb.from('clientes').select('*');
+    query = maybeOrder(query, 'clientes', 'created_at', false);
+    const { data, error } = await query;
+    if (error) {
+      console.error('Error clientes:', error);
+      /* Fallback sin ordenar */
+      const fallback = await sb.from('clientes').select('*');
+      if (fallback.error) throw fallback.error;
+      clientes = fallback.data || [];
+    } else {
+      clientes = data || [];
+    }
+    if (!tableColumns['clientes'] && clientes.length > 0) {
+      tableColumns['clientes'] = Object.keys(clientes[0]);
+    }
   } catch (e) {
     console.error('loadClientes:', e);
-    clientes = clientes || [];
+    clientes = [];
   }
   renderClientes();
   populateClienteSelects();
@@ -998,26 +1063,48 @@ async function loadClientes() {
 
 async function loadVehiculos() {
   try {
-    const { data, error } = await sb.from('vehiculos').select('*, clientes(nombre)').order('created_at', { ascending: false });
-    if (error) { console.error('Error vehiculos SELECT:', error); throw error; }
-    vehiculos = data || [];
+    let query = sb.from('vehiculos').select('*, clientes(nombre)');
+    query = maybeOrder(query, 'vehiculos', 'created_at', false);
+    const { data, error } = await query;
+    if (error) {
+      console.error('Error vehiculos:', error);
+      const fallback = await sb.from('vehiculos').select('*, clientes(nombre)');
+      if (fallback.error) throw fallback.error;
+      vehiculos = fallback.data || [];
+    } else {
+      vehiculos = data || [];
+    }
+    if (!tableColumns['vehiculos'] && vehiculos.length > 0) {
+      tableColumns['vehiculos'] = Object.keys(vehiculos[0]);
+    }
   } catch (e) {
     console.error('loadVehiculos:', e);
-    vehiculos = vehiculos || [];
+    vehiculos = [];
   }
   renderVehiculos();
 }
 
 async function loadServicios() {
   try {
-    const { data, error } = await sb.from('servicios')
-      .select('id,tipo,estado,created_at,vehiculos(id,marca,modelo,clientes(id,nombre,telefono))')
-      .order('created_at', { ascending: false });
-    if (error) { console.error('Error servicios SELECT:', error); throw error; }
-    servicios = data || [];
+    let query = sb.from('servicios')
+      .select('id,tipo,estado,created_at,vehiculos(id,marca,modelo,clientes(id,nombre,telefono))');
+    query = maybeOrder(query, 'servicios', 'created_at', false);
+    const { data, error } = await query;
+    if (error) {
+      console.error('Error servicios:', error);
+      const fallback = await sb.from('servicios')
+        .select('id,tipo,estado,created_at,vehiculos(id,marca,modelo,clientes(id,nombre,telefono))');
+      if (fallback.error) throw fallback.error;
+      servicios = fallback.data || [];
+    } else {
+      servicios = data || [];
+    }
+    if (!tableColumns['servicios'] && servicios.length > 0) {
+      tableColumns['servicios'] = Object.keys(servicios[0]);
+    }
   } catch (e) {
     console.error('loadServicios:', e);
-    servicios = servicios || [];
+    servicios = [];
   }
   renderKanban();
   renderRecentServices();
@@ -1027,20 +1114,50 @@ async function loadServicios() {
 
 async function loadCaja() {
   try {
-    const { data, error } = await sb.from('caja').select('*').order('created_at', { ascending: false });
-    if (error) { console.error('Error caja SELECT:', error); throw error; }
+    /* Intentar con created_at primero */
+    let query = sb.from('caja').select('*');
+    query = maybeOrder(query, 'caja', 'created_at', false);
+    let { data, error } = await query;
+
+    if (error) {
+      console.warn('[loadCaja] Error con order created_at, intentando sin ordenar:', error.message);
+      /* Fallback: SELECT * sin ordenar */
+      const fallback = await sb.from('caja').select('*');
+      if (fallback.error) throw fallback.error;
+      data = fallback.data;
+
+      /* Mostrar banner de configuracion */
+      showSetupBanner();
+    } else {
+      /* Ocultar banner si todo ok */
+      document.getElementById('cajaSetupBanner').classList.remove('show');
+    }
+
     movimientos = data || [];
-    /* Ocultar banner de debug si la lectura funciona */
-    document.getElementById('cajaDebugBanner').classList.remove('show');
+
+    /* Detectar columnas */
+    if (!tableColumns['caja'] && movimientos.length > 0) {
+      tableColumns['caja'] = Object.keys(movimientos[0]);
+      console.log('[loadCaja] Columnas detectadas:', tableColumns['caja'].join(', '));
+    }
   } catch (e) {
-    console.error('loadCaja:', e);
-    movimientos = movimientos || [];
-    /* Mostrar banner de debug con el error */
-    document.getElementById('cajaDebugMsg').textContent = 'Error leyendo caja: ' + (e.message || e);
-    document.getElementById('cajaDebugBanner').classList.add('show');
+    console.error('[loadCaja] Error:', e);
+    movimientos = [];
+    showSetupBanner(e.message);
   }
   renderCaja();
   updateKPIs();
+}
+
+function showSetupBanner(errMsg) {
+  const banner = document.getElementById('cajaSetupBanner');
+  const msg = document.getElementById('cajaSetupMsg');
+  if (errMsg) {
+    msg.innerHTML = 'Error: <code>' + esc(errMsg) + '</code><br><br>La tabla <code>caja</code> necesita la columna <code>created_at</code>. Ve a tu panel de Supabase, abre el <strong>SQL Editor</strong> y ejecuta:<br><br><code>ALTER TABLE caja ADD COLUMN created_at TIMESTAMPTZ DEFAULT NOW();</code>';
+  } else {
+    msg.innerHTML = 'La tabla <code>caja</code> no tiene la columna <code>created_at</code>. Ve a tu panel de Supabase, abre el <strong>SQL Editor</strong> y ejecuta:<br><br><code>ALTER TABLE caja ADD COLUMN created_at TIMESTAMPTZ DEFAULT NOW();</code><br><br>Esto permite ordenar los movimientos por fecha.';
+  }
+  banner.classList.add('show');
 }
 
 async function refreshAll() {
@@ -1220,7 +1337,7 @@ function renderTurnos() {
 }
 
 /* ═══════════════════════════════════════════════
-   RENDER: CAJA
+   RENDER: CAJA — seguro contra columnas faltantes
    ═══════════════════════════════════════════════ */
 function renderCaja() {
   const el = document.getElementById('listaCaja');
@@ -1230,6 +1347,9 @@ function renderCaja() {
   }
   el.innerHTML = movimientos.map(m => {
     const isIngreso = m.tipo === 'ingreso';
+    /* created_at puede no existir — mostramos fecha si esta disponible */
+    const tieneFecha = m.created_at || m.fecha || m.date;
+    const fechaStr = tieneFecha ? formatDate(m.created_at || m.fecha || m.date) : '';
     return `
     <div class="list-item">
       <div class="list-item-left">
@@ -1238,7 +1358,7 @@ function renderCaja() {
         </div>
         <div class="list-item-info">
           <h4>${esc(m.concepto)}</h4>
-          <p>${formatDate(m.created_at)}</p>
+          <p>${fechaStr || 'Sin fecha'}</p>
         </div>
       </div>
       <div style="display:flex;align-items:center;gap:10px;">
@@ -1289,8 +1409,8 @@ function populateVehiculoSelect(clienteId) {
   filtered.forEach(v => { sel.innerHTML += `<option value="${v.id}">${esc(v.marca)} ${esc(v.modelo || '')}</option>`; });
 }
 function onVehiculoSelect() {
-  const nuevoFields = document.getElementById('t_nuevo_vehiculo_fields');
-  nuevoFields.style.display = document.getElementById('t_vehiculo_sel').value === '__nuevo' ? 'block' : 'none';
+  document.getElementById('t_nuevo_vehiculo_fields').style.display =
+    document.getElementById('t_vehiculo_sel').value === '__nuevo' ? 'block' : 'none';
 }
 
 /* ═══════════════════════════════════════════════
@@ -1320,8 +1440,8 @@ async function guardarCliente() {
     document.getElementById('btnCancelEdit').style.display = 'none';
     await loadClientes();
   } catch (e) {
-    console.error('guardarCliente error:', e);
-    toast('Error al guardar cliente: ' + (e.message || e), 'error');
+    console.error('guardarCliente:', e);
+    toast('Error: ' + (e.message || e), 'error');
   }
 }
 function editarCliente(id) {
@@ -1351,9 +1471,7 @@ function eliminarCliente(id) {
       if (error) throw error;
       toast('Cliente eliminado', 'success');
       await loadClientes();
-    } catch (e) {
-      toast('Error: ' + (e.message || e), 'error');
-    }
+    } catch (e) { toast('Error: ' + (e.message || e), 'error'); }
   });
 }
 
@@ -1376,8 +1494,8 @@ async function crearVehiculo() {
     document.getElementById('v_patente').value = '';
     await loadVehiculos();
   } catch (e) {
-    console.error('crearVehiculo error:', e);
-    toast('Error al registrar vehiculo: ' + (e.message || e), 'error');
+    console.error('crearVehiculo:', e);
+    toast('Error: ' + (e.message || e), 'error');
   }
 }
 function eliminarVehiculo(id) {
@@ -1387,9 +1505,7 @@ function eliminarVehiculo(id) {
       if (error) throw error;
       toast('Vehiculo eliminado', 'success');
       await loadVehiculos();
-    } catch (e) {
-      toast('Error: ' + (e.message || e), 'error');
-    }
+    } catch (e) { toast('Error: ' + (e.message || e), 'error'); }
   });
 }
 
@@ -1401,7 +1517,6 @@ async function crearTurno() {
   const servicio = document.getElementById('t_servicio').value;
   const fecha = document.getElementById('t_fecha').value;
   if (!servicio) { toast('Selecciona un servicio', 'error'); return; }
-
   try {
     let clienteId;
     if (clienteSel === '__nuevo') {
@@ -1449,8 +1564,8 @@ async function crearTurno() {
     document.getElementById('t_nuevo_vehiculo_fields').style.display = 'none';
     await Promise.all([loadClientes(), loadVehiculos(), loadServicios()]);
   } catch (e) {
-    console.error('crearTurno error:', e);
-    toast('Error al crear turno: ' + (e.message || e), 'error');
+    console.error('crearTurno:', e);
+    toast('Error: ' + (e.message || e), 'error');
   }
 }
 
@@ -1461,9 +1576,7 @@ async function moverServicio(id, nuevoEstado) {
     const labels = { pendiente: 'Pendiente', proceso: 'En proceso', terminado: 'Completado' };
     toast('Servicio movido a ' + labels[nuevoEstado], 'success');
     await loadServicios();
-  } catch (e) {
-    toast('Error: ' + (e.message || e), 'error');
-  }
+  } catch (e) { toast('Error: ' + (e.message || e), 'error'); }
 }
 function eliminarServicio(id) {
   showModal('Eliminar servicio', 'Se eliminara este servicio. Esta accion no se puede deshacer.', async () => {
@@ -1472,88 +1585,71 @@ function eliminarServicio(id) {
       if (error) throw error;
       toast('Servicio eliminado', 'success');
       await loadServicios();
-    } catch (e) {
-      toast('Error: ' + (e.message || e), 'error');
-    }
+    } catch (e) { toast('Error: ' + (e.message || e), 'error'); }
   });
 }
 
 /* ═══════════════════════════════════════════════
-   CRUD: CAJA — con diagnostico completo
+   CRUD: CAJA — robusto con reintentos
    ═══════════════════════════════════════════════ */
 async function crearCaja() {
   const concepto = document.getElementById('cx_concepto').value.trim();
-  const montoRaw = document.getElementById('cx_monto').value.trim();
+  const montoRaw = document.getElementById('cx_monto').value.trim().replace(',', '.');
   const tipo = document.getElementById('cx_tipo').value;
 
   if (!concepto) { toast('Ingresa un concepto', 'error'); return; }
   if (!montoRaw) { toast('Ingresa un monto', 'error'); return; }
+  const montoNum = Number(montoRaw);
+  if (isNaN(montoNum) || montoNum <= 0) { toast('El monto debe ser un numero mayor a 0', 'error'); return; }
 
-  /* Parsear monto — aceptar comas como separador decimal */
-  const montoLimpio = montoRaw.replace(',', '.');
-  const montoNum = Number(montoLimpio);
-  if (isNaN(montoNum) || montoNum <= 0) {
-    toast('El monto debe ser un numero mayor a 0', 'error');
-    return;
-  }
-
-  /* Preparar payload — intentar con numero primero */
+  /* Preparar payload base */
   const payload = { concepto, monto: montoNum, tipo };
 
-  console.log('[CAJA] Intentando insert:', JSON.stringify(payload));
+  console.log('[CAJA] Insertando:', JSON.stringify(payload));
 
   try {
-    /* Intento 1: monto como numero */
-    const result = await sb.from('caja').insert(payload).select();
-    console.log('[CAJA] Resultado intento 1:', JSON.stringify(result));
+    const { data, error } = await sb.from('caja').insert(payload).select();
+    console.log('[CAJA] Resultado insert:', error ? 'ERROR: ' + error.message : 'OK', data);
 
-    if (result.error) {
-      console.warn('[CAJA] Error con monto numerico, intentando como string...', result.error);
-
-      /* Intento 2: monto como string (por si la columna es text) */
+    if (error) {
+      /* Si falla con monto numerico, intentar con string */
+      console.warn('[CAJA] Fallo con monto numerico, intentando como string...');
       const payload2 = { concepto, monto: montoRaw, tipo };
       const result2 = await sb.from('caja').insert(payload2).select();
-      console.log('[CAJA] Resultado intento 2 (string):', JSON.stringify(result2));
 
       if (result2.error) {
-        /* Intento 3: sin campo monto para diagnosticar */
-        console.warn('[CAJA] Error tambien con string. Intentando sin monto para diagnosticar...');
+        /* Si tambien falla, intentar sin monto para diagnosticar */
+        console.warn('[CAJA] Fallo con string, intentando sin monto...');
         const payload3 = { concepto, tipo };
         const result3 = await sb.from('caja').insert(payload3).select();
-        console.log('[CAJA] Resultado intento 3 (sin monto):', JSON.stringify(result3));
 
         if (result3.error) {
           throw new Error(result3.error.message || JSON.stringify(result3.error));
         } else {
-          toast('Registro creado SIN monto — la columna "monto" puede no existir. Verifica tu tabla.', 'error');
+          toast('Registro creado SIN monto. La columna "monto" puede no existir en la tabla caja.', 'error');
           await loadCaja();
           return;
         }
       }
 
-      /* Si el insert con string funciono */
+      /* String funciono */
+      console.log('[CAJA] Insert con string exitoso:', result2.data);
       toast((tipo === 'ingreso' ? 'Ingreso' : 'Egreso') + ' registrado', 'success');
       document.getElementById('cx_concepto').value = '';
       document.getElementById('cx_monto').value = '';
-      document.getElementById('cajaDebugBanner').classList.remove('show');
       await loadCaja();
       return;
     }
 
-    /* Intento 1 exitoso */
-    console.log('[CAJA] Insert exitoso, data:', JSON.stringify(result.data));
+    /* Insert numerico exitoso */
     toast((tipo === 'ingreso' ? 'Ingreso' : 'Egreso') + ' registrado', 'success');
     document.getElementById('cx_concepto').value = '';
     document.getElementById('cx_monto').value = '';
-    document.getElementById('cajaDebugBanner').classList.remove('show');
     await loadCaja();
 
   } catch (e) {
     console.error('[CAJA] Error final:', e);
-    const errMsg = e.message || String(e);
-    document.getElementById('cajaDebugMsg').textContent = 'Error: ' + errMsg;
-    document.getElementById('cajaDebugBanner').classList.add('show');
-    toast('Error al registrar: ' + errMsg, 'error');
+    toast('Error al registrar: ' + (e.message || e), 'error');
   }
 }
 
@@ -1564,65 +1660,30 @@ function eliminarCaja(id) {
       if (error) throw error;
       toast('Movimiento eliminado', 'success');
       await loadCaja();
-    } catch (e) {
-      toast('Error: ' + (e.message || e), 'error');
-    }
+    } catch (e) { toast('Error: ' + (e.message || e), 'error'); }
   });
-}
-
-/* ═══════════════════════════════════════════════
-   TEST DE CONEXION — se ejecuta al inicio
-   ═══════════════════════════════════════════════ */
-async function testConnection() {
-  console.log('[INIT] Testeando conexion a Supabase...');
-  try {
-    /* Test lectura de caja */
-    const { data, error } = await sb.from('caja').select('*').limit(1);
-    if (error) {
-      console.error('[INIT] Error leyendo tabla caja:', error);
-      document.getElementById('cajaDebugMsg').textContent =
-        'No se puede leer la tabla "caja": ' + (error.message || JSON.stringify(error)) +
-        ' — Verifica que la tabla exista y RLS permita SELECT para anon.';
-      document.getElementById('cajaDebugBanner').classList.add('show');
-    } else {
-      console.log('[INIT] Lectura caja OK, columnas:', data.length > 0 ? Object.keys(data[0]).join(', ') : 'tabla vacia');
-    }
-
-    /* Test de permisos INSERT */
-    const testData = { concepto: '__test_conexion__', monto: 1, tipo: 'ingreso' };
-    const insertResult = await sb.from('caja').insert(testData).select();
-    if (insertResult.error) {
-      console.error('[INIT] Error INSERT en caja:', insertResult.error);
-      document.getElementById('cajaDebugMsg').textContent =
-        'INSERT bloqueado en "caja": ' + (insertResult.error.message || JSON.stringify(insertResult.error)) +
-        ' — Verifica las politicas RLS en tu panel de Supabase.';
-      document.getElementById('cajaDebugBanner').classList.add('show');
-    } else {
-      console.log('[INIT] INSERT caja OK:', insertResult.data);
-      /* Borrar el registro de test */
-      if (insertResult.data && insertResult.data[0]) {
-        await sb.from('caja').delete().eq('id', insertResult.data[0].id);
-        console.log('[INIT] Registro de test eliminado');
-      }
-      document.getElementById('cajaDebugBanner').classList.remove('show');
-    }
-  } catch (e) {
-    console.error('[INIT] Error general de conexion:', e);
-  }
 }
 
 /* ═══════════════════════════════════════════════
    INICIALIZACION
    ═══════════════════════════════════════════════ */
-(function init() {
+(async function init() {
   const now = new Date();
   const dias = ['Domingo','Lunes','Martes','Miercoles','Jueves','Viernes','Sabado'];
   const meses = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
   document.getElementById('topDate').textContent = dias[now.getDay()] + ', ' + now.getDate() + ' de ' + meses[now.getMonth()] + ', ' + now.getFullYear();
   document.getElementById('t_fecha').valueAsDate = now;
 
-  /* Test de conexion primero, luego cargar datos */
-  testConnection().then(() => refreshAll());
+  /* Detectar columnas primero */
+  console.log('[INIT] Detectando columnas de tablas...');
+  const colPromises = ['caja', 'clientes', 'vehiculos', 'servicios'].map(async t => {
+    const cols = await detectColumns(t);
+    if (cols) tableColumns[t] = cols;
+  });
+  await Promise.all(colPromises);
+
+  /* Luego cargar datos */
+  await refreshAll();
 })();
 </script>
 
