@@ -2,10 +2,11 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Monaco Detailing CRM</title>
+<title>Monaco Detailing CRM PRO</title>
 
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 
 <style>
@@ -23,7 +24,7 @@ body{
   position:fixed;
   background:#020617;
   border-right:1px solid rgba(255,255,255,.05);
-  padding:24px;
+  padding:25px;
 }
 
 .logo{
@@ -32,29 +33,18 @@ body{
   gap:10px;
   margin-bottom:30px;
 }
-.logo img{
-  width:36px;
-}
-.logo span{
-  font-weight:700;
-  font-size:16px;
-}
+.logo img{width:36px;border-radius:8px;}
+.logo span{font-weight:700;font-size:16px;}
 
-/* MENU */
-.menu-item{
+.menu{
   padding:12px;
   border-radius:10px;
   cursor:pointer;
   margin-bottom:6px;
 }
-.menu-item:hover{background:#0f172a;}
-.active{
-  background:#00c853;
-  color:#000;
-  font-weight:600;
-}
+.menu:hover{background:#0f172a;}
+.active{background:#00c853;color:black;font-weight:600;}
 
-/* CONTENT */
 .content{
   margin-left:270px;
   padding:30px;
@@ -84,7 +74,6 @@ body{
   padding:10px;
   border-radius:8px;
   font-weight:600;
-  width:100%;
 }
 
 /* KANBAN */
@@ -114,12 +103,12 @@ body{
 <span>Monaco CRM</span>
 </div>
 
-<div class="menu-item active" onclick="tab('dashboard',this)">Dashboard</div>
-<div class="menu-item" onclick="tab('operaciones',this)">Operaciones</div>
-<div class="menu-item" onclick="tab('turnos',this)">Turnos</div>
-<div class="menu-item" onclick="tab('clientes',this)">Clientes</div>
-<div class="menu-item" onclick="tab('vehiculos',this)">Vehículos</div>
-<div class="menu-item" onclick="tab('caja',this)">Caja</div>
+<div class="menu active" onclick="tab('dashboard',this)">Dashboard</div>
+<div class="menu" onclick="tab('operaciones',this)">Operaciones</div>
+<div class="menu" onclick="tab('turnos',this)">Turnos</div>
+<div class="menu" onclick="tab('clientes',this)">Clientes</div>
+<div class="menu" onclick="tab('vehiculos',this)">Vehículos</div>
+<div class="menu" onclick="tab('caja',this)">Caja</div>
 
 </div>
 
@@ -130,10 +119,10 @@ body{
 <div id="dashboard">
 <div class="grid grid-cols-4 gap-4">
 
-<div class="card"><p>En proceso</p><h2 id="kpi_proceso">0</h2></div>
-<div class="card"><p>Terminados</p><h2 id="kpi_terminado">0</h2></div>
-<div class="card"><p>Facturación</p><h2 id="kpi_facturacion">$0</h2></div>
-<div class="card"><p>Clientes</p><h2 id="kpi_clientes">0</h2></div>
+<div class="card">En proceso <h2 id="kpi_proceso">0</h2></div>
+<div class="card">Terminados <h2 id="kpi_terminado">0</h2></div>
+<div class="card">Facturación <h2 id="kpi_facturacion">$0</h2></div>
+<div class="card">Clientes <h2 id="kpi_clientes">0</h2></div>
 
 </div>
 </div>
@@ -141,11 +130,9 @@ body{
 <!-- OPERACIONES -->
 <div id="operaciones" style="display:none">
 <div class="grid grid-cols-3 gap-4">
-
 <div class="column" id="pendiente"><h3>Pendiente</h3></div>
 <div class="column" id="proceso"><h3>Proceso</h3></div>
 <div class="column" id="terminado"><h3>Terminado</h3></div>
-
 </div>
 </div>
 
@@ -158,7 +145,7 @@ body{
 <input id="t_servicio" placeholder="Servicio" class="input">
 <input id="t_fecha" type="date" class="input">
 
-<button onclick="crearTurno()" class="btn">Crear turno</button>
+<button onclick="crearTurno()" class="btn w-full">Crear turno</button>
 
 </div>
 </div>
@@ -170,7 +157,7 @@ body{
 <input id="c_nombre" placeholder="Nombre" class="input">
 <input id="c_tel" placeholder="Teléfono" class="input">
 
-<button onclick="crearCliente()" class="btn">Guardar</button>
+<button onclick="crearCliente()" class="btn w-full">Guardar</button>
 
 <ul id="listaClientes"></ul>
 
@@ -185,7 +172,7 @@ body{
 <input id="v_marca" placeholder="Marca" class="input">
 <input id="v_modelo" placeholder="Modelo" class="input">
 
-<button onclick="crearVehiculo()" class="btn">Guardar</button>
+<button onclick="crearVehiculo()" class="btn w-full">Guardar</button>
 
 <ul id="listaVehiculos"></ul>
 
@@ -196,15 +183,15 @@ body{
 <div id="caja" style="display:none">
 <div class="card max-w-xl">
 
-<input id="caja_concepto" placeholder="Concepto" class="input">
-<input id="caja_monto" placeholder="Monto" class="input">
+<input id="cx_concepto" placeholder="Concepto" class="input">
+<input id="cx_monto" placeholder="Monto" class="input">
 
-<select id="caja_tipo" class="input">
+<select id="cx_tipo" class="input">
 <option value="ingreso">Ingreso</option>
 <option value="egreso">Egreso</option>
 </select>
 
-<button onclick="movimientoCaja()" class="btn">Registrar</button>
+<button onclick="crearCaja()" class="btn w-full">Registrar</button>
 
 <ul id="listaCaja"></ul>
 
@@ -219,26 +206,68 @@ const sb = supabase.createClient(
 "sb_publishable_nzzOvYY0RYXDUavs-pFH6Q_pqnLU2tb"
 );
 
-// TABS
+/* NAV */
 function tab(id,el){
-["dashboard","operaciones","turnos","clientes","vehiculos","caja"].forEach(t=>{
-document.getElementById(t).style.display="none";
+["dashboard","operaciones","turnos","clientes","vehiculos","caja"].forEach(x=>{
+document.getElementById(x).style.display="none";
 });
 document.getElementById(id).style.display="block";
-document.querySelectorAll(".menu-item").forEach(e=>e.classList.remove("active"));
+
+document.querySelectorAll(".menu").forEach(x=>x.classList.remove("active"));
 el.classList.add("active");
 }
 
-// ================= TURNOS → SERVICIO =================
+/* CLIENTES */
+async function crearCliente(){
+await sb.from("clientes").insert({
+nombre:c_nombre.value,
+telefono:c_tel.value
+});
+cargarClientes();
+}
+
+async function cargarClientes(){
+const {data}=await sb.from("clientes").select("*");
+listaClientes.innerHTML="";
+v_cliente.innerHTML="";
+data.forEach(c=>{
+listaClientes.innerHTML+=`<li>${c.nombre}</li>`;
+v_cliente.innerHTML+=`<option value="${c.id}">${c.nombre}</option>`;
+});
+}
+
+/* VEHICULOS */
+async function crearVehiculo(){
+await sb.from("vehiculos").insert({
+cliente_id:v_cliente.value,
+marca:v_marca.value,
+modelo:v_modelo.value
+});
+cargarVehiculos();
+}
+
+async function cargarVehiculos(){
+const {data}=await sb.from("vehiculos").select("*");
+listaVehiculos.innerHTML="";
+data.forEach(v=>{
+listaVehiculos.innerHTML+=`<li>${v.marca} ${v.modelo}</li>`;
+});
+}
+
+/* TURNOS → SERVICIO */
 async function crearTurno(){
 
-const {data:cliente} = await sb.from("clientes")
+const {data:clienteInsert}=await sb.from("clientes")
 .insert({nombre:t_cliente.value,telefono:t_tel.value})
-.select().single();
+.select();
 
-const {data:vehiculo} = await sb.from("vehiculos")
+const cliente=clienteInsert[0];
+
+const {data:vehiculoInsert}=await sb.from("vehiculos")
 .insert({cliente_id:cliente.id,marca:"Auto",modelo:""})
-.select().single();
+.select();
+
+const vehiculo=vehiculoInsert[0];
 
 await sb.from("servicios").insert({
 vehiculo_id:vehiculo.id,
@@ -249,14 +278,14 @@ estado:"pendiente"
 cargarServicios();
 }
 
-// ================= SERVICIOS =================
+/* SERVICIOS */
 async function cargarServicios(){
 
 const {data}=await sb.from("servicios")
-.select(`id,tipo,estado,vehiculos(marca,clientes(nombre,telefono))`);
+.select("id,tipo,estado,vehiculos(marca,clientes(nombre,telefono))");
 
-["pendiente","proceso","terminado"].forEach(c=>{
-document.getElementById(c).innerHTML=`<h3>${c}</h3>`;
+["pendiente","proceso","terminado"].forEach(x=>{
+document.getElementById(x).innerHTML=`<h3>${x}</h3>`;
 });
 
 data.forEach(s=>{
@@ -266,35 +295,19 @@ el.className="task";
 el.innerHTML=`
 <div>${s.tipo}</div>
 <div>${s.vehiculos?.marca}</div>
-
-<div class="flex gap-2 mt-2">
-<button onclick="mover('${s.id}','proceso')" class="btn">▶</button>
-<button onclick="finalizar(${JSON.stringify(s)})" class="btn">✔</button>
-</div>
+<button onclick="mover('${s.id}','proceso')" class="btn mt-2">Mover</button>
 `;
 
 document.getElementById(s.estado).appendChild(el);
 });
 }
 
-async function mover(id,estado){
-await sb.from("servicios").update({estado}).eq("id",id);
-cargarServicios();
-}
-
-// WHATSAPP
-function finalizar(s){
-const tel=s.vehiculos?.clientes?.telefono || "";
-window.open(`https://wa.me/54${tel}?text=Vehiculo listo`);
-}
-
-// ================= CAJA =================
-async function movimientoCaja(){
+/* CAJA */
+async function crearCaja(){
 await sb.from("caja").insert({
-concepto:caja_concepto.value,
-monto:caja_monto.value,
-tipo:caja_tipo.value,
-fecha:new Date()
+concepto:cx_concepto.value,
+monto:cx_monto.value,
+tipo:cx_tipo.value
 });
 cargarCaja();
 }
@@ -303,11 +316,13 @@ async function cargarCaja(){
 const {data}=await sb.from("caja").select("*");
 listaCaja.innerHTML="";
 data.forEach(c=>{
-listaCaja.innerHTML+=`<li>${c.tipo} $${c.monto}</li>`;
+listaCaja.innerHTML+=`<li>${c.tipo} - $${c.monto}</li>`;
 });
 }
 
-// INIT
+/* INIT */
+cargarClientes();
+cargarVehiculos();
 cargarServicios();
 cargarCaja();
 </script>
