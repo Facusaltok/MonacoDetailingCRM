@@ -2,329 +2,1605 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Monaco Detailing CRM PRO</title>
-
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
 <style>
-body{
-  margin:0;
-  font-family:Inter;
-  background:#030712;
-  color:#e5e7eb;
+:root {
+  --bg-base: #04080F;
+  --bg-sidebar: #060C18;
+  --bg-card: #0B1221;
+  --bg-card-hover: #0F1830;
+  --bg-input: #070E1C;
+  --border: rgba(255,255,255,0.05);
+  --border-focus: rgba(200,168,80,0.5);
+  --gold: #C8A850;
+  --gold-soft: rgba(200,168,80,0.12);
+  --gold-glow: rgba(200,168,80,0.25);
+  --emerald: #10B981;
+  --blue: #3B82F6;
+  --amber: #F59E0B;
+  --rose: #F43F5E;
+  --text-primary: #F1F5F9;
+  --text-secondary: #7A8BA8;
+  --text-muted: #3E4F6A;
 }
 
-/* SIDEBAR */
-.sidebar{
-  width:270px;
-  height:100vh;
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background: var(--bg-base);
+  color: var(--text-primary);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ─── FONDO AMBIENTAL ─── */
+body::before {
+  content:'';
   position:fixed;
-  background:#020617;
-  border-right:1px solid rgba(255,255,255,.05);
-  padding:25px;
+  top:-30%; left:-10%;
+  width:500px; height:500px;
+  background: radial-gradient(circle, rgba(200,168,80,0.04) 0%, transparent 70%);
+  border-radius:50%;
+  pointer-events:none;
+  animation: floatOrb 20s ease-in-out infinite;
+  z-index:0;
+}
+body::after {
+  content:'';
+  position:fixed;
+  bottom:-20%; right:-5%;
+  width:600px; height:600px;
+  background: radial-gradient(circle, rgba(59,130,246,0.03) 0%, transparent 70%);
+  border-radius:50%;
+  pointer-events:none;
+  animation: floatOrb 25s ease-in-out infinite reverse;
+  z-index:0;
+}
+@keyframes floatOrb {
+  0%,100%{ transform: translate(0,0) scale(1); }
+  33%{ transform: translate(40px,-30px) scale(1.05); }
+  66%{ transform: translate(-20px,40px) scale(0.95); }
 }
 
-.logo{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  margin-bottom:30px;
+/* ─── SIDEBAR ─── */
+.sidebar {
+  position:fixed; top:0; left:0;
+  width:260px; height:100vh;
+  background: var(--bg-sidebar);
+  border-right:1px solid var(--border);
+  display:flex; flex-direction:column;
+  z-index:50;
+  transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
 }
-.logo img{width:36px;border-radius:8px;}
-.logo span{font-weight:700;font-size:16px;}
+.sidebar-logo {
+  padding:28px 24px 24px;
+  display:flex; align-items:center; gap:12px;
+  border-bottom:1px solid var(--border);
+}
+.logo-icon {
+  width:40px; height:40px;
+  background: linear-gradient(135deg, var(--gold), #A07830);
+  border-radius:10px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:18px; color:#000; font-weight:800;
+  box-shadow: 0 4px 20px rgba(200,168,80,0.25);
+}
+.logo-text { font-weight:700; font-size:15px; letter-spacing:-0.3px; }
+.logo-sub { font-size:10px; color:var(--text-muted); text-transform:uppercase; letter-spacing:2px; font-weight:600; }
 
-.menu{
-  padding:12px;
+.sidebar-nav { flex:1; padding:16px 12px; display:flex; flex-direction:column; gap:2px; }
+.nav-item {
+  display:flex; align-items:center; gap:12px;
+  padding:11px 16px;
   border-radius:10px;
   cursor:pointer;
-  margin-bottom:6px;
+  font-size:13.5px; font-weight:500;
+  color:var(--text-secondary);
+  transition: all 0.2s ease;
+  position:relative;
+  border:1px solid transparent;
 }
-.menu:hover{background:#0f172a;}
-.active{background:#00c853;color:black;font-weight:600;}
-
-.content{
-  margin-left:270px;
-  padding:30px;
+.nav-item i { width:18px; text-align:center; font-size:14px; }
+.nav-item:hover {
+  color:var(--text-primary);
+  background:rgba(255,255,255,0.03);
+  transform:translateX(3px);
 }
-
-/* CARD */
-.card{
-  background:#0f172a;
-  border-radius:14px;
-  padding:20px;
-  border:1px solid rgba(255,255,255,.05);
-}
-
-/* INPUT */
-.input{
-  background:#020617;
-  border:1px solid #1e293b;
-  padding:10px;
-  border-radius:8px;
-  width:100%;
-  margin-bottom:10px;
-}
-
-/* BTN */
-.btn{
-  background:#00c853;
-  padding:10px;
-  border-radius:8px;
+.nav-item.active {
+  color:var(--gold);
+  background:var(--gold-soft);
+  border-color:rgba(200,168,80,0.15);
   font-weight:600;
 }
+.nav-item.active::before {
+  content:'';
+  position:absolute; left:-12px; top:50%; transform:translateY(-50%);
+  width:3px; height:24px;
+  background:var(--gold);
+  border-radius:0 4px 4px 0;
+}
 
-/* KANBAN */
-.column{
-  background:#020617;
-  padding:15px;
-  border-radius:12px;
-  border:1px solid #1e293b;
-  min-height:400px;
+.sidebar-footer {
+  padding:20px 24px;
+  border-top:1px solid var(--border);
+  display:flex; align-items:center; gap:10px;
 }
-.task{
-  background:#0f172a;
-  padding:12px;
+.avatar {
+  width:34px; height:34px;
+  background:linear-gradient(135deg, #1E3A5F, #0D1B2A);
+  border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  font-size:13px; font-weight:700; color:var(--gold);
+  border:1px solid rgba(200,168,80,0.2);
+}
+.sidebar-footer span { font-size:12px; color:var(--text-secondary); }
+.sidebar-footer small { font-size:10px; color:var(--text-muted); display:block; }
+
+/* ─── CONTENIDO PRINCIPAL ─── */
+.main-content {
+  margin-left:260px;
+  min-height:100vh;
+  position:relative; z-index:1;
+}
+.top-bar {
+  position:sticky; top:0; z-index:40;
+  padding:18px 32px;
+  display:flex; align-items:center; justify-content:space-between;
+  background:rgba(4,8,15,0.8);
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);
+}
+.top-bar-left h1 { font-size:20px; font-weight:700; letter-spacing:-0.5px; }
+.top-bar-left p { font-size:12px; color:var(--text-muted); margin-top:2px; }
+.hamburger {
+  display:none;
+  background:none; border:none; color:var(--text-primary);
+  font-size:20px; cursor:pointer; margin-right:12px;
+}
+
+.page-body { padding:28px 32px 40px; }
+
+/* ─── SECCIONES ─── */
+.tab-section { display:none; }
+.tab-section.active { display:block; animation: fadeUp 0.35s ease; }
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(12px); }
+  to { opacity:1; transform:translateY(0); }
+}
+
+/* ─── TARJETAS KPI ─── */
+.kpi-card {
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:22px 24px;
+  position:relative;
+  overflow:hidden;
+  transition: all 0.25s ease;
+}
+.kpi-card:hover {
+  border-color:rgba(255,255,255,0.1);
+  transform:translateY(-2px);
+  box-shadow:0 8px 30px rgba(0,0,0,0.3);
+}
+.kpi-card::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:2px;
+}
+.kpi-card.kpi-blue::before { background:linear-gradient(90deg, var(--blue), transparent); }
+.kpi-card.kpi-emerald::before { background:linear-gradient(90deg, var(--emerald), transparent); }
+.kpi-card.kpi-gold::before { background:linear-gradient(90deg, var(--gold), transparent); }
+.kpi-card.kpi-amber::before { background:linear-gradient(90deg, var(--amber), transparent); }
+
+.kpi-icon {
+  width:42px; height:42px;
   border-radius:10px;
-  margin-bottom:10px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:16px;
+  margin-bottom:14px;
 }
+.kpi-blue .kpi-icon { background:rgba(59,130,246,0.12); color:var(--blue); }
+.kpi-emerald .kpi-icon { background:rgba(16,185,129,0.12); color:var(--emerald); }
+.kpi-gold .kpi-icon { background:var(--gold-soft); color:var(--gold); }
+.kpi-amber .kpi-icon { background:rgba(245,158,11,0.12); color:var(--amber); }
+
+.kpi-value { font-size:28px; font-weight:800; letter-spacing:-1px; line-height:1; }
+.kpi-label { font-size:12px; color:var(--text-secondary); margin-top:6px; font-weight:500; }
+
+/* ─── TARJETA GENÉRICA ─── */
+.card {
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:24px;
+  transition: border-color 0.2s;
+}
+.card:hover { border-color:rgba(255,255,255,0.08); }
+.card-title {
+  font-size:14px; font-weight:700; margin-bottom:18px;
+  display:flex; align-items:center; gap:8px;
+}
+.card-title i { color:var(--gold); font-size:13px; }
+
+/* ─── INPUTS ─── */
+.form-group { margin-bottom:14px; }
+.form-label { display:block; font-size:11px; font-weight:600; color:var(--text-secondary); margin-bottom:6px; text-transform:uppercase; letter-spacing:0.5px; }
+.form-input {
+  width:100%;
+  background:var(--bg-input);
+  border:1px solid rgba(255,255,255,0.07);
+  padding:11px 14px;
+  border-radius:9px;
+  color:var(--text-primary);
+  font-size:13.5px;
+  font-family:inherit;
+  transition:all 0.2s;
+  outline:none;
+}
+.form-input:focus {
+  border-color:var(--border-focus);
+  box-shadow:0 0 0 3px rgba(200,168,80,0.08);
+}
+.form-input::placeholder { color:var(--text-muted); }
+select.form-input { cursor:pointer; appearance:auto; }
+
+/* ─── BOTONES ─── */
+.btn-gold {
+  background:linear-gradient(135deg, var(--gold), #A07830);
+  color:#000;
+  padding:11px 22px;
+  border-radius:9px;
+  border:none;
+  font-weight:700;
+  font-size:13px;
+  cursor:pointer;
+  font-family:inherit;
+  transition:all 0.2s;
+  display:inline-flex; align-items:center; gap:8px;
+}
+.btn-gold:hover {
+  transform:translateY(-1px);
+  box-shadow:0 4px 20px var(--gold-glow);
+}
+.btn-ghost {
+  background:transparent;
+  color:var(--text-secondary);
+  padding:8px 14px;
+  border-radius:8px;
+  border:1px solid var(--border);
+  font-size:12px;
+  cursor:pointer;
+  font-family:inherit;
+  transition:all 0.2s;
+  display:inline-flex; align-items:center; gap:6px;
+}
+.btn-ghost:hover { border-color:rgba(255,255,255,0.15); color:var(--text-primary); }
+
+.btn-sm {
+  padding:6px 12px;
+  border-radius:7px;
+  border:none;
+  font-size:11px;
+  font-weight:600;
+  cursor:pointer;
+  font-family:inherit;
+  transition:all 0.15s;
+  display:inline-flex; align-items:center; gap:5px;
+}
+.btn-blue { background:rgba(59,130,246,0.15); color:var(--blue); }
+.btn-blue:hover { background:rgba(59,130,246,0.25); }
+.btn-emerald { background:rgba(16,185,129,0.15); color:var(--emerald); }
+.btn-emerald:hover { background:rgba(16,185,129,0.25); }
+.btn-amber { background:rgba(245,158,11,0.15); color:var(--amber); }
+.btn-amber:hover { background:rgba(245,158,11,0.25); }
+.btn-rose { background:rgba(244,63,94,0.1); color:var(--rose); }
+.btn-rose:hover { background:rgba(244,63,94,0.2); }
+
+/* ─── KANBAN ─── */
+.kanban-col {
+  background:var(--bg-sidebar);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:0;
+  min-height:420px;
+  display:flex; flex-direction:column;
+}
+.kanban-header {
+  padding:16px 18px;
+  border-bottom:1px solid var(--border);
+  display:flex; align-items:center; justify-content:space-between;
+}
+.kanban-header-left { display:flex; align-items:center; gap:10px; }
+.kanban-dot { width:8px; height:8px; border-radius:50%; }
+.kanban-dot.dot-amber { background:var(--amber); box-shadow:0 0 8px rgba(245,158,11,0.4); }
+.kanban-dot.dot-blue { background:var(--blue); box-shadow:0 0 8px rgba(59,130,246,0.4); }
+.kanban-dot.dot-emerald { background:var(--emerald); box-shadow:0 0 8px rgba(16,185,129,0.4); }
+.kanban-title { font-size:13px; font-weight:700; }
+.kanban-count {
+  background:rgba(255,255,255,0.06);
+  padding:2px 9px;
+  border-radius:20px;
+  font-size:11px;
+  font-weight:600;
+  color:var(--text-secondary);
+}
+.kanban-body { padding:12px; flex:1; display:flex; flex-direction:column; gap:10px; overflow-y:auto; }
+
+.task-card {
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:11px;
+  padding:14px;
+  transition:all 0.2s;
+}
+.task-card:hover {
+  border-color:rgba(255,255,255,0.1);
+  transform:translateY(-1px);
+}
+.task-service { font-size:13px; font-weight:700; margin-bottom:8px; }
+.task-meta { font-size:11px; color:var(--text-muted); display:flex; align-items:center; gap:5px; margin-bottom:10px; }
+.task-meta i { font-size:10px; }
+.task-actions { display:flex; gap:6px; }
+
+/* ─── LISTAS / TABLAS ─── */
+.list-item {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:12px 16px;
+  border-bottom:1px solid var(--border);
+  transition:background 0.15s;
+}
+.list-item:last-child { border-bottom:none; }
+.list-item:hover { background:rgba(255,255,255,0.02); }
+.list-item-left { display:flex; align-items:center; gap:12px; }
+.list-icon {
+  width:36px; height:36px;
+  border-radius:9px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:14px;
+}
+.list-item-info h4 { font-size:13px; font-weight:600; }
+.list-item-info p { font-size:11px; color:var(--text-muted); margin-top:1px; }
+
+.badge {
+  padding:3px 10px;
+  border-radius:20px;
+  font-size:10px;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:0.5px;
+}
+.badge-ingreso { background:rgba(16,185,129,0.12); color:var(--emerald); }
+.badge-egreso { background:rgba(244,63,94,0.12); color:var(--rose); }
+.badge-pendiente { background:rgba(245,158,11,0.12); color:var(--amber); }
+.badge-proceso { background:rgba(59,130,246,0.12); color:var(--blue); }
+.badge-terminado { background:rgba(16,185,129,0.12); color:var(--emerald); }
+
+/* ─── TOAST ─── */
+.toast-container {
+  position:fixed; top:20px; right:20px;
+  z-index:9999;
+  display:flex; flex-direction:column; gap:10px;
+}
+.toast {
+  padding:14px 20px;
+  border-radius:11px;
+  font-size:13px; font-weight:500;
+  display:flex; align-items:center; gap:10px;
+  animation:toastIn 0.35s ease;
+  min-width:280px;
+  box-shadow:0 10px 40px rgba(0,0,0,0.5);
+  border:1px solid var(--border);
+  backdrop-filter:blur(12px);
+}
+.toast-success { background:rgba(16,185,129,0.15); color:var(--emerald); border-color:rgba(16,185,129,0.2); }
+.toast-error { background:rgba(244,63,94,0.15); color:var(--rose); border-color:rgba(244,63,94,0.2); }
+.toast-info { background:rgba(59,130,246,0.15); color:var(--blue); border-color:rgba(59,130,246,0.2); }
+.toast-out { animation:toastOut 0.3s ease forwards; }
+@keyframes toastIn { from{opacity:0;transform:translateX(40px);} to{opacity:1;transform:translateX(0);} }
+@keyframes toastOut { to{opacity:0;transform:translateX(40px);} }
+
+/* ─── MODAL ─── */
+.modal-overlay {
+  position:fixed; inset:0;
+  background:rgba(0,0,0,0.6);
+  backdrop-filter:blur(4px);
+  z-index:100;
+  display:flex; align-items:center; justify-content:center;
+  opacity:0; pointer-events:none;
+  transition:opacity 0.25s;
+}
+.modal-overlay.show { opacity:1; pointer-events:auto; }
+.modal-box {
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:28px;
+  max-width:400px; width:90%;
+  transform:scale(0.95);
+  transition:transform 0.25s;
+}
+.modal-overlay.show .modal-box { transform:scale(1); }
+.modal-box h3 { font-size:16px; font-weight:700; margin-bottom:8px; }
+.modal-box p { font-size:13px; color:var(--text-secondary); margin-bottom:20px; }
+.modal-actions { display:flex; gap:10px; justify-content:flex-end; }
+
+/* ─── EMPTY STATE ─── */
+.empty-state {
+  text-align:center; padding:40px 20px; color:var(--text-muted);
+}
+.empty-state i { font-size:32px; margin-bottom:12px; opacity:0.3; }
+.empty-state p { font-size:13px; }
+
+/* ─── SECCIÓN HEADER ─── */
+.section-header {
+  display:flex; align-items:center; justify-content:space-between;
+  margin-bottom:24px;
+}
+.section-header h2 { font-size:18px; font-weight:700; }
+.section-header-sub { font-size:12px; color:var(--text-muted); margin-top:2px; }
+
+/* ─── COUNTER ANIM ─── */
+@keyframes countPulse {
+  0%{transform:scale(1);} 50%{transform:scale(1.05);} 100%{transform:scale(1);}
+}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:1024px){
+  .sidebar { transform:translateX(-100%); }
+  .sidebar.open { transform:translateX(0); box-shadow:20px 0 60px rgba(0,0,0,0.5); }
+  .main-content { margin-left:0; }
+  .hamburger { display:block; }
+}
+@media(max-width:768px){
+  .page-body { padding:20px 16px 32px; }
+  .top-bar { padding:14px 16px; }
+  .kpi-grid { grid-template-columns:1fr 1fr !important; }
+  .kanban-grid { grid-template-columns:1fr !important; }
+  .form-row { grid-template-columns:1fr !important; }
+}
+@media(max-width:480px){
+  .kpi-grid { grid-template-columns:1fr !important; }
+}
+
+/* ─── SCROLLBAR ─── */
+::-webkit-scrollbar { width:6px; }
+::-webkit-scrollbar-track { background:transparent; }
+::-webkit-scrollbar-thumb { background:rgba(255,255,255,0.08); border-radius:10px; }
+::-webkit-scrollbar-thumb:hover { background:rgba(255,255,255,0.15); }
 </style>
 </head>
 
 <body>
 
-<!-- SIDEBAR -->
-<div class="sidebar">
+<!-- ═══════════════════ SIDEBAR ═══════════════════ -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-icon">M</div>
+    <div>
+      <div class="logo-text">Monaco Detailing</div>
+      <div class="logo-sub">CRM Pro</div>
+    </div>
+  </div>
 
-<div class="logo">
-<img src="logo.png">
-<span>Monaco CRM</span>
+  <nav class="sidebar-nav">
+    <div class="nav-item active" data-tab="dashboard" onclick="switchTab('dashboard',this)">
+      <i class="fa-solid fa-gauge-high"></i> Dashboard
+    </div>
+    <div class="nav-item" data-tab="operaciones" onclick="switchTab('operaciones',this)">
+      <i class="fa-solid fa-arrows-spin"></i> Operaciones
+    </div>
+    <div class="nav-item" data-tab="turnos" onclick="switchTab('turnos',this)">
+      <i class="fa-solid fa-calendar-check"></i> Turnos
+    </div>
+    <div class="nav-item" data-tab="clientes" onclick="switchTab('clientes',this)">
+      <i class="fa-solid fa-user-group"></i> Clientes
+    </div>
+    <div class="nav-item" data-tab="vehiculos" onclick="switchTab('vehiculos',this)">
+      <i class="fa-solid fa-car"></i> Vehiculos
+    </div>
+    <div class="nav-item" data-tab="caja" onclick="switchTab('caja',this)">
+      <i class="fa-solid fa-vault"></i> Caja
+    </div>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="avatar">A</div>
+    <div>
+      <span>Administrador</span>
+      <small>Monaco HQ</small>
+    </div>
+  </div>
+</aside>
+
+<!-- ═══════════════════ MAIN ═══════════════════ -->
+<div class="main-content">
+
+  <!-- TOP BAR -->
+  <div class="top-bar">
+    <div style="display:flex;align-items:center;">
+      <button class="hamburger" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></button>
+      <div class="top-bar-left">
+        <h1 id="topTitle">Dashboard</h1>
+        <p id="topDate"></p>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <button class="btn-ghost" onclick="refreshAll()" title="Recargar datos">
+        <i class="fa-solid fa-rotate"></i> Actualizar
+      </button>
+    </div>
+  </div>
+
+  <!-- PAGE BODY -->
+  <div class="page-body">
+
+    <!-- ═══ DASHBOARD ═══ -->
+    <div class="tab-section active" id="sec-dashboard">
+      <div class="kpi-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px;">
+        <div class="kpi-card kpi-blue">
+          <div class="kpi-icon"><i class="fa-solid fa-wrench"></i></div>
+          <div class="kpi-value" id="kpi_proceso">0</div>
+          <div class="kpi-label">En Proceso</div>
+        </div>
+        <div class="kpi-card kpi-emerald">
+          <div class="kpi-icon"><i class="fa-solid fa-circle-check"></i></div>
+          <div class="kpi-value" id="kpi_terminado">0</div>
+          <div class="kpi-label">Terminados</div>
+        </div>
+        <div class="kpi-card kpi-gold">
+          <div class="kpi-icon"><i class="fa-solid fa-coins"></i></div>
+          <div class="kpi-value" id="kpi_facturacion">$0</div>
+          <div class="kpi-label">Facturacion Total</div>
+        </div>
+        <div class="kpi-card kpi-amber">
+          <div class="kpi-icon"><i class="fa-solid fa-users"></i></div>
+          <div class="kpi-value" id="kpi_clientes">0</div>
+          <div class="kpi-label">Clientes</div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:2fr 1fr;gap:20px;">
+        <!-- Servicios recientes -->
+        <div class="card">
+          <div class="card-title"><i class="fa-solid fa-clock-rotate-left"></i> Servicios Recientes</div>
+          <div id="recentServices">
+            <div class="empty-state"><i class="fa-solid fa-inbox"></i><p>Cargando servicios...</p></div>
+          </div>
+        </div>
+        <!-- Resumen financiero -->
+        <div class="card">
+          <div class="card-title"><i class="fa-solid fa-chart-line"></i> Resumen Financiero</div>
+          <div style="margin-bottom:18px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+              <span style="font-size:12px;color:var(--text-secondary);">Ingresos</span>
+              <span style="font-size:14px;font-weight:700;color:var(--emerald);" id="dash_ingresos">$0</span>
+            </div>
+            <div style="height:6px;background:rgba(255,255,255,0.04);border-radius:10px;overflow:hidden;">
+              <div id="bar_ingresos" style="height:100%;background:var(--emerald);border-radius:10px;width:0%;transition:width 0.8s ease;"></div>
+            </div>
+          </div>
+          <div style="margin-bottom:18px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+              <span style="font-size:12px;color:var(--text-secondary);">Egresos</span>
+              <span style="font-size:14px;font-weight:700;color:var(--rose);" id="dash_egresos">$0</span>
+            </div>
+            <div style="height:6px;background:rgba(255,255,255,0.04);border-radius:10px;overflow:hidden;">
+              <div id="bar_egresos" style="height:100%;background:var(--rose);border-radius:10px;width:0%;transition:width 0.8s ease;"></div>
+            </div>
+          </div>
+          <div style="padding-top:14px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;">
+            <span style="font-size:12px;color:var(--text-secondary);">Balance</span>
+            <span style="font-size:18px;font-weight:800;color:var(--gold);" id="dash_balance">$0</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ OPERACIONES ═══ -->
+    <div class="tab-section" id="sec-operaciones">
+      <div class="section-header">
+        <div>
+          <h2>Tablero de Operaciones</h2>
+          <div class="section-header-sub">Gestiona el flujo de trabajos</div>
+        </div>
+      </div>
+      <div class="kanban-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;">
+        <div class="kanban-col">
+          <div class="kanban-header">
+            <div class="kanban-header-left"><div class="kanban-dot dot-amber"></div><span class="kanban-title">Pendiente</span></div>
+            <span class="kanban-count" id="count_pendiente">0</span>
+          </div>
+          <div class="kanban-body" id="col_pendiente"></div>
+        </div>
+        <div class="kanban-col">
+          <div class="kanban-header">
+            <div class="kanban-header-left"><div class="kanban-dot dot-blue"></div><span class="kanban-title">En Proceso</span></div>
+            <span class="kanban-count" id="count_proceso">0</span>
+          </div>
+          <div class="kanban-body" id="col_proceso"></div>
+        </div>
+        <div class="kanban-col">
+          <div class="kanban-header">
+            <div class="kanban-header-left"><div class="kanban-dot dot-emerald"></div><span class="kanban-title">Terminado</span></div>
+            <span class="kanban-count" id="count_terminado">0</span>
+          </div>
+          <div class="kanban-body" id="col_terminado"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ TURNOS ═══ -->
+    <div class="tab-section" id="sec-turnos">
+      <div class="section-header">
+        <div>
+          <h2>Nuevo Turno</h2>
+          <div class="section-header-sub">Registra un nuevo servicio</div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1.5fr;gap:20px;">
+        <div class="card">
+          <div class="card-title"><i class="fa-solid fa-plus"></i> Crear Turno</div>
+          <div class="form-group">
+            <label class="form-label">Cliente</label>
+            <select id="t_cliente_sel" class="form-input" onchange="onClienteSelect()">
+              <option value="">-- Seleccionar --</option>
+              <option value="__nuevo">+ Nuevo cliente</option>
+            </select>
+          </div>
+          <div id="t_nuevo_cliente_fields" style="display:none;">
+            <div class="form-group">
+              <label class="form-label">Nombre</label>
+              <input id="t_nombre" class="form-input" placeholder="Nombre del cliente">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Telefono</label>
+              <input id="t_tel" class="form-input" placeholder="11-1234-5678">
+            </div>
+          </div>
+          <div id="t_vehiculo_fields">
+            <div class="form-group">
+              <label class="form-label">Vehiculo</label>
+              <select id="t_vehiculo_sel" class="form-input">
+                <option value="">-- Seleccionar --</option>
+                <option value="__nuevo">+ Nuevo vehiculo</option>
+              </select>
+            </div>
+            <div id="t_nuevo_vehiculo_fields" style="display:none;">
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+                <div class="form-group">
+                  <label class="form-label">Marca</label>
+                  <input id="t_marca" class="form-input" placeholder="Ej: BMW">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Modelo</label>
+                  <input id="t_modelo" class="form-input" placeholder="Ej: M3">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Servicio</label>
+            <select id="t_servicio" class="form-input">
+              <option value="Lavado Exterior">Lavado Exterior</option>
+              <option value="Lavado Interior">Lavado Interior</option>
+              <option value="Detailing Completo">Detailing Completo</option>
+              <option value="Pulido de Pintura">Pulido de Pintura</option>
+              <option value="Proteccion Ceramica">Proteccion Ceramica</option>
+              <option value="Limpieza de Motor">Limpieza de Motor</option>
+              <option value="Polarizado">Polarizado</option>
+              <option value="Tratamiento de Cuero">Tratamiento de Cuero</option>
+              <option value="PPF">PPF (Paint Protection Film)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Fecha</label>
+            <input id="t_fecha" type="date" class="form-input">
+          </div>
+          <button onclick="crearTurno()" class="btn-gold w-full" style="width:100%;justify-content:center;margin-top:6px;">
+            <i class="fa-solid fa-calendar-plus"></i> Crear Turno
+          </button>
+        </div>
+        <div class="card">
+          <div class="card-title"><i class="fa-solid fa-list-check"></i> Proximos Turnos</div>
+          <div id="listaTurnos">
+            <div class="empty-state"><i class="fa-solid fa-calendar-xmark"></i><p>No hay turnos pendientes</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ CLIENTES ═══ -->
+    <div class="tab-section" id="sec-clientes">
+      <div class="section-header">
+        <div>
+          <h2>Clientes</h2>
+          <div class="section-header-sub">Base de datos de clientes</div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1.5fr;gap:20px;">
+        <div class="card">
+          <div class="card-title"><i class="fa-solid fa-user-plus"></i> <span id="clienteFormTitle">Agregar Cliente</span></div>
+          <input type="hidden" id="c_edit_id" value="">
+          <div class="form-group">
+            <label class="form-label">Nombre completo</label>
+            <input id="c_nombre" class="form-input" placeholder="Juan Perez">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Telefono</label>
+            <input id="c_tel" class="form-input" placeholder="11-1234-5678">
+          </div>
+          <div style="display:flex;gap:10px;">
+            <button onclick="guardarCliente()" class="btn-gold" style="flex:1;justify-content:center;">
+              <i class="fa-solid fa-check"></i> <span id="clienteBtnText">Guardar</span>
+            </button>
+            <button onclick="cancelarEditCliente()" class="btn-ghost" id="btnCancelEdit" style="display:none;">Cancelar</button>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title"><i class="fa-solid fa-address-book"></i> Todos los Clientes</div>
+          <div id="listaClientes">
+            <div class="empty-state"><i class="fa-solid fa-user-slash"></i><p>No hay clientes registrados</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ VEHICULOS ═══ -->
+    <div class="tab-section" id="sec-vehiculos">
+      <div class="section-header">
+        <div>
+          <h2>Vehiculos</h2>
+          <div class="section-header-sub">Registro de vehiculos</div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1.5fr;gap:20px;">
+        <div class="card">
+          <div class="card-title"><i class="fa-solid fa-car-side"></i> Agregar Vehiculo</div>
+          <div class="form-group">
+            <label class="form-label">Propietario</label>
+            <select id="v_cliente" class="form-input">
+              <option value="">-- Seleccionar cliente --</option>
+            </select>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+            <div class="form-group">
+              <label class="form-label">Marca</label>
+              <input id="v_marca" class="form-input" placeholder="BMW">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Modelo</label>
+              <input id="v_modelo" class="form-input" placeholder="M3">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Patente</label>
+            <input id="v_patente" class="form-input" placeholder="AB 123 CD">
+          </div>
+          <button onclick="crearVehiculo()" class="btn-gold" style="width:100%;justify-content:center;">
+            <i class="fa-solid fa-plus"></i> Guardar Vehiculo
+          </button>
+        </div>
+        <div class="card">
+          <div class="card-title"><i class="fa-solid fa-warehouse"></i> Todos los Vehiculos</div>
+          <div id="listaVehiculos">
+            <div class="empty-state"><i class="fa-solid fa-car-burst"></i><p>No hay vehiculos registrados</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ CAJA ═══ -->
+    <div class="tab-section" id="sec-caja">
+      <div class="section-header">
+        <div>
+          <h2>Caja</h2>
+          <div class="section-header-sub">Control de ingresos y egresos</div>
+        </div>
+      </div>
+      <div class="kpi-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:24px;">
+        <div class="kpi-card kpi-emerald">
+          <div class="kpi-icon"><i class="fa-solid fa-arrow-trend-up"></i></div>
+          <div class="kpi-value" id="caja_ingresos">$0</div>
+          <div class="kpi-label">Total Ingresos</div>
+        </div>
+        <div class="kpi-card kpi-rose" style="overflow:hidden;position:relative;">
+          <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--rose),transparent);"></div>
+          <div class="kpi-icon" style="background:rgba(244,63,94,0.12);color:var(--rose);"><i class="fa-solid fa-arrow-trend-down"></i></div>
+          <div class="kpi-value" id="caja_egresos">$0</div>
+          <div class="kpi-label">Total Egresos</div>
+        </div>
+        <div class="kpi-card kpi-gold">
+          <div class="kpi-icon"><i class="fa-solid fa-scale-balanced"></i></div>
+          <div class="kpi-value" id="caja_balance">$0</div>
+          <div class="kpi-label">Balance</div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1.5fr;gap:20px;">
+        <div class="card">
+          <div class="card-title"><i class="fa-solid fa-receipt"></i> Registrar Movimiento</div>
+          <div class="form-group">
+            <label class="form-label">Concepto</label>
+            <input id="cx_concepto" class="form-input" placeholder="Ej: Detailing Completo">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Monto</label>
+            <input id="cx_monto" type="number" class="form-input" placeholder="15000">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Tipo</label>
+            <select id="cx_tipo" class="form-input">
+              <option value="ingreso">Ingreso</option>
+              <option value="egreso">Egreso</option>
+            </select>
+          </div>
+          <button onclick="crearCaja()" class="btn-gold" style="width:100%;justify-content:center;">
+            <i class="fa-solid fa-plus"></i> Registrar
+          </button>
+        </div>
+        <div class="card">
+          <div class="card-title"><i class="fa-solid fa-clock-rotate-left"></i> Historial</div>
+          <div id="listaCaja">
+            <div class="empty-state"><i class="fa-solid fa-receipt"></i><p>No hay movimientos</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /page-body -->
+</div><!-- /main-content -->
+
+<!-- ═══ MODAL ═══ -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal-box">
+    <h3 id="modalTitle">Confirmar</h3>
+    <p id="modalMsg">Esta accion no se puede deshacer.</p>
+    <div class="modal-actions">
+      <button class="btn-ghost" onclick="closeModal()">Cancelar</button>
+      <button class="btn-sm btn-rose" id="modalConfirmBtn" style="padding:10px 20px;font-size:13px;" onclick="confirmModal()">Eliminar</button>
+    </div>
+  </div>
 </div>
 
-<div class="menu active" onclick="tab('dashboard',this)">Dashboard</div>
-<div class="menu" onclick="tab('operaciones',this)">Operaciones</div>
-<div class="menu" onclick="tab('turnos',this)">Turnos</div>
-<div class="menu" onclick="tab('clientes',this)">Clientes</div>
-<div class="menu" onclick="tab('vehiculos',this)">Vehículos</div>
-<div class="menu" onclick="tab('caja',this)">Caja</div>
+<!-- ═══ TOASTS ═══ -->
+<div class="toast-container" id="toastContainer"></div>
 
-</div>
-
-<!-- CONTENT -->
-<div class="content">
-
-<!-- DASHBOARD -->
-<div id="dashboard">
-<div class="grid grid-cols-4 gap-4">
-
-<div class="card">En proceso <h2 id="kpi_proceso">0</h2></div>
-<div class="card">Terminados <h2 id="kpi_terminado">0</h2></div>
-<div class="card">Facturación <h2 id="kpi_facturacion">$0</h2></div>
-<div class="card">Clientes <h2 id="kpi_clientes">0</h2></div>
-
-</div>
-</div>
-
-<!-- OPERACIONES -->
-<div id="operaciones" style="display:none">
-<div class="grid grid-cols-3 gap-4">
-<div class="column" id="pendiente"><h3>Pendiente</h3></div>
-<div class="column" id="proceso"><h3>Proceso</h3></div>
-<div class="column" id="terminado"><h3>Terminado</h3></div>
-</div>
-</div>
-
-<!-- TURNOS -->
-<div id="turnos" style="display:none">
-<div class="card max-w-xl">
-
-<input id="t_cliente" placeholder="Cliente" class="input">
-<input id="t_tel" placeholder="Teléfono" class="input">
-<input id="t_servicio" placeholder="Servicio" class="input">
-<input id="t_fecha" type="date" class="input">
-
-<button onclick="crearTurno()" class="btn w-full">Crear turno</button>
-
-</div>
-</div>
-
-<!-- CLIENTES -->
-<div id="clientes" style="display:none">
-<div class="card max-w-xl">
-
-<input id="c_nombre" placeholder="Nombre" class="input">
-<input id="c_tel" placeholder="Teléfono" class="input">
-
-<button onclick="crearCliente()" class="btn w-full">Guardar</button>
-
-<ul id="listaClientes"></ul>
-
-</div>
-</div>
-
-<!-- VEHICULOS -->
-<div id="vehiculos" style="display:none">
-<div class="card max-w-xl">
-
-<select id="v_cliente" class="input"></select>
-<input id="v_marca" placeholder="Marca" class="input">
-<input id="v_modelo" placeholder="Modelo" class="input">
-
-<button onclick="crearVehiculo()" class="btn w-full">Guardar</button>
-
-<ul id="listaVehiculos"></ul>
-
-</div>
-</div>
-
-<!-- CAJA -->
-<div id="caja" style="display:none">
-<div class="card max-w-xl">
-
-<input id="cx_concepto" placeholder="Concepto" class="input">
-<input id="cx_monto" placeholder="Monto" class="input">
-
-<select id="cx_tipo" class="input">
-<option value="ingreso">Ingreso</option>
-<option value="egreso">Egreso</option>
-</select>
-
-<button onclick="crearCaja()" class="btn w-full">Registrar</button>
-
-<ul id="listaCaja"></ul>
-
-</div>
-</div>
-
-</div>
 
 <script>
+/* ═══════════════════════════════════════════════
+   CONFIGURACIÓN SUPABASE
+   ═══════════════════════════════════════════════ */
 const sb = supabase.createClient(
-"https://wuewcawbpajdehquorfq.supabase.co",
-"sb_publishable_nzzOvYY0RYXDUavs-pFH6Q_pqnLU2tb"
+  "https://wuewcawbpajdehquorfq.supabase.co",
+  "sb_publishable_nzzOvYY0RYXDUavs-pFH6Q_pqnLU2tb"
 );
 
-/* NAV */
-function tab(id,el){
-["dashboard","operaciones","turnos","clientes","vehiculos","caja"].forEach(x=>{
-document.getElementById(x).style.display="none";
-});
-document.getElementById(id).style.display="block";
+/* ═══ ESTADO GLOBAL ═══ */
+let clientes = [];
+let vehiculos = [];
+let servicios = [];
+let movimientos = [];
+let modalCallback = null;
 
-document.querySelectorAll(".menu").forEach(x=>x.classList.remove("active"));
-el.classList.add("active");
+/* ═══════════════════════════════════════════════
+   UTILIDADES
+   ═══════════════════════════════════════════════ */
+function formatMoney(n) {
+  return '$' + Number(n || 0).toLocaleString('es-AR');
 }
 
-/* CLIENTES */
-async function crearCliente(){
-await sb.from("clientes").insert({
-nombre:c_nombre.value,
-telefono:c_tel.value
-});
-cargarClientes();
+function formatDate(d) {
+  if (!d) return '-';
+  const date = new Date(d);
+  return date.toLocaleDateString('es-AR', { day:'2-digit', month:'short', year:'numeric' });
 }
 
-async function cargarClientes(){
-const {data}=await sb.from("clientes").select("*");
-listaClientes.innerHTML="";
-v_cliente.innerHTML="";
-data.forEach(c=>{
-listaClientes.innerHTML+=`<li>${c.nombre}</li>`;
-v_cliente.innerHTML+=`<option value="${c.id}">${c.nombre}</option>`;
-});
+function timeAgo(d) {
+  if (!d) return '';
+  const diff = Date.now() - new Date(d).getTime();
+  const mins = Math.floor(diff / 60000);
+  if (mins < 1) return 'Ahora';
+  if (mins < 60) return mins + ' min';
+  const hrs = Math.floor(mins / 60);
+  if (hrs < 24) return hrs + 'h';
+  const days = Math.floor(hrs / 24);
+  return days + 'd';
 }
 
-/* VEHICULOS */
-async function crearVehiculo(){
-await sb.from("vehiculos").insert({
-cliente_id:v_cliente.value,
-marca:v_marca.value,
-modelo:v_modelo.value
-});
-cargarVehiculos();
+/* Animación de conteo para KPIs */
+function animateValue(el, target, prefix, suffix) {
+  prefix = prefix || '';
+  suffix = suffix || '';
+  const start = parseInt(el.dataset.current || '0');
+  const duration = 600;
+  const startTime = performance.now();
+
+  function update(now) {
+    const elapsed = now - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+    const ease = 1 - Math.pow(1 - progress, 3);
+    const current = Math.round(start + (target - start) * ease);
+    el.textContent = prefix + current.toLocaleString('es-AR') + suffix;
+    if (progress < 1) requestAnimationFrame(update);
+    else el.dataset.current = target;
+  }
+  requestAnimationFrame(update);
 }
 
-async function cargarVehiculos(){
-const {data}=await sb.from("vehiculos").select("*");
-listaVehiculos.innerHTML="";
-data.forEach(v=>{
-listaVehiculos.innerHTML+=`<li>${v.marca} ${v.modelo}</li>`;
-});
+/* ═══════════════════════════════════════════════
+   TOASTS
+   ═══════════════════════════════════════════════ */
+function toast(msg, type) {
+  type = type || 'info';
+  const icons = { success:'fa-circle-check', error:'fa-circle-xmark', info:'fa-circle-info' };
+  const el = document.createElement('div');
+  el.className = 'toast toast-' + type;
+  el.innerHTML = '<i class="fa-solid ' + icons[type] + '"></i> ' + msg;
+  document.getElementById('toastContainer').appendChild(el);
+  setTimeout(() => {
+    el.classList.add('toast-out');
+    setTimeout(() => el.remove(), 300);
+  }, 3000);
 }
 
-/* TURNOS → SERVICIO */
-async function crearTurno(){
-
-const {data:clienteInsert}=await sb.from("clientes")
-.insert({nombre:t_cliente.value,telefono:t_tel.value})
-.select();
-
-const cliente=clienteInsert[0];
-
-const {data:vehiculoInsert}=await sb.from("vehiculos")
-.insert({cliente_id:cliente.id,marca:"Auto",modelo:""})
-.select();
-
-const vehiculo=vehiculoInsert[0];
-
-await sb.from("servicios").insert({
-vehiculo_id:vehiculo.id,
-tipo:t_servicio.value,
-estado:"pendiente"
-});
-
-cargarServicios();
+/* ═══════════════════════════════════════════════
+   MODAL
+   ═══════════════════════════════════════════════ */
+function showModal(title, msg, onConfirm) {
+  document.getElementById('modalTitle').textContent = title;
+  document.getElementById('modalMsg').textContent = msg;
+  modalCallback = onConfirm;
+  document.getElementById('modalOverlay').classList.add('show');
+}
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('show');
+  modalCallback = null;
+}
+function confirmModal() {
+  if (modalCallback) modalCallback();
+  closeModal();
 }
 
-/* SERVICIOS */
-async function cargarServicios(){
+/* ═══════════════════════════════════════════════
+   NAVEGACIÓN
+   ═══════════════════════════════════════════════ */
+const tabNames = {
+  dashboard: 'Dashboard',
+  operaciones: 'Operaciones',
+  turnos: 'Turnos',
+  clientes: 'Clientes',
+  vehiculos: 'Vehiculos',
+  caja: 'Caja'
+};
 
-const {data}=await sb.from("servicios")
-.select("id,tipo,estado,vehiculos(marca,clientes(nombre,telefono))");
-
-["pendiente","proceso","terminado"].forEach(x=>{
-document.getElementById(x).innerHTML=`<h3>${x}</h3>`;
-});
-
-data.forEach(s=>{
-let el=document.createElement("div");
-el.className="task";
-
-el.innerHTML=`
-<div>${s.tipo}</div>
-<div>${s.vehiculos?.marca}</div>
-<button onclick="mover('${s.id}','proceso')" class="btn mt-2">Mover</button>
-`;
-
-document.getElementById(s.estado).appendChild(el);
-});
+function switchTab(id, el) {
+  document.querySelectorAll('.tab-section').forEach(s => s.classList.remove('active'));
+  document.getElementById('sec-' + id).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('topTitle').textContent = tabNames[id] || id;
+  /* Cerrar sidebar en mobile */
+  document.getElementById('sidebar').classList.remove('open');
 }
 
-/* CAJA */
-async function crearCaja(){
-await sb.from("caja").insert({
-concepto:cx_concepto.value,
-monto:cx_monto.value,
-tipo:cx_tipo.value
-});
-cargarCaja();
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
 }
 
-async function cargarCaja(){
-const {data}=await sb.from("caja").select("*");
-listaCaja.innerHTML="";
-data.forEach(c=>{
-listaCaja.innerHTML+=`<li>${c.tipo} - $${c.monto}</li>`;
+/* Cerrar sidebar al clickear fuera (mobile) */
+document.addEventListener('click', (e) => {
+  const sb = document.getElementById('sidebar');
+  const hamburger = document.querySelector('.hamburger');
+  if (window.innerWidth <= 1024 && sb.classList.contains('open') && !sb.contains(e.target) && !hamburger.contains(e.target)) {
+    sb.classList.remove('open');
+  }
 });
+
+/* ═══════════════════════════════════════════════
+   CARGA DE DATOS
+   ═══════════════════════════════════════════════ */
+async function loadClientes() {
+  try {
+    const { data, error } = await sb.from('clientes').select('*').order('created_at', { ascending: false });
+    if (error) throw error;
+    clientes = data || [];
+  } catch (e) {
+    console.error('Error cargando clientes:', e);
+    clientes = [];
+  }
+  renderClientes();
+  populateClienteSelects();
 }
 
-/* INIT */
-cargarClientes();
-cargarVehiculos();
-cargarServicios();
-cargarCaja();
+async function loadVehiculos() {
+  try {
+    const { data, error } = await sb.from('vehiculos').select('*, clientes(nombre)').order('created_at', { ascending: false });
+    if (error) throw error;
+    vehiculos = data || [];
+  } catch (e) {
+    console.error('Error cargando vehiculos:', e);
+    vehiculos = [];
+  }
+  renderVehiculos();
+}
+
+async function loadServicios() {
+  try {
+    const { data, error } = await sb.from('servicios')
+      .select('id,tipo,estado,created_at,vehiculos(id,marca,modelo,clientes(id,nombre,telefono))')
+      .order('created_at', { ascending: false });
+    if (error) throw error;
+    servicios = data || [];
+  } catch (e) {
+    console.error('Error cargando servicios:', e);
+    servicios = [];
+  }
+  renderKanban();
+  renderRecentServices();
+  renderTurnos();
+  updateKPIs();
+}
+
+async function loadCaja() {
+  try {
+    const { data, error } = await sb.from('caja').select('*').order('created_at', { ascending: false });
+    if (error) throw error;
+    movimientos = data || [];
+  } catch (e) {
+    console.error('Error cargando caja:', e);
+    movimientos = [];
+  }
+  renderCaja();
+  updateKPIs();
+}
+
+async function refreshAll() {
+  await Promise.all([loadClientes(), loadVehiculos(), loadServicios(), loadCaja()]);
+  toast('Datos actualizados', 'success');
+}
+
+/* ═══════════════════════════════════════════════
+   KPIs
+   ═══════════════════════════════════════════════ */
+function updateKPIs() {
+  const enProceso = servicios.filter(s => s.estado === 'proceso').length;
+  const terminados = servicios.filter(s => s.estado === 'terminado').length;
+  const ingresos = movimientos.filter(m => m.tipo === 'ingreso').reduce((a, m) => a + Number(m.monto), 0);
+  const egresos = movimientos.filter(m => m.tipo === 'egreso').reduce((a, m) => a + Number(m.monto), 0);
+
+  animateValue(document.getElementById('kpi_proceso'), enProceso);
+  animateValue(document.getElementById('kpi_terminado'), terminados);
+  animateValue(document.getElementById('kpi_facturacion'), ingresos, '$');
+  animateValue(document.getElementById('kpi_clientes'), clientes.length);
+
+  /* Dashboard financiero */
+  document.getElementById('dash_ingresos').textContent = formatMoney(ingresos);
+  document.getElementById('dash_egresos').textContent = formatMoney(egresos);
+  document.getElementById('dash_balance').textContent = formatMoney(ingresos - egresos);
+
+  const maxVal = Math.max(ingresos, egresos, 1);
+  setTimeout(() => {
+    document.getElementById('bar_ingresos').style.width = (ingresos / maxVal * 100) + '%';
+    document.getElementById('bar_egresos').style.width = (egresos / maxVal * 100) + '%';
+  }, 100);
+
+  /* Caja KPIs */
+  animateValue(document.getElementById('caja_ingresos'), ingresos, '$');
+  animateValue(document.getElementById('caja_egresos'), egresos, '$');
+  animateValue(document.getElementById('caja_balance'), ingresos - egresos, '$');
+}
+
+/* ═══════════════════════════════════════════════
+   RENDER: CLIENTES
+   ═══════════════════════════════════════════════ */
+function renderClientes() {
+  const el = document.getElementById('listaClientes');
+  if (!clientes.length) {
+    el.innerHTML = '<div class="empty-state"><i class="fa-solid fa-user-slash"></i><p>No hay clientes registrados</p></div>';
+    return;
+  }
+  el.innerHTML = clientes.map(c => {
+    const vCount = vehiculos.filter(v => v.cliente_id === c.id).length;
+    return `
+    <div class="list-item">
+      <div class="list-item-left">
+        <div class="list-icon" style="background:var(--gold-soft);color:var(--gold);">
+          <i class="fa-solid fa-user"></i>
+        </div>
+        <div class="list-item-info">
+          <h4>${esc(c.nombre)}</h4>
+          <p><i class="fa-solid fa-phone" style="font-size:9px;margin-right:3px;"></i>${esc(c.telefono || '-')} &nbsp;·&nbsp; ${vCount} vehiculo${vCount!==1?'s':''}</p>
+        </div>
+      </div>
+      <div style="display:flex;gap:6px;">
+        <button class="btn-sm btn-amber" onclick="editarCliente('${c.id}')"><i class="fa-solid fa-pen"></i></button>
+        <button class="btn-sm btn-rose" onclick="eliminarCliente('${c.id}')"><i class="fa-solid fa-trash"></i></button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+/* Escapar HTML */
+function esc(s) {
+  const d = document.createElement('div');
+  d.textContent = s || '';
+  return d.innerHTML;
+}
+
+/* ═══════════════════════════════════════════════
+   RENDER: VEHICULOS
+   ═══════════════════════════════════════════════ */
+function renderVehiculos() {
+  const el = document.getElementById('listaVehiculos');
+  if (!vehiculos.length) {
+    el.innerHTML = '<div class="empty-state"><i class="fa-solid fa-car-burst"></i><p>No hay vehiculos registrados</p></div>';
+    return;
+  }
+  el.innerHTML = vehiculos.map(v => `
+    <div class="list-item">
+      <div class="list-item-left">
+        <div class="list-icon" style="background:rgba(59,130,246,0.1);color:var(--blue);">
+          <i class="fa-solid fa-car"></i>
+        </div>
+        <div class="list-item-info">
+          <h4>${esc(v.marca)} ${esc(v.modelo)}</h4>
+          <p><i class="fa-solid fa-user" style="font-size:9px;margin-right:3px;"></i>${esc(v.clientes?.nombre || '-')} ${v.patente ? '· ' + esc(v.patente) : ''}</p>
+        </div>
+      </div>
+      <button class="btn-sm btn-rose" onclick="eliminarVehiculo('${v.id}')"><i class="fa-solid fa-trash"></i></button>
+    </div>
+  `).join('');
+}
+
+/* ═══════════════════════════════════════════════
+   RENDER: KANBAN
+   ═══════════════════════════════════════════════ */
+function renderKanban() {
+  const estados = ['pendiente', 'proceso', 'terminado'];
+  estados.forEach(est => {
+    const col = document.getElementById('col_' + est);
+    const items = servicios.filter(s => s.estado === est);
+    document.getElementById('count_' + est).textContent = items.length;
+
+    if (!items.length) {
+      col.innerHTML = '<div class="empty-state" style="padding:30px 10px;"><i class="fa-solid fa-inbox"></i><p>Sin servicios</p></div>';
+      return;
+    }
+
+    col.innerHTML = items.map(s => {
+      const cliente = s.vehiculos?.clientes?.nombre || 'Sin cliente';
+      const vehiculo = s.vehiculos ? (s.vehiculos.marca + ' ' + (s.vehiculos.modelo || '')) : '';
+
+      let actions = '';
+      if (est === 'pendiente') {
+        actions = `<button class="btn-sm btn-blue" onclick="moverServicio('${s.id}','proceso')"><i class="fa-solid fa-play"></i> Iniciar</button>`;
+      } else if (est === 'proceso') {
+        actions = `<button class="btn-sm btn-emerald" onclick="moverServicio('${s.id}','terminado')"><i class="fa-solid fa-check"></i> Completar</button>`;
+      } else {
+        actions = `<button class="btn-sm btn-amber" onclick="moverServicio('${s.id}','pendiente')"><i class="fa-solid fa-rotate-left"></i> Reabrir</button>`;
+      }
+      actions += ` <button class="btn-sm btn-rose" onclick="eliminarServicio('${s.id}')"><i class="fa-solid fa-trash"></i></button>`;
+
+      return `
+        <div class="task-card">
+          <div class="task-service">${esc(s.tipo)}</div>
+          <div class="task-meta"><i class="fa-solid fa-user"></i> ${esc(cliente)}</div>
+          ${vehiculo ? `<div class="task-meta"><i class="fa-solid fa-car"></i> ${esc(vehiculo)}</div>` : ''}
+          <div class="task-meta"><i class="fa-regular fa-clock"></i> ${timeAgo(s.created_at)}</div>
+          <div class="task-actions">${actions}</div>
+        </div>`;
+    }).join('');
+  });
+}
+
+/* ═══════════════════════════════════════════════
+   RENDER: SERVICIOS RECIENTES (DASHBOARD)
+   ═══════════════════════════════════════════════ */
+function renderRecentServices() {
+  const el = document.getElementById('recentServices');
+  const recent = servicios.slice(0, 8);
+  if (!recent.length) {
+    el.innerHTML = '<div class="empty-state"><i class="fa-solid fa-inbox"></i><p>No hay servicios registrados</p></div>';
+    return;
+  }
+  el.innerHTML = recent.map(s => {
+    const badgeClass = 'badge-' + s.estado;
+    const estadoLabel = s.estado === 'proceso' ? 'En proceso' : s.estado.charAt(0).toUpperCase() + s.estado.slice(1);
+    const cliente = s.vehiculos?.clientes?.nombre || '-';
+    return `
+    <div class="list-item">
+      <div class="list-item-left">
+        <div class="list-icon" style="background:rgba(200,168,80,0.08);color:var(--gold);font-size:12px;">
+          <i class="fa-solid fa-spray-can-sparkles"></i>
+        </div>
+        <div class="list-item-info">
+          <h4>${esc(s.tipo)}</h4>
+          <p>${esc(cliente)} · ${timeAgo(s.created_at)}</p>
+        </div>
+      </div>
+      <span class="badge ${badgeClass}">${estadoLabel}</span>
+    </div>`;
+  }).join('');
+}
+
+/* ═══════════════════════════════════════════════
+   RENDER: TURNOS (pendientes)
+   ═══════════════════════════════════════════════ */
+function renderTurnos() {
+  const el = document.getElementById('listaTurnos');
+  const pendientes = servicios.filter(s => s.estado === 'pendiente');
+  if (!pendientes.length) {
+    el.innerHTML = '<div class="empty-state"><i class="fa-solid fa-calendar-xmark"></i><p>No hay turnos pendientes</p></div>';
+    return;
+  }
+  el.innerHTML = pendientes.map(s => {
+    const cliente = s.vehiculos?.clientes?.nombre || '-';
+    const vehiculo = s.vehiculos ? (s.vehiculos.marca + ' ' + (s.vehiculos.modelo || '')) : '';
+    return `
+    <div class="list-item">
+      <div class="list-item-left">
+        <div class="list-icon" style="background:rgba(245,158,11,0.1);color:var(--amber);">
+          <i class="fa-solid fa-clock"></i>
+        </div>
+        <div class="list-item-info">
+          <h4>${esc(s.tipo)}</h4>
+          <p>${esc(cliente)} ${vehiculo ? '· ' + esc(vehiculo) : ''} · ${timeAgo(s.created_at)}</p>
+        </div>
+      </div>
+      <div style="display:flex;gap:6px;">
+        <button class="btn-sm btn-blue" onclick="moverServicio('${s.id}','proceso')"><i class="fa-solid fa-play"></i></button>
+        <button class="btn-sm btn-rose" onclick="eliminarServicio('${s.id}')"><i class="fa-solid fa-trash"></i></button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+/* ═══════════════════════════════════════════════
+   RENDER: CAJA
+   ═══════════════════════════════════════════════ */
+function renderCaja() {
+  const el = document.getElementById('listaCaja');
+  if (!movimientos.length) {
+    el.innerHTML = '<div class="empty-state"><i class="fa-solid fa-receipt"></i><p>No hay movimientos</p></div>';
+    return;
+  }
+  el.innerHTML = movimientos.map(m => {
+    const isIngreso = m.tipo === 'ingreso';
+    return `
+    <div class="list-item">
+      <div class="list-item-left">
+        <div class="list-icon" style="background:${isIngreso ? 'rgba(16,185,129,0.1)' : 'rgba(244,63,94,0.1)'};color:${isIngreso ? 'var(--emerald)' : 'var(--rose)'};">
+          <i class="fa-solid ${isIngreso ? 'fa-arrow-up' : 'fa-arrow-down'}"></i>
+        </div>
+        <div class="list-item-info">
+          <h4>${esc(m.concepto)}</h4>
+          <p>${formatDate(m.created_at)}</p>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <span style="font-weight:700;color:${isIngreso ? 'var(--emerald)' : 'var(--rose)'};">${isIngreso ? '+' : '-'}${formatMoney(m.monto)}</span>
+        <button class="btn-sm btn-rose" onclick="eliminarCaja('${m.id}')"><i class="fa-solid fa-trash"></i></button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+/* ═══════════════════════════════════════════════
+   SELECTORES DE CLIENTES
+   ═══════════════════════════════════════════════ */
+function populateClienteSelects() {
+  const selects = ['t_cliente_sel', 'v_cliente'];
+  selects.forEach(id => {
+    const sel = document.getElementById(id);
+    if (!sel) return;
+    const val = sel.value;
+    const firstOption = sel.querySelector('option:first-child');
+    const newOption = id === 't_cliente_sel' ? '<option value="__nuevo">+ Nuevo cliente</option>' : '';
+    sel.innerHTML = (firstOption ? firstOption.outerHTML : '') + newOption;
+    clientes.forEach(c => {
+      sel.innerHTML += `<option value="${c.id}">${esc(c.nombre)}</option>`;
+    });
+    sel.value = val;
+  });
+}
+
+/* Cuando selecciona cliente en turno */
+function onClienteSelect() {
+  const val = document.getElementById('t_cliente_sel').value;
+  const nuevoFields = document.getElementById('t_nuevo_cliente_fields');
+  const vehiculoFields = document.getElementById('t_vehiculo_fields');
+
+  if (val === '__nuevo') {
+    nuevoFields.style.display = 'block';
+    vehiculoFields.style.display = 'none';
+  } else if (val) {
+    nuevoFields.style.display = 'none';
+    vehiculoFields.style.display = 'block';
+    populateVehiculoSelect(val);
+  } else {
+    nuevoFields.style.display = 'none';
+    vehiculoFields.style.display = 'block';
+    populateVehiculoSelect('');
+  }
+}
+
+function populateVehiculoSelect(clienteId) {
+  const sel = document.getElementById('t_vehiculo_sel');
+  sel.innerHTML = '<option value="">-- Seleccionar --</option><option value="__nuevo">+ Nuevo vehiculo</option>';
+  const filtered = clienteId ? vehiculos.filter(v => v.cliente_id === clienteId) : vehiculos;
+  filtered.forEach(v => {
+    sel.innerHTML += `<option value="${v.id}">${esc(v.marca)} ${esc(v.modelo || '')}</option>`;
+  });
+}
+
+/* Cuando selecciona vehiculo en turno */
+document.getElementById('t_vehiculo_sel').addEventListener('change', function() {
+  const nuevoFields = document.getElementById('t_nuevo_vehiculo_fields');
+  nuevoFields.style.display = this.value === '__nuevo' ? 'block' : 'none';
+});
+
+/* ═══════════════════════════════════════════════
+   CRUD: CLIENTES
+   ═══════════════════════════════════════════════ */
+async function guardarCliente() {
+  const editId = document.getElementById('c_edit_id').value;
+  const nombre = document.getElementById('c_nombre').value.trim();
+  const telefono = document.getElementById('c_tel').value.trim();
+
+  if (!nombre) { toast('Ingresa el nombre del cliente', 'error'); return; }
+
+  try {
+    if (editId) {
+      const { error } = await sb.from('clientes').update({ nombre, telefono }).eq('id', editId);
+      if (error) throw error;
+      toast('Cliente actualizado', 'success');
+    } else {
+      const { error } = await sb.from('clientes').insert({ nombre, telefono });
+      if (error) throw error;
+      toast('Cliente creado', 'success');
+    }
+    document.getElementById('c_nombre').value = '';
+    document.getElementById('c_tel').value = '';
+    document.getElementById('c_edit_id').value = '';
+    document.getElementById('clienteFormTitle').textContent = 'Agregar Cliente';
+    document.getElementById('clienteBtnText').textContent = 'Guardar';
+    document.getElementById('btnCancelEdit').style.display = 'none';
+    await loadClientes();
+  } catch (e) {
+    toast('Error: ' + e.message, 'error');
+  }
+}
+
+function editarCliente(id) {
+  const c = clientes.find(x => x.id === id);
+  if (!c) return;
+  document.getElementById('c_edit_id').value = c.id;
+  document.getElementById('c_nombre').value = c.nombre || '';
+  document.getElementById('c_tel').value = c.telefono || '';
+  document.getElementById('clienteFormTitle').textContent = 'Editar Cliente';
+  document.getElementById('clienteBtnText').textContent = 'Actualizar';
+  document.getElementById('btnCancelEdit').style.display = 'inline-flex';
+  /* Scroll al formulario */
+  document.getElementById('c_nombre').focus();
+}
+
+function cancelarEditCliente() {
+  document.getElementById('c_edit_id').value = '';
+  document.getElementById('c_nombre').value = '';
+  document.getElementById('c_tel').value = '';
+  document.getElementById('clienteFormTitle').textContent = 'Agregar Cliente';
+  document.getElementById('clienteBtnText').textContent = 'Guardar';
+  document.getElementById('btnCancelEdit').style.display = 'none';
+}
+
+function eliminarCliente(id) {
+  const c = clientes.find(x => x.id === id);
+  showModal('Eliminar cliente', 'Se eliminara ' + (c?.nombre || 'el cliente') + '. Esta accion no se puede deshacer.', async () => {
+    try {
+      const { error } = await sb.from('clientes').delete().eq('id', id);
+      if (error) throw error;
+      toast('Cliente eliminado', 'success');
+      await loadClientes();
+    } catch (e) {
+      toast('Error: ' + e.message, 'error');
+    }
+  });
+}
+
+/* ═══════════════════════════════════════════════
+   CRUD: VEHICULOS
+   ═══════════════════════════════════════════════ */
+async function crearVehiculo() {
+  const cliente_id = document.getElementById('v_cliente').value;
+  const marca = document.getElementById('v_marca').value.trim();
+  const modelo = document.getElementById('v_modelo').value.trim();
+  const patente = document.getElementById('v_patente').value.trim();
+
+  if (!cliente_id) { toast('Selecciona un propietario', 'error'); return; }
+  if (!marca) { toast('Ingresa la marca', 'error'); return; }
+
+  try {
+    const { error } = await sb.from('vehiculos').insert({ cliente_id, marca, modelo, patente });
+    if (error) throw error;
+    toast('Vehiculo registrado', 'success');
+    document.getElementById('v_marca').value = '';
+    document.getElementById('v_modelo').value = '';
+    document.getElementById('v_patente').value = '';
+    await loadVehiculos();
+  } catch (e) {
+    toast('Error: ' + e.message, 'error');
+  }
+}
+
+function eliminarVehiculo(id) {
+  showModal('Eliminar vehiculo', 'Se eliminara el vehiculo. Esta accion no se puede deshacer.', async () => {
+    try {
+      const { error } = await sb.from('vehiculos').delete().eq('id', id);
+      if (error) throw error;
+      toast('Vehiculo eliminado', 'success');
+      await loadVehiculos();
+    } catch (e) {
+      toast('Error: ' + e.message, 'error');
+    }
+  });
+}
+
+/* ═══════════════════════════════════════════════
+   CRUD: TURNOS / SERVICIOS
+   ═══════════════════════════════════════════════ */
+async function crearTurno() {
+  const clienteSel = document.getElementById('t_cliente_sel').value;
+  const servicio = document.getElementById('t_servicio').value;
+  const fecha = document.getElementById('t_fecha').value;
+
+  if (!servicio) { toast('Selecciona un servicio', 'error'); return; }
+
+  try {
+    let clienteId;
+
+    /* Cliente nuevo o existente */
+    if (clienteSel === '__nuevo') {
+      const nombre = document.getElementById('t_nombre').value.trim();
+      const telefono = document.getElementById('t_tel').value.trim();
+      if (!nombre) { toast('Ingresa el nombre del cliente', 'error'); return; }
+
+      const { data, error } = await sb.from('clientes').insert({ nombre, telefono }).select();
+      if (error) throw error;
+      clienteId = data[0].id;
+    } else if (clienteSel) {
+      clienteId = clienteSel;
+    } else {
+      toast('Selecciona o crea un cliente', 'error');
+      return;
+    }
+
+    /* Vehiculo nuevo o existente */
+    let vehiculoId;
+    const vehiculoSel = document.getElementById('t_vehiculo_sel').value;
+
+    if (clienteSel === '__nuevo' || vehiculoSel === '__nuevo') {
+      const marca = document.getElementById('t_marca').value.trim() || 'Sin marca';
+      const modelo = document.getElementById('t_modelo').value.trim() || '';
+      const { data, error } = await sb.from('vehiculos').insert({ cliente_id: clienteId, marca, modelo }).select();
+      if (error) throw error;
+      vehiculoId = data[0].id;
+    } else if (vehiculoSel) {
+      vehiculoId = vehiculoSel;
+    } else {
+      /* Si no selecciona vehiculo y no es nuevo, crear uno generico */
+      const { data, error } = await sb.from('vehiculos').insert({ cliente_id: clienteId, marca: 'Auto', modelo: '' }).select();
+      if (error) throw error;
+      vehiculoId = data[0].id;
+    }
+
+    /* Crear servicio */
+    const servicioData = { vehiculo_id: vehiculoId, tipo: servicio, estado: 'pendiente' };
+    if (fecha) servicioData.fecha = fecha;
+
+    const { error } = await sb.from('servicios').insert(servicioData);
+    if (error) throw error;
+
+    toast('Turno creado correctamente', 'success');
+
+    /* Limpiar form */
+    document.getElementById('t_cliente_sel').value = '';
+    document.getElementById('t_nombre').value = '';
+    document.getElementById('t_tel').value = '';
+    document.getElementById('t_vehiculo_sel').value = '';
+    document.getElementById('t_marca').value = '';
+    document.getElementById('t_modelo').value = '';
+    document.getElementById('t_nuevo_cliente_fields').style.display = 'none';
+    document.getElementById('t_nuevo_vehiculo_fields').style.display = 'none';
+
+    /* Recargar datos */
+    await Promise.all([loadClientes(), loadVehiculos(), loadServicios()]);
+
+  } catch (e) {
+    toast('Error: ' + e.message, 'error');
+  }
+}
+
+async function moverServicio(id, nuevoEstado) {
+  try {
+    const { error } = await sb.from('servicios').update({ estado: nuevoEstado }).eq('id', id);
+    if (error) throw error;
+    const labels = { pendiente: 'Pendiente', proceso: 'En proceso', terminado: 'Completado' };
+    toast('Servicio movido a ' + labels[nuevoEstado], 'success');
+    await loadServicios();
+  } catch (e) {
+    toast('Error: ' + e.message, 'error');
+  }
+}
+
+function eliminarServicio(id) {
+  showModal('Eliminar servicio', 'Se eliminara este servicio. Esta accion no se puede deshacer.', async () => {
+    try {
+      const { error } = await sb.from('servicios').delete().eq('id', id);
+      if (error) throw error;
+      toast('Servicio eliminado', 'success');
+      await loadServicios();
+    } catch (e) {
+      toast('Error: ' + e.message, 'error');
+    }
+  });
+}
+
+/* ═══════════════════════════════════════════════
+   CRUD: CAJA
+   ═══════════════════════════════════════════════ */
+async function crearCaja() {
+  const concepto = document.getElementById('cx_concepto').value.trim();
+  const monto = parseFloat(document.getElementById('cx_monto').value);
+  const tipo = document.getElementById('cx_tipo').value;
+
+  if (!concepto) { toast('Ingresa un concepto', 'error'); return; }
+  if (!monto || monto <= 0) { toast('Ingresa un monto valido', 'error'); return; }
+
+  try {
+    const { error } = await sb.from('caja').insert({ concepto, monto, tipo });
+    if (error) throw error;
+    toast((tipo === 'ingreso' ? 'Ingreso' : 'Egreso') + ' registrado', 'success');
+    document.getElementById('cx_concepto').value = '';
+    document.getElementById('cx_monto').value = '';
+    await loadCaja();
+  } catch (e) {
+    toast('Error: ' + e.message, 'error');
+  }
+}
+
+function eliminarCaja(id) {
+  showModal('Eliminar movimiento', 'Se eliminara este registro. Esta accion no se puede deshacer.', async () => {
+    try {
+      const { error } = await sb.from('caja').delete().eq('id', id);
+      if (error) throw error;
+      toast('Movimiento eliminado', 'success');
+      await loadCaja();
+    } catch (e) {
+      toast('Error: ' + e.message, 'error');
+    }
+  });
+}
+
+/* ═══════════════════════════════════════════════
+   INICIALIZACIÓN
+   ═══════════════════════════════════════════════ */
+(function init() {
+  /* Fecha en top bar */
+  const now = new Date();
+  const dias = ['Domingo','Lunes','Martes','Miercoles','Jueves','Viernes','Sabado'];
+  const meses = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+  document.getElementById('topDate').textContent = dias[now.getDay()] + ', ' + now.getDate() + ' de ' + meses[now.getMonth()] + ', ' + now.getFullYear();
+
+  /* Fecha default en turno */
+  document.getElementById('t_fecha').valueAsDate = now;
+
+  /* Cargar datos */
+  refreshAll();
+})();
 </script>
 
 </body>
