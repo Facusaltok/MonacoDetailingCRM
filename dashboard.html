@@ -1785,9 +1785,9 @@ try {
   toast('Certificado guardado', 'success');
   loadGarantias();
 
-} catch (err) {
-  console.error(err);
-  toast('Error al guardar certificado', 'error');
+catch (err) {
+  console.error("ERROR SUPABASE:", err);
+  alert(JSON.stringify(err));
 }
   try{
     const res=await sb.from('garantias').insert(payload);
