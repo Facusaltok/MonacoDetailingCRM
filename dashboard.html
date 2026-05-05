@@ -1787,7 +1787,7 @@ try {
 
 catch (err) {
   console.error("ERROR SUPABASE:", err);
-  alert(JSON.stringify(err));
+  toast(err.message || 'Error al guardar certificado', 'error');
 }
   try{
     const res=await sb.from('garantias').insert(payload);
