@@ -502,13 +502,13 @@ select.form-input {cursor:pointer;appearance:auto;}
           <div class="form-group"><label class="form-label">Marca / Rollo de PPF *</label><select id="g_ppf_marca" class="form-input" onchange="onPPFBrandChange()"><option value="">-- Seleccionar marca --</option></select></div>
           <div class="ppf-info-card" id="ppfInfoCard">
             <h4><i class="fa-solid fa-circle-info"></i> <span id="ppfInfoName">-</span></h4>
-            <p>Garantia producto: <span class="ppf-year-big" id="ppfInfoProdYears">-</span> anos | Garantia instalacion: <span class="ppf-year-big" id="ppfInfoInstYears">-</span> ano(s)</p>
+            <p>Garantia producto: <span class="ppf-year-big" id="ppfInfoProdYears">-</span> años | Garantia instalacion: <span class="ppf-year-big" id="ppfInfoInstYears">-</span> año(s)</p>
           </div>
           <div class="form-group"><label class="form-label">Codigo del producto</label><input id="g_codigo" class="form-input" placeholder="Ej: NG-CL-2025"></div>
           <div class="form-group"><label class="form-label">Fecha de instalacion *</label><input id="g_fecha" type="date" class="form-input"></div>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-            <div class="form-group"><label class="form-label">Garantia producto (anos)</label><input id="g_anios_prod" type="number" min="1" max="30" class="form-input" placeholder="10"></div>
-            <div class="form-group"><label class="form-label">Garantia instalacion (anos)</label><input id="g_anios_inst" type="number" min="0" max="30" class="form-input" placeholder="1"></div>
+            <div class="form-group"><label class="form-label">Garantia producto (años)</label><input id="g_anios_prod" type="number" min="1" max="30" class="form-input" placeholder="10"></div>
+            <div class="form-group"><label class="form-label">Garantia instalacion (años)</label><input id="g_anios_inst" type="number" min="0" max="30" class="form-input" placeholder="1"></div>
           </div>
           <div class="form-group"><label class="form-label">Responsable tecnico *</label><input id="g_responsable" class="form-input" placeholder="Nombre del responsable tecnico"></div>
           <button onclick="generarCertificado()" class="btn-gold" style="width:100%;justify-content:center;margin-top:4px;"><i class="fa-solid fa-shield-halved"></i> Generar Certificado</button>
@@ -1832,16 +1832,16 @@ function showCertificado(d){
   html+='</table>';
 
   html+='<h2>ALCANCE DE LA GARANTIA</h2>';
-  html+='<h3>Garantia por fallas del producto - '+prodWord+' ('+d.aniosProd+') anos</h3>';
-  html+='<p>Se otorga garantia de <strong>'+prodWord+' ('+d.aniosProd+') anos</strong> sobre el material PPF aplicado.</p>';
+  html+='<h3>Garantia por fallas del producto - '+prodWord+' ('+d.aniosProd+') años</h3>';
+  html+='<p>Se otorga garantia de <strong>'+prodWord+' ('+d.aniosProd+') años</strong> sobre el material PPF aplicado.</p>';
   html+='<p style="font-size:11px;color:#666;">Vencimiento: <strong>'+formatDateShort(vencProd)+'</strong></p>';
 
-  html+='<h3>Garantia por falla en la instalacion - '+instWord+' ('+d.aniosInst+') ano'+(d.aniosInst!==1 ? 's' : '')+'</h3>';
-  html+='<p>Se otorga garantia de <strong>'+instWord+' ('+d.aniosInst+') ano'+(d.aniosInst!==1 ? 's' : '')+'</strong> por defectos derivados de la instalacion.</p>';
+  html+='<h3>Garantia por falla en la instalacion - '+instWord+' ('+d.aniosInst+') año'+(d.aniosInst!==1 ? 's' : '')+'</h3>';
+  html+='<p>Se otorga garantia de <strong>'+instWord+' ('+d.aniosInst+') año'+(d.aniosInst!==1 ? 's' : '')+'</strong> por defectos derivados de la instalacion.</p>';
   html+='<p style="font-size:11px;color:#666;">Vencimiento: <strong>'+formatDateShort(vencInst)+'</strong></p>';
 
   html+='<h2>EXCLUSIONES DE LA GARANTIA</h2>';
-  html+='<p>La presente garantia NO cubre danos por golpes, rayones, impactos, vandalismo o accidentes.</p>';
+  html+='<p>La presente garantia NO cubre daños por golpes, rayones, impactos, vandalismo o accidentes.</p>';
 
   html+='<div class="cert-sig-area">';
   html+='<div class="cert-sig-block">';
