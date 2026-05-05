@@ -512,6 +512,7 @@ select.form-input {cursor:pointer;appearance:auto;}
           </div>
           <div class="form-group"><label class="form-label">Responsable tecnico *</label><input id="g_responsable" class="form-input" placeholder="Nombre del responsable tecnico"></div>
           <button onclick="generarCertificado()" class="btn-gold" style="width:100%;justify-content:center;margin-top:4px;"><i class="fa-solid fa-shield-halved"></i> Generar Certificado</button>
+          
         </div>
         <div class="card"><div class="card-title"><i class="fa-solid fa-scroll"></i> Certificados Generados</div><div id="listaGarantias"><div class="empty-state"><i class="fa-solid fa-shield-halved"></i><p>No hay certificados generados</p></div></div></div>
       </div>
@@ -1767,7 +1768,27 @@ async function generarCertificado(){
     garantia_instalacion_anios:aniosInst,
     responsable_tecnico:responsable
   };
+try {
+  const { error } = await sb.from('garantias').insert([{
+    cliente_id: clienteId,
+    vehiculo_id: vehiculoId,
+    ppf_marca: ppfId,
+    codigo_producto: codigo,
+    fecha_instalacion: fecha,
+    garantia_producto_anios: aniosProdRaw,
+    garantia_instalacion_anios: aniosInstRaw,
+    responsable_tecnico: responsable
+  }]);
 
+  if (error) throw error;
+
+  toast('Certificado guardado', 'success');
+  loadGarantias();
+
+} catch (err) {
+  console.error(err);
+  toast('Error al guardar certificado', 'error');
+}
   try{
     const res=await sb.from('garantias').insert(payload);
     if(res.error) console.warn('[garantias] No se guardo:',res.error.message);
