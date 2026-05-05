@@ -1843,19 +1843,7 @@ function showCertificado(d){
   html+='<h2>EXCLUSIONES DE LA GARANTIA</h2>';
   html+='<p>La presente garantia NO cubre daños por golpes, rayones, impactos, vandalismo o accidentes.</p>';
 
-  html+='<div class="cert-sig-area">';
-  html+='<div class="cert-sig-block">';
-  html+='<div class="cert-sig-label">Firma del responsable tecnico - Monaco Detailing</div>';
-  html+='<div class="cert-sig-line"></div>';
-  html+='<div class="cert-sig-name">'+esc(d.responsable)+'</div>';
-  html+='</div>';
-  html+='<div class="cert-sig-block">';
-  html+='<div class="cert-sig-label">Firma del cliente</div>';
-  html+='<div class="cert-sig-line"></div>';
-  html+='<div class="cert-sig-name">'+esc(d.clienteNombre)+'</div>';
-  html+='</div></div>';
-
-  html+='<div class="cert-footer-note">Documento emitido por Monaco Detailing</div>';
+  html+='<div class="cert-footer-note">Documento oficial emitido por Monaco Detailing</div>';
   html+='</div>';
 
   document.getElementById('certContent').innerHTML=html;
