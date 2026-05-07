@@ -1768,6 +1768,21 @@ async function generarCertificado(){
     garantia_instalacion_anios:aniosInst,
     responsable_tecnico:responsable
   };
+const payload={
+  numero:certNum,
+  cliente_id:clienteId,
+  cliente_nombre:cli?.nombre||'',
+  vehiculo_id:vehiculoId,
+  vehiculo_desc:vehDesc,
+  vehiculo_patente:vehPatente,
+  ppf_marca:brand.name,
+  ppf_codigo:codigo,
+  fecha_instalacion:fecha,
+  garantia_producto_anios:aniosProd,
+  garantia_instalacion_anios:aniosInst,
+  responsable_tecnico:responsable
+};
+
 try{
   const res = await sb.from('garantias').insert(payload);
 
@@ -1784,34 +1799,21 @@ try{
   toast(e.message || 'Error BD','error');
 }
 
-} catch (err) {
-  console.error(err);
-  toast('Error al guardar', 'error');
-}
-  try{
-    const res=await sb.from('garantias').insert(payload);
-    if(res.error) console.warn('[garantias] No se guardo:',res.error.message);
-    else await loadGarantias();
-  }catch(e){
-    console.warn('[garantias] Error BD:',e);
-  }
+showCertificado({
+  certNum:certNum,
+  clienteNombre:cli?.nombre||'',
+  clienteTel:cli?.telefono||'',
+  vehDesc:vehDesc,
+  vehPatente:vehPatente,
+  ppfMarca:brand.name,
+  codigo:codigo,
+  fecha:fecha,
+  aniosProd:aniosProd,
+  aniosInst:aniosInst,
+  responsable:responsable
+});
 
-  showCertificado({
-    certNum:certNum,
-    clienteNombre:cli?.nombre||'',
-    clienteTel:cli?.telefono||'',
-    vehDesc:vehDesc,
-    vehPatente:vehPatente,
-    ppfMarca:brand.name,
-    codigo:codigo,
-    fecha:fecha,
-    aniosProd:aniosProd,
-    aniosInst:aniosInst,
-    responsable:responsable
-  });
-
-  toast('Certificado generado','success');
-}
+toast('Certificado generado','success');
 
 // MOSTRAR CERTIFICADO
 function showCertificado(d){
