@@ -514,9 +514,32 @@ select.form-input {cursor:pointer;appearance:auto;}
           <button onclick="generarCertificado()" class="btn-gold" style="width:100%;justify-content:center;margin-top:4px;"><i class="fa-solid fa-shield-halved"></i> Generar Certificado</button>
           
         </div>
-        <div class="card"><div class="card-title"><i class="fa-solid fa-scroll"></i> Certificados Generados</div><div id="listaGarantias"><div class="empty-state"><i class="fa-solid fa-shield-halved"></i><p>No hay certificados generados</p></div></div></div>
-      </div>
+       <div class="card">
+
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;gap:10px;flex-wrap:wrap;">
+
+    <div class="card-title" style="margin-bottom:0;">
+      <i class="fa-solid fa-scroll"></i> Certificados Generados
     </div>
+
+    <div style="display:flex;gap:8px;width:100%;max-width:420px;">
+
+      <input 
+        id="buscarGarantiaInput"
+        class="form-input"
+        placeholder="Buscar N° certificado..."
+        oninput="buscarGarantia()"
+      >
+
+      <button class="btn-gold" onclick="buscarGarantia()">
+        <i class="fa-solid fa-magnifying-glass"></i>
+      </button>
+
+    </div>
+
+  </div>
+
+  <div id="listaGarantias">
 
     <!-- CAJA -->
     <div class="tab-section" id="sec-caja">
