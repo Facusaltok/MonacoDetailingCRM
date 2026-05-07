@@ -1855,11 +1855,12 @@ async function generarCertificado(){
 
   const certNum='MON-GAR-'+Date.now().toString(36).toUpperCase();
 
-  const payload={
-    numero:certNum,
-    cliente_id:clienteId,
-    cliente_nombre:cli?.nombre||'',
-    vehiculo_id:vehiculoId,
+const payload={
+  numero:certNum,
+  cliente_id:clienteId,
+  cliente_nombre:cli?.nombre||'',
+  cliente_telefono: cli?.telefono || '',
+  vehiculo_id:vehiculoId,
     vehiculo_desc:vehDesc,
     vehiculo_patente:vehPatente,
     ppf_marca:brand.name,
@@ -2014,7 +2015,7 @@ function reimprimirGarantia(id){
   showCertificado({
     certNum:g.numero||'-',
     clienteNombre:g.cliente_nombre||'',
-    clienteTel:'',
+   clienteTel:g.cliente_telefono||'',
     vehDesc:g.vehiculo_desc||'',
     vehPatente:g.vehiculo_patente||'',
     ppfMarca:g.ppf_marca||'',
