@@ -1841,17 +1841,46 @@ html+='<p style="text-align:justify; line-height:1.7; color:#444;">Por el presen
   html+='<tr><td>Codigo del producto</td><td>'+esc(d.codigo||'-')+'</td></tr>';
   html+='</table>';
 
-  html+='<h2>ALCANCE DE LA GARANTIA</h2>';
-  html+='<h3>Garantia por fallas del producto - '+prodWord+' ('+d.aniosProd+') años</h3>';
-  html+='<p>Se otorga garantia de <strong>'+prodWord+' ('+d.aniosProd+') años</strong> sobre el material PPF aplicado.</p>';
-  html+='<p style="font-size:11px;color:#666;">Vencimiento: <strong>'+formatDateShort(vencProd)+'</strong></p>';
+html+='<h2>ALCANCE DE LA GARANTIA</h2>';
 
-  html+='<h3>Garantia por falla en la instalacion - '+instWord+' ('+d.aniosInst+') año'+(d.aniosInst!==1 ? 's' : '')+'</h3>';
-  html+='<p>Se otorga garantia de <strong>'+instWord+' ('+d.aniosInst+') año'+(d.aniosInst!==1 ? 's' : '')+'</strong> por defectos derivados de la instalacion.</p>';
-  html+='<p style="font-size:11px;color:#666;">Vencimiento: <strong>'+formatDateShort(vencInst)+'</strong></p>';
+html+='<h3>Garantia por fallas del producto - '+prodWord+' ('+d.aniosProd+') años</h3>';
 
-  html+='<h2>EXCLUSIONES DE LA GARANTIA</h2>';
-  html+='<p>La presente garantia NO cubre daños por golpes, rayones, impactos, vandalismo o accidentes.</p>';
+html+='<p style="text-align:justify; line-height:1.7;">Se otorga garantia de <strong>'+prodWord+' ('+d.aniosProd+') años</strong> sobre el material PPF aplicado, la cual cubre exclusivamente defectos de fabricacion del producto tales como:</p>';
+
+html+='<ul style="line-height:1.7; padding-left:20px;">';
+html+='<li>Amarilleo prematuro del film.</li>';
+html+='<li>Agrietamiento o cuarteo del material.</li>';
+html+='<li>Deslaminacion del film.</li>';
+html+='<li>Perdida anormal de propiedades del PPF atribuibles al fabricante.</li>';
+html+='</ul>';
+
+html+='<p style="text-align:justify; line-height:1.7;">Esta garantia queda sujeta a las condiciones de uso y mantenimiento recomendadas por Monaco Detailing y por el fabricante del PPF.</p>';
+
+html+='<p style="font-size:11px;color:#666;">Vencimiento: <strong>'+formatDateShort(vencProd)+'</strong></p>';
+
+html+='<h3>Garantia por falla en la instalacion - '+instWord+' ('+d.aniosInst+') año'+(d.aniosInst!==1 ? 's' : '')+'</h3>';
+
+html+='<p style="text-align:justify; line-height:1.7;">Se otorga garantia de <strong>'+instWord+' ('+d.aniosInst+') año'+(d.aniosInst!==1 ? 's' : '')+'</strong> por defectos derivados de la instalacion del PPF, la cual cubre:</p>';
+
+html+='<ul style="line-height:1.7; padding-left:20px;">';
+html+='<li>Despegues del film atribuibles a una incorrecta aplicacion.</li>';
+html+='<li>Levantamientos de bordes o burbujas generadas por la instalacion.</li>';
+html+='<li>Fallas de adherencia no relacionadas con golpes, impactos o uso indebido.</li>';
+html+='</ul>';
+
+html+='<p style="font-size:11px;color:#666;">Vencimiento: <strong>'+formatDateShort(vencInst)+'</strong></p>';
+
+html+='<h2>EXCLUSIONES DE LA GARANTIA</h2>';
+
+html+='<p style="text-align:justify; line-height:1.7;">La presente garantia NO cubre:</p>';
+
+html+='<ul style="line-height:1.7; padding-left:20px;">';
+html+='<li>Daños ocasionados por golpes, rayones, impactos, vandalismo o accidentes.</li>';
+html+='<li>Daños provocados por lavado inadecuado o uso de productos abrasivos o corrosivos.</li>';
+html+='<li>Daños derivados de condiciones extremas o uso indebido del vehiculo.</li>';
+html+='<li>Alteraciones, reparaciones o intervenciones sobre el PPF realizadas por terceros ajenos a Monaco Detailing.</li>';
+html+='<li>Contaminacion quimica, manchas por excremento de aves, savia de arboles o agentes corrosivos no removidos a tiempo.</li>';
+html+='</ul>';
 
   html+='<div class="cert-footer-note">Documento oficial emitido por Monaco Detailing</div>';
   html+='</div>';
