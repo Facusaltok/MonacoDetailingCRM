@@ -1784,19 +1784,19 @@ const payload={
 };
 
 try{
-  const res = await sb.from('garantias').insert(payload);
+  const res = await sb.from('garantias').insert([payload]);
 
   if(res.error){
-    console.warn('[garantias] No se guardo:', res.error.message);
-    toast(res.error.message,'error');
+    console.error(res.error);
+    toast('Error al guardar: ' + res.error.message,'error');
   } else {
     await loadGarantias();
     toast('Certificado guardado','success');
   }
 
 }catch(e){
-  console.warn('[garantias] Error BD:',e);
-  toast(e.message || 'Error BD','error');
+  console.error(e);
+  toast('Error BD','error');
 }
 
 showCertificado({
