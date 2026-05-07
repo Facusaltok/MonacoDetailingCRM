@@ -1768,22 +1768,23 @@ async function generarCertificado(){
     garantia_instalacion_anios:aniosInst,
     responsable_tecnico:responsable
   };
-try{
-  const res = await sb.from('garantias').insert([payload]);
 
-  if(res.error){
-    console.error(res.error);
-    toast('Error al guardar: ' + res.error.message,'error');
-  } else {
-    await loadGarantias();
-    toast('Certificado guardado','success');
+  try{
+    const res = await sb.from('garantias').insert([payload]);
+
+    if(res.error){
+      console.error(res.error);
+      toast('Error al guardar: ' + res.error.message,'error');
+    } else {
+      await loadGarantias();
+      toast('Certificado guardado','success');
+    }
+
+  }catch(e){
+    console.error(e);
+    toast('Error BD','error');
   }
 
-}catch(e){
-  console.error(e);
-  toast('Error BD','error');
-}
-  
   showCertificado({
     certNum:certNum,
     clienteNombre:cli?.nombre||'',
@@ -1800,6 +1801,8 @@ try{
 
   toast('Certificado generado','success');
 }
+  
+
 
 // MOSTRAR CERTIFICADO
 function showCertificado(d){
