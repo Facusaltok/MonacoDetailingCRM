@@ -909,6 +909,7 @@ function showCajaBanner(err){
 }
 
 async function loadGarantias(){
+  
   try{
     let q=sb.from('garantias').select('*');
     q=maybeOrder(q,'garantias','created_at',false);
@@ -930,6 +931,71 @@ async function loadGarantias(){
     garantias=[];
   }
   renderGarantias();
+}
+  function buscarGarantia(){
+
+  const txt = document
+    .getElementById('buscarGarantiaInput')
+    .value
+    .trim()
+    .toUpperCase();
+
+  const el = document.getElementById('listaGarantias');
+
+  if(!txt){
+    renderGarantias();
+    return;
+  }
+
+  const filtradas = garantias.filter(function(g){
+
+    return (
+      (g.numero || '')
+      .toUpperCase()
+      .includes(txt)
+    );
+
+  });
+
+  if(!filtradas.length){
+
+    el.innerHTML = `
+      <div class="empty-state">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <p>No se encontraron certificados</p>
+      </div>
+    `;
+
+    return;
+  }
+
+  let html='';
+
+  filtradas.forEach(function(g){
+
+    html += `
+      <div class="garantia-item">
+
+        <div>
+          <strong>${g.numero || '-'}</strong>
+          <div style="font-size:13px;color:#999;">
+            ${g.cliente_nombre || '-'}
+          </div>
+        </div>
+
+        <button 
+          class="btn-sm btn-gold"
+          onclick="reimprimirGarantia('${g.id}')"
+        >
+          <i class="fa-solid fa-print"></i>
+        </button>
+
+      </div>
+    `;
+
+  });
+
+  el.innerHTML = html;
 }
 
 async function refreshAll(){
