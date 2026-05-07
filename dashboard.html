@@ -2015,7 +2015,7 @@ function reimprimirGarantia(id){
   showCertificado({
     certNum:g.numero||'-',
     clienteNombre:g.cliente_nombre||'',
-   clienteTel:g.cliente_telefono||'',
+   clienteTel:g.cliente_telefono ?? '',
     vehDesc:g.vehiculo_desc||'',
     vehPatente:g.vehiculo_patente||'',
     ppfMarca:g.ppf_marca||'',
