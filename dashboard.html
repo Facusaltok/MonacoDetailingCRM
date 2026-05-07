@@ -1768,52 +1768,51 @@ async function generarCertificado(){
     garantia_instalacion_anios:aniosInst,
     responsable_tecnico:responsable
   };
-const payload={
-  numero:certNum,
-  cliente_id:clienteId,
-  cliente_nombre:cli?.nombre||'',
-  vehiculo_id:vehiculoId,
-  vehiculo_desc:vehDesc,
-  vehiculo_patente:vehPatente,
-  ppf_marca:brand.name,
-  ppf_codigo:codigo,
-  fecha_instalacion:fecha,
-  garantia_producto_anios:aniosProd,
-  garantia_instalacion_anios:aniosInst,
-  responsable_tecnico:responsable
-};
+try {
+  const { error } = await sb.from('garantias').insert([{
+    cliente_id: clienteId,
+    vehiculo_id: vehiculoId,
+    ppf_marca: ppfId,
+    codigo_producto: codigo,
+    fecha_instalacion: fecha,
+    garantia_producto_anios: aniosProdRaw,
+    garantia_instalacion_anios: aniosInstRaw,
+    responsable_tecnico: responsable
+  }]);
 
-try{
-  const res = await sb.from('garantias').insert([payload]);
+  if (error) throw error;
 
-  if(res.error){
-    console.error(res.error);
-    toast('Error al guardar: ' + res.error.message,'error');
-  } else {
-    await loadGarantias();
-    toast('Certificado guardado','success');
+  toast('Certificado guardado', 'success');
+  loadGarantias();
+
+} catch (err) {
+  console.error(err);
+  toast('Error al guardar', 'error');
+}
+  try{
+    const res=await sb.from('garantias').insert(payload);
+    if(res.error) console.warn('[garantias] No se guardo:',res.error.message);
+    else await loadGarantias();
+  }catch(e){
+    console.warn('[garantias] Error BD:',e);
   }
 
-}catch(e){
-  console.error(e);
-  toast('Error BD','error');
+  showCertificado({
+    certNum:certNum,
+    clienteNombre:cli?.nombre||'',
+    clienteTel:cli?.telefono||'',
+    vehDesc:vehDesc,
+    vehPatente:vehPatente,
+    ppfMarca:brand.name,
+    codigo:codigo,
+    fecha:fecha,
+    aniosProd:aniosProd,
+    aniosInst:aniosInst,
+    responsable:responsable
+  });
+
+  toast('Certificado generado','success');
 }
-
-showCertificado({
-  certNum:certNum,
-  clienteNombre:cli?.nombre||'',
-  clienteTel:cli?.telefono||'',
-  vehDesc:vehDesc,
-  vehPatente:vehPatente,
-  ppfMarca:brand.name,
-  codigo:codigo,
-  fecha:fecha,
-  aniosProd:aniosProd,
-  aniosInst:aniosInst,
-  responsable:responsable
-});
-
-toast('Certificado generado','success');
 
 // MOSTRAR CERTIFICADO
 function showCertificado(d){
