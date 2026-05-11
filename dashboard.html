@@ -368,6 +368,8 @@ select.form-input {cursor:pointer;appearance:auto;}
 .lightbox-nav:hover {background:rgba(255,255,255,0.2);}
 .lightbox-prev {left:-60px;}
 .lightbox-next {right:-60px;}
+.lightbox-download {position:absolute;top:-40px;right:50px;background:var(--primary);color:#000;border:none;padding:8px 16px;border-radius:8px;font-weight:700;font-size:12px;cursor:pointer;display:flex;align-items:center;gap:6px;transition:all 0.2s;}
+.lightbox-download:hover {box-shadow:0 4px 15px rgba(16,185,129,0.3);transform:translateY(-1px);}
 
 @media(max-width:1024px){
   .sidebar {transform:translateX(-100%);}
@@ -672,6 +674,7 @@ select.form-input {cursor:pointer;appearance:auto;}
 <div class="lightbox-overlay" id="lightboxOverlay" onclick="closeLightbox()">
   <div class="lightbox-content" onclick="event.stopPropagation()">
     <button class="lightbox-close" onclick="closeLightbox()"><i class="fa-solid fa-xmark"></i></button>
+    <button class="lightbox-download" id="lightboxDownloadBtn" onclick="descargarArchivoActual()"><i class="fa-solid fa-download"></i> Descargar</button>
     <button class="lightbox-nav lightbox-prev" onclick="lightboxPrev()"><i class="fa-solid fa-chevron-left"></i></button>
     <button class="lightbox-nav lightbox-next" onclick="lightboxNext()"><i class="fa-solid fa-chevron-right"></i></button>
     <div id="lightboxMedia"></div>
@@ -699,6 +702,7 @@ let cajaMode = 'trabajo';
 let pendingFiles = [];
 let currentLightboxIndex = 0;
 let currentLightboxItems = [];
+let currentLightboxFiltro = '';
 
 // CONFIG PPF
 const ppfBrands = [
@@ -842,35 +846,24 @@ async function loadGarantias(){
   renderGarantias();
 }
 
-// ============================================
-// GALERIA - LOAD (CORREGIDO)
-// ============================================
+// GALERIA - LOAD
 async function loadGaleria(){
-  // Siempre cargar primero de localStorage
   const localData = JSON.parse(localStorage.getItem('monaco_galeria')||'[]');
   
   try{
     const res = await sb.from('galeria').select('*');
     
-    // Si hay error de permisos o tabla no existe, usar solo localStorage
     if(res.error){
       console.log('Supabase galeria error, usando localStorage:', res.error.message);
       galeria = localData;
     } else {
-      // Si Supabase funciona, combinar datos
       const supabaseData = res.data || [];
       
       if(supabaseData.length > 0){
-        // Crear Set de IDs que ya estan en Supabase
         const supabaseIds = new Set(supabaseData.map(g => g.id));
-        
-        // Filtrar items de localStorage que NO estan en Supabase
         const onlyLocalItems = localData.filter(g => !supabaseIds.has(g.id));
-        
-        // Combinar: Supabase primero + items que solo estan en localStorage
         galeria = [...supabaseData, ...onlyLocalItems];
       } else {
-        // Supabase vacio, usar localStorage
         galeria = localData;
       }
     }
@@ -879,7 +872,6 @@ async function loadGaleria(){
     galeria = localData;
   }
   
-  // Siempre actualizar localStorage con lo que tengamos
   if(galeria.length > 0){
     localStorage.setItem('monaco_galeria', JSON.stringify(galeria));
   }
@@ -1507,9 +1499,7 @@ function renderUploadPreview(){
 
 function clearPendingFiles(){ pendingFiles=[]; document.getElementById('gal_files').value=''; document.getElementById('uploadPreview').innerHTML=''; }
 
-// ============================================
-// GALERIA - SUBIR (CORREGIDO)
-// ============================================
+// GALERIA - SUBIR
 async function subirArchivos(){
   const vehiculo_id=document.getElementById('gal_vehiculo').value;
   const descripcion=document.getElementById('gal_descripcion').value.trim();
@@ -1525,7 +1515,6 @@ async function subirArchivos(){
     if(file.size>20*1024*1024){ toast('Archivo muy grande: '+file.name,'error'); continue; }
     
     try{
-      // Convertir a base64
       const fileData=await new Promise(function(resolve,reject){
         const reader=new FileReader();
         reader.onload=function(e){ resolve(e.target.result); };
@@ -1543,20 +1532,13 @@ async function subirArchivos(){
         created_at: new Date().toISOString()
       };
       
-      // Agregar al array en memoria
       galeria.unshift(registro);
-      
-      // GUARDAR EN LOCALSTORAGE INMEDIATAMENTE (esto asegura persistencia)
       localStorage.setItem('monaco_galeria', JSON.stringify(galeria));
       
-      // Intentar guardar en Supabase (si la tabla existe y tiene permisos)
       try{
-        const supabaseRes = await sb.from('galeria').insert([registro]);
-        if(supabaseRes.error){
-          console.log('Supabase no disponible para galeria:', supabaseRes.error.message);
-        }
+        await sb.from('galeria').insert([registro]);
       }catch(dbErr){
-        console.log('Error guardando en Supabase, usando localStorage');
+        console.log('Supabase no disponible para galeria');
       }
       
       successCount++;
@@ -1586,13 +1568,17 @@ function renderGaleria(){
     html+='<div class="gallery-item" onclick="openLightbox('+i+',\''+filtro+'\')"><span class="gallery-item-type '+g.tipo+'">'+(isVideo?'VIDEO':'IMAGEN')+'</span>';
     if(isVideo){ html+='<video muted style="width:100%;height:100%;object-fit:cover;"><source src="'+esc(g.url)+'" type="video/mp4"></video>'; }
     else{ html+='<img src="'+esc(g.url)+'" alt="'+esc(g.nombre||'')+'">'; }
-    html+='<div class="gallery-item-overlay"><div class="gallery-item-actions"><button class="btn-sm btn-rose" onclick="event.stopPropagation();eliminarGaleriaItem(\''+g.id+'\')"><i class="fa-solid fa-trash"></i></button></div></div></div>';
+    html+='<div class="gallery-item-overlay"><div class="gallery-item-actions">';
+    html+='<button class="btn-sm btn-emerald" onclick="event.stopPropagation();descargarArchivo(\''+g.id+'\')"><i class="fa-solid fa-download"></i></button>';
+    html+='<button class="btn-sm btn-rose" onclick="event.stopPropagation();eliminarGaleriaItem(\''+g.id+'\')"><i class="fa-solid fa-trash"></i></button>';
+    html+='</div></div></div>';
   }
   html+='</div>';
   el.innerHTML=html;
 }
 
 function openLightbox(index,filtro){
+  currentLightboxFiltro=filtro;
   let filtered=galeria;
   if(filtro){ filtered=galeria.filter(function(g){ return g.vehiculo_id===filtro; }); }
   currentLightboxItems=filtered;
@@ -1622,6 +1608,36 @@ function closeLightbox(){
 
 function lightboxPrev(){ if(currentLightboxIndex>0){ currentLightboxIndex--; renderLightboxItem(); } }
 function lightboxNext(){ if(currentLightboxIndex<currentLightboxItems.length-1){ currentLightboxIndex++; renderLightboxItem(); } }
+
+// ============================================
+// DESCARGA DE ARCHIVOS
+// ============================================
+function descargarArchivo(id){
+  const item=galeria.find(function(g){ return g.id===id; });
+  if(!item){ toast('Archivo no encontrado','error'); return; }
+  
+  const link=document.createElement('a');
+  link.href=item.url;
+  link.download=item.nombre||('archivo_'+item.id+'.'+(item.tipo==='video'?'mp4':'jpg'));
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  toast('Descargando '+item.nombre,'success');
+}
+
+function descargarArchivoActual(){
+  if(!currentLightboxItems.length || currentLightboxIndex<0) return;
+  const item=currentLightboxItems[currentLightboxIndex];
+  if(!item){ toast('No hay archivo para descargar','error'); return; }
+  
+  const link=document.createElement('a');
+  link.href=item.url;
+  link.download=item.nombre||('archivo_'+item.id+'.'+(item.tipo==='video'?'mp4':'jpg'));
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  toast('Descargando '+item.nombre,'success');
+}
 
 document.addEventListener('keydown',function(e){
   if(!document.getElementById('lightboxOverlay').classList.contains('show')) return;
