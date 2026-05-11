@@ -1470,191 +1470,367 @@ function buscarGarantia(){
 }
 
 // ============================================
+// ============================================
 // GALERIA FUNCTIONS
 // ============================================
-function handleFileSelect(e){ pendingFiles=Array.from(e.target.files); renderUploadPreview(); }
-
-function renderUploadPreview(){
-  const el=document.getElementById('uploadPreview');
-  if(!pendingFiles.length){ el.innerHTML=''; return; }
-  let html='<div style="font-size:11px;color:var(--text-secondary);margin-bottom:8px;">'+pendingFiles.length+' archivo(s) seleccionado(s)</div><div style="display:flex;flex-wrap:wrap;gap:8px;">';
-  for(let i=0;i<pendingFiles.length;i++){
-    const f=pendingFiles[i];
-    const isVideo=f.type.startsWith('video/');
-    const size=(f.size/1024/1024).toFixed(1);
-    if(isVideo){
-      html+='<div style="width:70px;height:70px;border-radius:8px;background:rgba(59,130,246,0.1);display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:10px;color:var(--text-secondary);border:1px solid var(--border);"><i class="fa-solid fa-video" style="font-size:18px;color:var(--blue);margin-bottom:4px;"></i><span style="overflow:hidden;text-overflow:ellipsis;max-width:60px;text-align:center;">'+esc(f.name)+'</span><span style="color:var(--text-muted);">'+size+'MB</span></div>';
-    }else{
-      html+='<div style="width:70px;height:70px;border-radius:8px;overflow:hidden;border:1px solid var(--border);position:relative;"><img id="preview-'+i+'" style="width:100%;height:100%;object-fit:cover;"></div>';
-      (function(idx,file){
-        const reader=new FileReader();
-        reader.onload=function(ev){ const img=document.getElementById('preview-'+idx); if(img) img.src=ev.target.result; };
-        reader.readAsDataURL(file);
-      })(i,f);
-    }
-  }
-  html+='</div><button class="btn-ghost" style="margin-top:10px;font-size:11px;" onclick="clearPendingFiles()"><i class="fa-solid fa-xmark"></i> Limpiar</button>';
-  el.innerHTML=html;
+function handleFileSelect(e){ 
+  pendingFiles = Array.from(e.target.files); 
+  renderUploadPreview(); 
 }
 
-function clearPendingFiles(){ pendingFiles=[]; document.getElementById('gal_files').value=''; document.getElementById('uploadPreview').innerHTML=''; }
-
-// GALERIA - SUBIR
-async function subirArchivos(){
-  const vehiculo_id=document.getElementById('gal_vehiculo').value;
-  const descripcion=document.getElementById('gal_descripcion').value.trim();
-  if(!vehiculo_id){ toast('Selecciona un vehiculo','error'); return; }
-  if(!pendingFiles.length){ toast('Selecciona archivos para subir','error'); return; }
-  if(pendingFiles.length>10){ toast('Maximo 10 archivos a la vez','error'); return; }
+function renderUploadPreview(){
+  const el = document.getElementById('uploadPreview');
+  if(!pendingFiles.length){ el.innerHTML = ''; return; }
   
-  let successCount=0;
+  let html = '<div style="font-size:11px;color:var(--text-secondary);margin-bottom:8px;">' + pendingFiles.length + ' archivo(s) seleccionado(s)</div><div style="display:flex;flex-wrap:wrap;gap:8px;">';
   
-  for(let i=0;i<pendingFiles.length;i++){
-    const file=pendingFiles[i];
-    const isVideo=file.type.startsWith('video/');
-    if(file.size>20*1024*1024){ toast('Archivo muy grande: '+file.name,'error'); continue; }
+  for(let i = 0; i < pendingFiles.length; i++){
+    const f = pendingFiles[i];
+    const isVideo = f.type.startsWith('video/');
+    const size = (f.size / 1024 / 1024).toFixed(1);
     
-    try{
-      const fileData=await new Promise(function(resolve,reject){
-        const reader=new FileReader();
-        reader.onload=function(e){ resolve(e.target.result); };
-        reader.onerror=reject;
+    if(isVideo){
+      html += '<div style="width:70px;height:70px;border-radius:8px;background:rgba(59,130,246,0.1);display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:10px;color:var(--text-secondary);border:1px solid var(--border);"><i class="fa-solid fa-video" style="font-size:18px;color:var(--blue);margin-bottom:4px;"></i><span style="overflow:hidden;text-overflow:ellipsis;max-width:60px;text-align:center;">' + esc(f.name) + '</span><span style="color:var(--text-muted);">' + size + 'MB</span></div>';
+    } else {
+      html += '<div style="width:70px;height:70px;border-radius:8px;overflow:hidden;border:1px solid var(--border);position:relative;"><img id="preview-' + i + '" style="width:100%;height:100%;object-fit:cover;"></div>';
+      (function(idx, file){
+        const reader = new FileReader();
+        reader.onload = function(ev){ 
+          const img = document.getElementById('preview-' + idx); 
+          if(img) img.src = ev.target.result; 
+        };
         reader.readAsDataURL(file);
-      });
+      })(i, f);
+    }
+  }
+  
+  html += '</div><button class="btn-ghost" style="margin-top:10px;font-size:11px;" onclick="clearPendingFiles()"><i class="fa-solid fa-xmark"></i> Limpiar</button>';
+  el.innerHTML = html;
+}
+
+function clearPendingFiles(){ 
+  pendingFiles = []; 
+  document.getElementById('gal_files').value = ''; 
+  document.getElementById('uploadPreview').innerHTML = ''; 
+}
+
+// GALERIA - SUBIR A SUPABASE STORAGE
+async function subirArchivos(){
+  const vehiculo_id = document.getElementById('gal_vehiculo').value;
+  const descripcion = document.getElementById('gal_descripcion').value.trim();
+  
+  if(!vehiculo_id){ 
+    toast('Selecciona un vehiculo', 'error'); 
+    return; 
+  }
+  if(!pendingFiles.length){ 
+    toast('Selecciona archivos para subir', 'error'); 
+    return; 
+  }
+  if(pendingFiles.length > 10){ 
+    toast('Maximo 10 archivos a la vez', 'error'); 
+    return; 
+  }
+  
+  let successCount = 0;
+  let errorCount = 0;
+  
+  // Mostrar indicador de carga
+  const uploadBtn = document.querySelector('button[onclick="subirArchivos()"]');
+  const originalText = uploadBtn.innerHTML;
+  uploadBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Subiendo...';
+  uploadBtn.disabled = true;
+  
+  for(let i = 0; i < pendingFiles.length; i++){
+    const file = pendingFiles[i];
+    const isVideo = file.type.startsWith('video/');
+    
+    // Validar tamaño (20MB max)
+    if(file.size > 20 * 1024 * 1024){ 
+      toast('Archivo muy grande: ' + file.name + ' (max 20MB)', 'error'); 
+      errorCount++;
+      continue; 
+    }
+    
+    try {
+      // Generar nombre único para el archivo
+      const fileExt = file.name.split('.').pop().toLowerCase();
+      const fileName = Date.now() + '_' + Math.random().toString(36).substr(2, 9) + '.' + fileExt;
+      const filePath = vehiculo_id + '/' + fileName;
       
-      const registro={
-        id: Date.now().toString()+'_'+Math.random().toString(36).substr(2,9),
+      // Subir a Supabase Storage
+      const { data: uploadData, error: uploadError } = await sb.storage
+        .from('galeria')
+        .upload(filePath, file, {
+          cacheControl: '3600',
+          upsert: false
+        });
+      
+      if(uploadError){
+        console.error('Error subiendo a Storage:', uploadError);
+        
+        // Si el bucket no existe, mostrar mensaje
+        if(uploadError.message && uploadError.message.includes('Bucket not found')){
+          toast('Bucket "galeria" no existe. Crea el bucket en Supabase Storage.', 'error');
+          errorCount++;
+          continue;
+        }
+        
+        toast('Error al subir: ' + file.name, 'error');
+        errorCount++;
+        continue;
+      }
+      
+      // Obtener URL pública
+      const { data: urlData } = sb.storage
+        .from('galeria')
+        .getPublicUrl(filePath);
+      
+      const publicUrl = urlData.publicUrl;
+      
+      // Crear registro en la tabla galeria
+      const registro = {
+        id: Date.now().toString() + '_' + Math.random().toString(36).substr(2, 9),
         vehiculo_id: vehiculo_id,
         tipo: isVideo ? 'video' : 'imagen',
         nombre: file.name,
-        url: fileData,
+        url: publicUrl,
+        path: filePath, // Guardamos el path para poder eliminar del storage
         descripcion: descripcion,
         created_at: new Date().toISOString()
       };
       
-      galeria.unshift(registro);
-      localStorage.setItem('monaco_galeria', JSON.stringify(galeria));
-      
-      try{
-        await sb.from('galeria').insert([registro]);
-      }catch(dbErr){
-        console.log('Supabase no disponible para galeria');
+      // Guardar en Supabase (tabla galeria)
+      try {
+        const { error: dbError } = await sb.from('galeria').insert([registro]);
+        if(dbError){
+          console.error('Error guardando en BD:', dbError);
+          // Si falla la BD, al menos el archivo ya está en Storage
+        }
+      } catch(dbErr){
+        console.error('Error BD:', dbErr);
       }
       
+      // Agregar al array local
+      galeria.unshift(registro);
       successCount++;
-    }catch(err){
-      console.error('Error subiendo archivo:',err);
+      
+    } catch(err){
+      console.error('Error general:', err);
+      toast('Error al procesar: ' + file.name, 'error');
+      errorCount++;
     }
   }
   
-  if(successCount>0){
-    toast(successCount+' archivo(s) guardado(s)','success');
-    document.getElementById('gal_descripcion').value='';
+  // Restaurar botón
+  uploadBtn.innerHTML = originalText;
+  uploadBtn.disabled = false;
+  
+  if(successCount > 0){
+    toast(successCount + ' archivo(s) subido(s) correctamente', 'success');
+    document.getElementById('gal_descripcion').value = '';
     clearPendingFiles();
     renderGaleria();
   }
-}
-
-function renderGaleria(){
-  const el=document.getElementById('galeriaGrid');
-  const filtro=document.getElementById('gal_filtro_vehiculo')?.value||'';
-  let filtered=galeria;
-  if(filtro){ filtered=galeria.filter(function(g){ return g.vehiculo_id===filtro; }); }
-  if(!filtered.length){ el.innerHTML='<div class="empty-state"><i class="fa-solid fa-images"></i><p>'+(filtro?'No hay archivos para este vehiculo':'No hay archivos cargados')+'</p></div>'; return; }
-  let html='<div class="gallery-grid">';
-  for(let i=0;i<filtered.length;i++){
-    const g=filtered[i];
-    const isVideo=g.tipo==='video';
-    html+='<div class="gallery-item" onclick="openLightbox('+i+',\''+filtro+'\')"><span class="gallery-item-type '+g.tipo+'">'+(isVideo?'VIDEO':'IMAGEN')+'</span>';
-    if(isVideo){ html+='<video muted style="width:100%;height:100%;object-fit:cover;"><source src="'+esc(g.url)+'" type="video/mp4"></video>'; }
-    else{ html+='<img src="'+esc(g.url)+'" alt="'+esc(g.nombre||'')+'">'; }
-    html+='<div class="gallery-item-overlay"><div class="gallery-item-actions">';
-    html+='<button class="btn-sm btn-emerald" onclick="event.stopPropagation();descargarArchivo(\''+g.id+'\')"><i class="fa-solid fa-download"></i></button>';
-    html+='<button class="btn-sm btn-rose" onclick="event.stopPropagation();eliminarGaleriaItem(\''+g.id+'\')"><i class="fa-solid fa-trash"></i></button>';
-    html+='</div></div></div>';
+  
+  if(errorCount > 0){
+    toast(errorCount + ' archivo(s) fallaron', 'error');
   }
-  html+='</div>';
-  el.innerHTML=html;
 }
 
-function openLightbox(index,filtro){
-  currentLightboxFiltro=filtro;
-  let filtered=galeria;
-  if(filtro){ filtered=galeria.filter(function(g){ return g.vehiculo_id===filtro; }); }
-  currentLightboxItems=filtered;
-  currentLightboxIndex=index;
+// CARGAR GALERIA DESDE SUPABASE
+async function loadGaleria(){
+  try {
+    const res = await sb.from('galeria').select('*').order('created_at', { ascending: false });
+    
+    if(res.error){
+      console.log('Error cargando galeria de Supabase:', res.error.message);
+      galeria = [];
+    } else {
+      galeria = res.data || [];
+    }
+  } catch(e){
+    console.log('Error cargando galeria:', e);
+    galeria = [];
+  }
+  
+  renderGaleria();
+}
+
+// RENDER GALERIA
+function renderGaleria(){
+  const el = document.getElementById('galeriaGrid');
+  const filtro = document.getElementById('gal_filtro_vehiculo')?.value || '';
+  
+  let filtered = galeria;
+  if(filtro){ 
+    filtered = galeria.filter(function(g){ return g.vehiculo_id === filtro; }); 
+  }
+  
+  if(!filtered.length){ 
+    el.innerHTML = '<div class="empty-state"><i class="fa-solid fa-images"></i><p>' + (filtro ? 'No hay archivos para este vehiculo' : 'No hay archivos cargados') + '</p></div>'; 
+    return; 
+  }
+  
+  let html = '<div class="gallery-grid">';
+  
+  for(let i = 0; i < filtered.length; i++){
+    const g = filtered[i];
+    const isVideo = g.tipo === 'video';
+    
+    html += '<div class="gallery-item" onclick="openLightbox(' + i + ',\'' + filtro + '\')">';
+    html += '<span class="gallery-item-type ' + g.tipo + '">' + (isVideo ? 'VIDEO' : 'IMAGEN') + '</span>';
+    
+    if(isVideo){
+      html += '<video muted preload="metadata" style="width:100%;height:100%;object-fit:cover;"><source src="' + esc(g.url) + '" type="video/mp4"></video>';
+    } else {
+      html += '<img src="' + esc(g.url) + '" alt="' + esc(g.nombre || '') + '" loading="lazy">';
+    }
+    
+    html += '<div class="gallery-item-overlay"><div class="gallery-item-actions">';
+    html += '<button class="btn-sm btn-emerald" onclick="event.stopPropagation();descargarArchivo(\'' + g.id + '\')"><i class="fa-solid fa-download"></i></button>';
+    html += '<button class="btn-sm btn-rose" onclick="event.stopPropagation();eliminarGaleriaItem(\'' + g.id + '\')"><i class="fa-solid fa-trash"></i></button>';
+    html += '</div></div></div>';
+  }
+  
+  html += '</div>';
+  el.innerHTML = html;
+}
+
+// LIGHTBOX
+function openLightbox(index, filtro){
+  currentLightboxFiltro = filtro;
+  
+  let filtered = galeria;
+  if(filtro){ 
+    filtered = galeria.filter(function(g){ return g.vehiculo_id === filtro; }); 
+  }
+  
+  currentLightboxItems = filtered;
+  currentLightboxIndex = index;
   renderLightboxItem();
   document.getElementById('lightboxOverlay').classList.add('show');
 }
 
 function renderLightboxItem(){
-  const item=currentLightboxItems[currentLightboxIndex];
+  const item = currentLightboxItems[currentLightboxIndex];
   if(!item) return;
-  const el=document.getElementById('lightboxMedia');
-  const v=vehiculos.find(function(vh){ return vh.id===item.vehiculo_id; });
-  const vehLabel=v?(v.marca+' '+(v.modelo||'')):'Vehiculo';
-  let html='';
-  if(item.tipo==='video'){ html+='<video controls autoplay style="max-width:90vw;max-height:80vh;border-radius:8px;"><source src="'+esc(item.url)+'" type="video/mp4"></video>'; }
-  else{ html+='<img src="'+esc(item.url)+'" style="max-width:90vw;max-height:80vh;border-radius:8px;">'; }
-  html+='<div style="text-align:center;margin-top:12px;color:#fff;font-size:12px;">'+esc(vehLabel)+(item.descripcion?' - '+esc(item.descripcion):'')+'<span style="color:rgba(255,255,255,0.5);margin-left:10px;">('+(currentLightboxIndex+1)+'/'+currentLightboxItems.length+')</span></div>';
-  el.innerHTML=html;
+  
+  const el = document.getElementById('lightboxMedia');
+  const v = vehiculos.find(function(vh){ return vh.id === item.vehiculo_id; });
+  const vehLabel = v ? (v.marca + ' ' + (v.modelo || '')) : 'Vehiculo';
+  
+  let html = '';
+  
+  if(item.tipo === 'video'){
+    html += '<video controls autoplay style="max-width:90vw;max-height:80vh;border-radius:8px;"><source src="' + esc(item.url) + '" type="video/mp4">Tu navegador no soporta video.</video>';
+  } else {
+    html += '<img src="' + esc(item.url) + '" style="max-width:90vw;max-height:80vh;border-radius:8px;" alt="' + esc(item.nombre || '') + '">';
+  }
+  
+  html += '<div style="text-align:center;margin-top:12px;color:#fff;font-size:12px;">' + esc(vehLabel) + (item.descripcion ? ' - ' + esc(item.descripcion) : '') + '<span style="color:rgba(255,255,255,0.5);margin-left:10px;">(' + (currentLightboxIndex + 1) + '/' + currentLightboxItems.length + ')</span></div>';
+  
+  el.innerHTML = html;
 }
 
 function closeLightbox(){
   document.getElementById('lightboxOverlay').classList.remove('show');
-  const video=document.querySelector('#lightboxMedia video');
+  const video = document.querySelector('#lightboxMedia video');
   if(video) video.pause();
 }
 
-function lightboxPrev(){ if(currentLightboxIndex>0){ currentLightboxIndex--; renderLightboxItem(); } }
-function lightboxNext(){ if(currentLightboxIndex<currentLightboxItems.length-1){ currentLightboxIndex++; renderLightboxItem(); } }
+function lightboxPrev(){ 
+  if(currentLightboxIndex > 0){ 
+    currentLightboxIndex--; 
+    renderLightboxItem(); 
+  } 
+}
 
-// ============================================
+function lightboxNext(){ 
+  if(currentLightboxIndex < currentLightboxItems.length - 1){ 
+    currentLightboxIndex++; 
+    renderLightboxItem(); 
+  } 
+}
+
 // DESCARGA DE ARCHIVOS
-// ============================================
-function descargarArchivo(id){
-  const item=galeria.find(function(g){ return g.id===id; });
-  if(!item){ toast('Archivo no encontrado','error'); return; }
+async function descargarArchivo(id){
+  const item = galeria.find(function(g){ return g.id === id; });
+  if(!item){ 
+    toast('Archivo no encontrado', 'error'); 
+    return; 
+  }
   
-  const link=document.createElement('a');
-  link.href=item.url;
-  link.download=item.nombre||('archivo_'+item.id+'.'+(item.tipo==='video'?'mp4':'jpg'));
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-  toast('Descargando '+item.nombre,'success');
+  try {
+    // Descargar como blob para forzar la descarga
+    const response = await fetch(item.url);
+    const blob = await response.blob();
+    
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = item.nombre || ('archivo_' + item.id + '.' + (item.tipo === 'video' ? 'mp4' : 'jpg'));
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(url);
+    
+    toast('Descargando ' + item.nombre, 'success');
+  } catch(err){
+    console.error('Error descargando:', err);
+    // Fallback: abrir en nueva pestaña
+    window.open(item.url, '_blank');
+  }
 }
 
 function descargarArchivoActual(){
-  if(!currentLightboxItems.length || currentLightboxIndex<0) return;
-  const item=currentLightboxItems[currentLightboxIndex];
-  if(!item){ toast('No hay archivo para descargar','error'); return; }
+  if(!currentLightboxItems.length || currentLightboxIndex < 0) return;
   
-  const link=document.createElement('a');
-  link.href=item.url;
-  link.download=item.nombre||('archivo_'+item.id+'.'+(item.tipo==='video'?'mp4':'jpg'));
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-  toast('Descargando '+item.nombre,'success');
+  const item = currentLightboxItems[currentLightboxIndex];
+  if(!item){ 
+    toast('No hay archivo para descargar', 'error'); 
+    return; 
+  }
+  
+  descargarArchivo(item.id);
 }
 
-document.addEventListener('keydown',function(e){
-  if(!document.getElementById('lightboxOverlay').classList.contains('show')) return;
-  if(e.key==='Escape') closeLightbox();
-  if(e.key==='ArrowLeft') lightboxPrev();
-  if(e.key==='ArrowRight') lightboxNext();
-});
-
+// ELIMINAR ARCHIVO
 async function eliminarGaleriaItem(id){
-  showModal('Eliminar archivo','Se eliminara este archivo.',async function(){
-    galeria=galeria.filter(function(g){ return g.id!==id; });
-    localStorage.setItem('monaco_galeria', JSON.stringify(galeria));
-    try{ await sb.from('galeria').delete().eq('id',id); }catch(e){}
-    toast('Archivo eliminado','success');
+  showModal('Eliminar archivo', 'Se eliminara este archivo permanentemente.', async function(){
+    const item = galeria.find(function(g){ return g.id === id; });
+    
+    // Eliminar del array local
+    galeria = galeria.filter(function(g){ return g.id !== id; });
+    
+    // Eliminar de la BD
+    try {
+      await sb.from('galeria').delete().eq('id', id);
+    } catch(e){
+      console.log('Error eliminando de BD:', e);
+    }
+    
+    // Eliminar del Storage si tenemos el path
+    if(item && item.path){
+      try {
+        await sb.storage.from('galeria').remove([item.path]);
+      } catch(e){
+        console.log('Error eliminando de Storage:', e);
+      }
+    }
+    
+    toast('Archivo eliminado', 'success');
     renderGaleria();
   });
 }
+
+// TECLADO PARA LIGHTBOX
+document.addEventListener('keydown', function(e){
+  if(!document.getElementById('lightboxOverlay').classList.contains('show')) return;
+  if(e.key === 'Escape') closeLightbox();
+  if(e.key === 'ArrowLeft') lightboxPrev();
+  if(e.key === 'ArrowRight') lightboxNext();
+});
 
 // SETUP UPLOAD ZONE
 function setupUploadZone(){
