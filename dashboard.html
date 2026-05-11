@@ -842,11 +842,48 @@ async function loadGarantias(){
   renderGarantias();
 }
 
+// ============================================
+// GALERIA - LOAD (CORREGIDO)
+// ============================================
 async function loadGaleria(){
+  // Siempre cargar primero de localStorage
+  const localData = JSON.parse(localStorage.getItem('monaco_galeria')||'[]');
+  
   try{
-    const res=await sb.from('galeria').select('*');
-    galeria=res.data||[];
-  }catch(e){ galeria=JSON.parse(localStorage.getItem('monaco_galeria')||'[]'); }
+    const res = await sb.from('galeria').select('*');
+    
+    // Si hay error de permisos o tabla no existe, usar solo localStorage
+    if(res.error){
+      console.log('Supabase galeria error, usando localStorage:', res.error.message);
+      galeria = localData;
+    } else {
+      // Si Supabase funciona, combinar datos
+      const supabaseData = res.data || [];
+      
+      if(supabaseData.length > 0){
+        // Crear Set de IDs que ya estan en Supabase
+        const supabaseIds = new Set(supabaseData.map(g => g.id));
+        
+        // Filtrar items de localStorage que NO estan en Supabase
+        const onlyLocalItems = localData.filter(g => !supabaseIds.has(g.id));
+        
+        // Combinar: Supabase primero + items que solo estan en localStorage
+        galeria = [...supabaseData, ...onlyLocalItems];
+      } else {
+        // Supabase vacio, usar localStorage
+        galeria = localData;
+      }
+    }
+  }catch(e){
+    console.log('Error cargando galeria, usando localStorage:', e);
+    galeria = localData;
+  }
+  
+  // Siempre actualizar localStorage con lo que tengamos
+  if(galeria.length > 0){
+    localStorage.setItem('monaco_galeria', JSON.stringify(galeria));
+  }
+  
   renderGaleria();
 }
 
@@ -1440,7 +1477,9 @@ function buscarGarantia(){
   el.innerHTML=html;
 }
 
+// ============================================
 // GALERIA FUNCTIONS
+// ============================================
 function handleFileSelect(e){ pendingFiles=Array.from(e.target.files); renderUploadPreview(); }
 
 function renderUploadPreview(){
@@ -1468,33 +1507,66 @@ function renderUploadPreview(){
 
 function clearPendingFiles(){ pendingFiles=[]; document.getElementById('gal_files').value=''; document.getElementById('uploadPreview').innerHTML=''; }
 
+// ============================================
+// GALERIA - SUBIR (CORREGIDO)
+// ============================================
 async function subirArchivos(){
   const vehiculo_id=document.getElementById('gal_vehiculo').value;
   const descripcion=document.getElementById('gal_descripcion').value.trim();
   if(!vehiculo_id){ toast('Selecciona un vehiculo','error'); return; }
   if(!pendingFiles.length){ toast('Selecciona archivos para subir','error'); return; }
   if(pendingFiles.length>10){ toast('Maximo 10 archivos a la vez','error'); return; }
+  
   let successCount=0;
+  
   for(let i=0;i<pendingFiles.length;i++){
     const file=pendingFiles[i];
     const isVideo=file.type.startsWith('video/');
     if(file.size>20*1024*1024){ toast('Archivo muy grande: '+file.name,'error'); continue; }
+    
     try{
-      let fileData=await new Promise(function(resolve,reject){
+      // Convertir a base64
+      const fileData=await new Promise(function(resolve,reject){
         const reader=new FileReader();
         reader.onload=function(e){ resolve(e.target.result); };
         reader.onerror=reject;
         reader.readAsDataURL(file);
       });
-      const registro={id:Date.now().toString()+'_'+i,vehiculo_id:vehiculo_id,tipo:isVideo?'video':'imagen',nombre:file.name,url:fileData,descripcion:descripcion,created_at:new Date().toISOString()};
+      
+      const registro={
+        id: Date.now().toString()+'_'+Math.random().toString(36).substr(2,9),
+        vehiculo_id: vehiculo_id,
+        tipo: isVideo ? 'video' : 'imagen',
+        nombre: file.name,
+        url: fileData,
+        descripcion: descripcion,
+        created_at: new Date().toISOString()
+      };
+      
+      // Agregar al array en memoria
       galeria.unshift(registro);
-      localStorage.setItem('monaco_galeria',JSON.stringify(galeria));
-      try{ await sb.from('galeria').insert([registro]); }catch(dbErr){}
+      
+      // GUARDAR EN LOCALSTORAGE INMEDIATAMENTE (esto asegura persistencia)
+      localStorage.setItem('monaco_galeria', JSON.stringify(galeria));
+      
+      // Intentar guardar en Supabase (si la tabla existe y tiene permisos)
+      try{
+        const supabaseRes = await sb.from('galeria').insert([registro]);
+        if(supabaseRes.error){
+          console.log('Supabase no disponible para galeria:', supabaseRes.error.message);
+        }
+      }catch(dbErr){
+        console.log('Error guardando en Supabase, usando localStorage');
+      }
+      
       successCount++;
-    }catch(err){ console.error('Error subiendo archivo:',err); }
+    }catch(err){
+      console.error('Error subiendo archivo:',err);
+    }
   }
+  
   if(successCount>0){
-    toast(successCount+' archivo(s) subido(s)','success');
+    toast(successCount+' archivo(s) guardado(s)','success');
     document.getElementById('gal_descripcion').value='';
     clearPendingFiles();
     renderGaleria();
@@ -1561,7 +1633,7 @@ document.addEventListener('keydown',function(e){
 async function eliminarGaleriaItem(id){
   showModal('Eliminar archivo','Se eliminara este archivo.',async function(){
     galeria=galeria.filter(function(g){ return g.id!==id; });
-    localStorage.setItem('monaco_galeria',JSON.stringify(galeria));
+    localStorage.setItem('monaco_galeria', JSON.stringify(galeria));
     try{ await sb.from('galeria').delete().eq('id',id); }catch(e){}
     toast('Archivo eliminado','success');
     renderGaleria();
