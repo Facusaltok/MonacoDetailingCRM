@@ -1514,7 +1514,7 @@ function clearPendingFiles(){
   document.getElementById('uploadPreview').innerHTML = ''; 
 }
 
-// GALERIA - SUBIR A SUPABASE STORAGE
+// GALERIA - SUBIR A SUPABASE STORAGE (CORREGIDO)
 async function subirArchivos(){
   const vehiculo_id = document.getElementById('gal_vehiculo').value;
   const descripcion = document.getElementById('gal_descripcion').value.trim();
@@ -1535,7 +1535,6 @@ async function subirArchivos(){
   let successCount = 0;
   let errorCount = 0;
   
-  // Mostrar indicador de carga
   const uploadBtn = document.querySelector('button[onclick="subirArchivos()"]');
   const originalText = uploadBtn.innerHTML;
   uploadBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Subiendo...';
@@ -1545,7 +1544,6 @@ async function subirArchivos(){
     const file = pendingFiles[i];
     const isVideo = file.type.startsWith('video/');
     
-    // Validar tamaño (20MB max)
     if(file.size > 20 * 1024 * 1024){ 
       toast('Archivo muy grande: ' + file.name + ' (max 20MB)', 'error'); 
       errorCount++;
@@ -1553,91 +1551,70 @@ async function subirArchivos(){
     }
     
     try {
-      // Generar nombre único para el archivo
       const fileExt = file.name.split('.').pop().toLowerCase();
       const fileName = Date.now() + '_' + Math.random().toString(36).substr(2, 9) + '.' + fileExt;
       const filePath = vehiculo_id + '/' + fileName;
       
-      // Subir a Supabase Storage
-      const { data: uploadData, error: uploadError } = await sb.storage
+      // 1. Subir a Storage
+      const { error: uploadError } = await sb.storage
         .from('galeria')
-        .upload(filePath, file, {
-          cacheControl: '3600',
-          upsert: false
-        });
+        .upload(filePath, file);
       
       if(uploadError){
-        console.error('Error subiendo a Storage:', uploadError);
-        
-        // Si el bucket no existe, mostrar mensaje
-        if(uploadError.message && uploadError.message.includes('Bucket not found')){
-          toast('Bucket "galeria" no existe. Crea el bucket en Supabase Storage.', 'error');
-          errorCount++;
-          continue;
-        }
-        
-        toast('Error al subir: ' + file.name, 'error');
+        console.error('Error Storage:', uploadError);
+        toast('Error al subir archivo: ' + uploadError.message, 'error');
         errorCount++;
         continue;
       }
       
-      // Obtener URL pública
-      const { data: urlData } = sb.storage
-        .from('galeria')
-        .getPublicUrl(filePath);
-      
+      // 2. Obtener URL pública
+      const { data: urlData } = sb.storage.from('galeria').getPublicUrl(filePath);
       const publicUrl = urlData.publicUrl;
       
-      // Crear registro en la tabla galeria
+      // 3. Guardar en Tabla (SIN la columna path)
       const registro = {
         id: Date.now().toString() + '_' + Math.random().toString(36).substr(2, 9),
         vehiculo_id: vehiculo_id,
         tipo: isVideo ? 'video' : 'imagen',
         nombre: file.name,
         url: publicUrl,
-        path: filePath, // Guardamos el path para poder eliminar del storage
+        // NOTA: Se elimina 'path' para evitar el error de SQL
         descripcion: descripcion,
         created_at: new Date().toISOString()
       };
       
-      // Guardar en Supabase (tabla galeria)
-      try {
-        const { error: dbError } = await sb.from('galeria').insert([registro]);
-        if(dbError){
-          console.error('Error guardando en BD:', dbError);
-          // Si falla la BD, al menos el archivo ya está en Storage
-        }
-      } catch(dbErr){
-        console.error('Error BD:', dbErr);
-      }
+      const { error: dbError } = await sb.from('galeria').insert([registro]);
       
-      // Agregar al array local
-      galeria.unshift(registro);
-      successCount++;
+      if(dbError){
+        console.error('Error BD:', dbError);
+        toast('Error al guardar registro: ' + dbError.message, 'error');
+        errorCount++;
+      } else {
+        galeria.unshift(registro);
+        successCount++;
+      }
       
     } catch(err){
       console.error('Error general:', err);
-      toast('Error al procesar: ' + file.name, 'error');
+      toast('Error inesperado', 'error');
       errorCount++;
     }
   }
   
-  // Restaurar botón
   uploadBtn.innerHTML = originalText;
   uploadBtn.disabled = false;
   
   if(successCount > 0){
-    toast(successCount + ' archivo(s) subido(s) correctamente', 'success');
+    toast(successCount + ' archivo(s) subido(s)', 'success');
     document.getElementById('gal_descripcion').value = '';
     clearPendingFiles();
     renderGaleria();
   }
   
   if(errorCount > 0){
-    toast(errorCount + ' archivo(s) fallaron', 'error');
+    toast('Revisa la consola para ver detalles del error', 'error');
   }
 }
-
 // CARGAR GALERIA DESDE SUPABASE
 async function loadGaleria(){
   try {
