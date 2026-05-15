@@ -339,7 +339,18 @@ select.form-input {cursor:pointer;appearance:auto;}
 .mode-btn:not(.active) {background:transparent;color:var(--text-muted);}
 .mode-btn:not(.active):hover {color:var(--text-secondary);background:rgba(255,255,255,0.04);}
 
-/* GALERIA STYLES */
+.search-box {
+  display:flex;align-items:center;gap:8px;background:var(--bg-input);border:1px solid var(--border);
+  border-radius:9px;padding:8px 12px;margin-bottom:14px;transition:border-color 0.2s;
+}
+.search-box:focus-within {border-color:var(--border-focus);}
+.search-box i {color:var(--text-muted);font-size:12px;}
+.search-box input {
+  flex:1;background:transparent;border:none;outline:none;color:var(--text-primary);
+  font-size:12px;font-family:inherit;
+}
+.search-box input::placeholder {color:var(--text-muted);}
+
 .gallery-grid {display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;margin-top:16px;}
 .gallery-item {position:relative;border-radius:10px;overflow:hidden;aspect-ratio:4/3;background:var(--bg-input);border:1px solid var(--border);cursor:pointer;transition:all 0.2s;}
 .gallery-item:hover {border-color:rgba(16,185,129,0.3);transform:scale(1.02);}
@@ -507,7 +518,14 @@ select.form-input {cursor:pointer;appearance:auto;}
           <div class="form-group"><label class="form-label">Telefono</label><input id="c_tel" class="form-input" placeholder="11-1234-5678"></div>
           <div style="display:flex;gap:10px;"><button onclick="guardarCliente()" class="btn-gold" style="flex:1;justify-content:center;"><i class="fa-solid fa-check"></i> <span id="clienteBtnText">Guardar</span></button><button onclick="cancelarEditCliente()" class="btn-ghost" id="btnCancelEdit" style="display:none;">Cancelar</button></div>
         </div>
-        <div class="card"><div class="card-title"><i class="fa-solid fa-address-book"></i> Todos los Clientes</div><div id="listaClientes"><div class="empty-state"><i class="fa-solid fa-user-slash"></i><p>No hay clientes</p></div></div></div>
+        <div class="card">
+          <div class="card-title"><i class="fa-solid fa-address-book"></i> Todos los Clientes</div>
+          <div class="search-box">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="buscarClienteInput" placeholder="Buscar por nombre o telefono..." oninput="buscarClientes()">
+          </div>
+          <div id="listaClientes"><div class="empty-state"><i class="fa-solid fa-user-slash"></i><p>No hay clientes</p></div></div>
+        </div>
       </div>
     </div>
 
@@ -522,7 +540,14 @@ select.form-input {cursor:pointer;appearance:auto;}
           <div class="form-group"><label class="form-label">Patente</label><input id="v_patente" class="form-input" placeholder="AB 123 CD"></div>
           <button onclick="crearVehiculo()" class="btn-gold" style="width:100%;justify-content:center;"><i class="fa-solid fa-plus"></i> Guardar Vehiculo</button>
         </div>
-        <div class="card"><div class="card-title"><i class="fa-solid fa-warehouse"></i> Todos los Vehiculos</div><div id="listaVehiculos"><div class="empty-state"><i class="fa-solid fa-car-burst"></i><p>No hay vehiculos</p></div></div></div>
+        <div class="card">
+          <div class="card-title"><i class="fa-solid fa-warehouse"></i> Todos los Vehiculos</div>
+          <div class="search-box">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="buscarVehiculoInput" placeholder="Buscar por marca, modelo, patente o propietario..." oninput="buscarVehiculos()">
+          </div>
+          <div id="listaVehiculos"><div class="empty-state"><i class="fa-solid fa-car-burst"></i><p>No hay vehiculos</p></div></div>
+        </div>
       </div>
     </div>
 
@@ -640,10 +665,14 @@ select.form-input {cursor:pointer;appearance:auto;}
           <button onclick="crearCaja()" class="btn-gold" style="width:100%;justify-content:center;"><i class="fa-solid fa-plus"></i> Registrar</button>
         </div>
         <div class="card">
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:10px;">
             <div class="card-title" style="margin-bottom:0;"><i class="fa-solid fa-clock-rotate-left"></i> Historial</div>
-            <div style="display:flex;align-items:center;gap:8px;">
-              <select id="cx_filtro_vehiculo" class="form-input" style="width:auto;min-width:180px;padding:7px 10px;font-size:11px;" onchange="renderCaja()"><option value="">Todos los vehiculos</option></select>
+            <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+              <div class="search-box" style="margin-bottom:0;flex:1;min-width:180px;">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="buscarCajaInput" placeholder="Buscar movimiento..." oninput="buscarCaja()">
+              </div>
+              <select id="cx_filtro_vehiculo" class="form-input" style="width:auto;min-width:150px;padding:7px 10px;font-size:11px;" onchange="renderCaja()"><option value="">Todos los vehiculos</option></select>
             </div>
           </div>
           <div id="listaCaja"><div class="empty-state"><i class="fa-solid fa-receipt"></i><p>No hay movimientos</p></div></div>
@@ -735,6 +764,15 @@ function numToWord(n){
   return n.toString();
 }
 
+// ORDENAMIENTO POR FECHA DE CREACION (mas recientes primero)
+function sortByCreatedAt(arr){
+  return arr.slice().sort(function(a,b){
+    const da = a.created_at ? new Date(a.created_at).getTime() : 0;
+    const db = b.created_at ? new Date(b.created_at).getTime() : 0;
+    return db - da;
+  });
+}
+
 // TOASTS
 function toast(msg,type){
   type=type||'info';
@@ -804,6 +842,7 @@ async function loadClientes(){
     const res=await sb.from('clientes').select('*');
     clientes=res.data||[];
   }catch(e){ clientes=[]; }
+  clientes = sortByCreatedAt(clientes);
   renderClientes();
   populateClienteSelects();
 }
@@ -813,6 +852,7 @@ async function loadVehiculos(){
     const res=await sb.from('vehiculos').select('*, clientes(nombre)');
     vehiculos=res.data||[];
   }catch(e){ vehiculos=[]; }
+  vehiculos = sortByCreatedAt(vehiculos);
   renderVehiculos();
   populateCajaVehiculoSelects();
   populateGaleriaVehiculoSelects();
@@ -823,6 +863,7 @@ async function loadServicios(){
     const res=await sb.from('servicios').select('id,tipo,estado,created_at,vehiculos(id,marca,modelo,clientes(id,nombre,telefono))');
     servicios=res.data||[];
   }catch(e){ servicios=[]; }
+  servicios = sortByCreatedAt(servicios);
   renderKanban();
   renderRecentServices();
   renderTurnos();
@@ -834,6 +875,7 @@ async function loadCaja(){
     const res=await sb.from('caja').select('*');
     movimientos=res.data||[];
   }catch(e){ movimientos=[]; }
+  movimientos = sortByCreatedAt(movimientos);
   renderCaja();
   updateKPIs();
 }
@@ -843,22 +885,18 @@ async function loadGarantias(){
     const res=await sb.from('garantias').select('*');
     garantias=res.data||[];
   }catch(e){ garantias=[]; }
+  garantias = sortByCreatedAt(garantias);
   renderGarantias();
 }
 
-// GALERIA - LOAD
 async function loadGaleria(){
   const localData = JSON.parse(localStorage.getItem('monaco_galeria')||'[]');
-  
   try{
     const res = await sb.from('galeria').select('*');
-    
     if(res.error){
-      console.log('Supabase galeria error, usando localStorage:', res.error.message);
       galeria = localData;
     } else {
       const supabaseData = res.data || [];
-      
       if(supabaseData.length > 0){
         const supabaseIds = new Set(supabaseData.map(g => g.id));
         const onlyLocalItems = localData.filter(g => !supabaseIds.has(g.id));
@@ -868,14 +906,12 @@ async function loadGaleria(){
       }
     }
   }catch(e){
-    console.log('Error cargando galeria, usando localStorage:', e);
     galeria = localData;
   }
-  
+  galeria = sortByCreatedAt(galeria);
   if(galeria.length > 0){
     localStorage.setItem('monaco_galeria', JSON.stringify(galeria));
   }
-  
   renderGaleria();
 }
 
@@ -903,8 +939,14 @@ function updateKPIs(){
     document.getElementById('bar_egresos').style.width=(egr/mx*100)+'%';
   },100);
   const fv=document.getElementById('cx_filtro_vehiculo')?document.getElementById('cx_filtro_vehiculo').value:'';
+  const fc=document.getElementById('buscarCajaInput')?document.getElementById('buscarCajaInput').value.trim().toLowerCase():'';
   let movSet=movimientos;
-  if(fv){ movSet=movimientos.filter(function(m){ return m.vehiculo_id===fv; }); }
+  if(fv){ movSet=movSet.filter(function(m){ return m.vehiculo_id===fv; }); }
+  if(fc){
+    movSet=movSet.filter(function(m){
+      return (m.concepto||'').toLowerCase().includes(fc) || (m.servicio||'').toLowerCase().includes(fc);
+    });
+  }
   const cIng=movSet.filter(function(m){ return m.tipo==='ingreso'; }).reduce(function(a,m){ return a+Number(m.monto||0); },0);
   const cEgr=movSet.filter(function(m){ return m.tipo==='egreso'; }).reduce(function(a,m){ return a+Number(m.monto||0); },0);
   document.getElementById('caja_ingresos').textContent=formatMoney(cIng);
@@ -912,27 +954,53 @@ function updateKPIs(){
   document.getElementById('caja_balance').textContent=formatMoney(cIng-cEgr);
 }
 
+// BUSCADOR CLIENTES
+function buscarClientes(){
+  const txt = document.getElementById('buscarClienteInput').value.trim().toLowerCase();
+  renderClientes(txt);
+}
+
 // RENDER CLIENTES
-function renderClientes(){
+function renderClientes(filtro){
+  filtro = filtro || '';
+  let lista = clientes;
+  if(filtro){
+    lista = clientes.filter(function(c){
+      return (c.nombre||'').toLowerCase().includes(filtro) || (c.telefono||'').toLowerCase().includes(filtro);
+    });
+  }
   const el=document.getElementById('listaClientes');
-  if(!clientes.length){ el.innerHTML='<div class="empty-state"><i class="fa-solid fa-user-slash"></i><p>No hay clientes</p></div>'; return; }
+  if(!lista.length){ el.innerHTML='<div class="empty-state"><i class="fa-solid fa-user-slash"></i><p>'+(filtro?'No se encontraron resultados':'No hay clientes')+'</p></div>'; return; }
   let html='';
-  for(let i=0;i<clientes.length;i++){
-    const c=clientes[i];
+  for(let i=0;i<lista.length;i++){
+    const c=lista[i];
     const vc=vehiculos.filter(function(v){ return v.cliente_id===c.id; }).length;
-    html+='<div class="list-item"><div class="list-item-left"><div class="list-icon" style="background:var(--primary-soft);color:var(--primary);"><i class="fa-solid fa-user"></i></div><div class="list-item-info"><h4>'+esc(c.nombre)+'</h4><p><i class="fa-solid fa-phone" style="font-size:9px;margin-right:3px;"></i>'+esc(c.telefono||'-')+' &middot; '+vc+' veh.</p></div></div><div style="display:flex;gap:5px;"><button class="btn-sm btn-amber" onclick="editarCliente(\''+c.id+'\')"><i class="fa-solid fa-pen"></i></button><button class="btn-sm btn-rose" onclick="eliminarCliente(\''+c.id+'\')"><i class="fa-solid fa-trash"></i></button></div></div>';
+    html+='<div class="list-item"><div class="list-item-left"><div class="list-icon" style="background:var(--primary-soft);color:var(--primary);"><i class="fa-solid fa-user"></i></div><div class="list-item-info"><h4>'+esc(c.nombre)+'</h4><p><i class="fa-solid fa-phone" style="font-size:9px;margin-right:3px;"></i>'+esc(c.telefono||'-')+' · '+vc+' veh.</p></div></div><div style="display:flex;gap:5px;"><button class="btn-sm btn-amber" onclick="editarCliente(\''+c.id+'\')"><i class="fa-solid fa-pen"></i></button><button class="btn-sm btn-rose" onclick="eliminarCliente(\''+c.id+'\')"><i class="fa-solid fa-trash"></i></button></div></div>';
   }
   el.innerHTML=html;
 }
 
+// BUSCADOR VEHICULOS
+function buscarVehiculos(){
+  const txt = document.getElementById('buscarVehiculoInput').value.trim().toLowerCase();
+  renderVehiculos(txt);
+}
+
 // RENDER VEHICULOS
-function renderVehiculos(){
+function renderVehiculos(filtro){
+  filtro = filtro || '';
+  let lista = vehiculos;
+  if(filtro){
+    lista = vehiculos.filter(function(v){
+      return (v.marca||'').toLowerCase().includes(filtro) || (v.modelo||'').toLowerCase().includes(filtro) || (v.patente||'').toLowerCase().includes(filtro) || (v.clientes?.nombre||'').toLowerCase().includes(filtro);
+    });
+  }
   const el=document.getElementById('listaVehiculos');
-  if(!vehiculos.length){ el.innerHTML='<div class="empty-state"><i class="fa-solid fa-car-burst"></i><p>No hay vehiculos</p></div>'; return; }
+  if(!lista.length){ el.innerHTML='<div class="empty-state"><i class="fa-solid fa-car-burst"></i><p>'+(filtro?'No se encontraron resultados':'No hay vehiculos')+'</p></div>'; return; }
   let html='';
-  for(let i=0;i<vehiculos.length;i++){
-    const v=vehiculos[i];
-    html+='<div class="list-item"><div class="list-item-left"><div class="list-icon" style="background:rgba(59,130,246,0.12);color:var(--blue);"><i class="fa-solid fa-car"></i></div><div class="list-item-info"><h4>'+esc(v.marca)+' '+(esc(v.modelo)||'')+'</h4><p><i class="fa-solid fa-user" style="font-size:9px;margin-right:3px;"></i>'+(esc(v.clientes?.nombre)||'-')+(v.patente?' &middot; '+esc(v.patente):'')+'</p></div></div><button class="btn-sm btn-rose" onclick="eliminarVehiculo(\''+v.id+'\')"><i class="fa-solid fa-trash"></i></button></div>';
+  for(let i=0;i<lista.length;i++){
+    const v=lista[i];
+    html+='<div class="list-item"><div class="list-item-left"><div class="list-icon" style="background:rgba(59,130,246,0.12);color:var(--blue);"><i class="fa-solid fa-car"></i></div><div class="list-item-info"><h4>'+esc(v.marca)+' '+(esc(v.modelo)||'')+'</h4><p><i class="fa-solid fa-user" style="font-size:9px;margin-right:3px;"></i>'+(esc(v.clientes?.nombre)||'-')+(v.patente?' · '+esc(v.patente):'')+'</p></div></div><button class="btn-sm btn-rose" onclick="eliminarVehiculo(\''+v.id+'\')"><i class="fa-solid fa-trash"></i></button></div>';
   }
   el.innerHTML=html;
 }
@@ -943,7 +1011,7 @@ function renderKanban(){
   for(let ei=0;ei<estados.length;ei++){
     const est=estados[ei];
     const col=document.getElementById('col_'+est);
-    const items=servicios.filter(function(s){ return s.estado===est; });
+    const items=sortByCreatedAt(servicios.filter(function(s){ return s.estado===est; }));
     document.getElementById('count_'+est).textContent=items.length;
     if(!items.length){ col.innerHTML='<div class="empty-state" style="padding:28px 10px;"><i class="fa-solid fa-inbox"></i><p>Sin servicios</p></div>'; continue; }
     let html='';
@@ -965,7 +1033,7 @@ function renderKanban(){
 // RENDER SERVICIOS RECIENTES
 function renderRecentServices(){
   const el=document.getElementById('recentServices');
-  const rec=servicios.slice(0,8);
+  const rec=sortByCreatedAt(servicios).slice(0,8);
   if(!rec.length){ el.innerHTML='<div class="empty-state"><i class="fa-solid fa-inbox"></i><p>No hay servicios</p></div>'; return; }
   let html='';
   for(let i=0;i<rec.length;i++){
@@ -973,7 +1041,7 @@ function renderRecentServices(){
     const bc='badge-'+s.estado;
     const lb=s.estado==='proceso'?'En proceso':s.estado.charAt(0).toUpperCase()+s.estado.slice(1);
     const cl=s.vehiculos?.clientes?.nombre||'-';
-    html+='<div class="list-item"><div class="list-item-left"><div class="list-icon" style="background:rgba(16,185,129,0.1);color:var(--primary);font-size:12px;"><i class="fa-solid fa-spray-can-sparkles"></i></div><div class="list-item-info"><h4>'+esc(s.tipo)+'</h4><p>'+esc(cl)+' &middot; '+timeAgo(s.created_at)+'</p></div></div><span class="badge '+bc+'">'+lb+'</span></div>';
+    html+='<div class="list-item"><div class="list-item-left"><div class="list-icon" style="background:rgba(16,185,129,0.1);color:var(--primary);font-size:12px;"><i class="fa-solid fa-spray-can-sparkles"></i></div><div class="list-item-info"><h4>'+esc(s.tipo)+'</h4><p>'+esc(cl)+' · '+timeAgo(s.created_at)+'</p></div></div><span class="badge '+bc+'">'+lb+'</span></div>';
   }
   el.innerHTML=html;
 }
@@ -981,25 +1049,36 @@ function renderRecentServices(){
 // RENDER TURNOS
 function renderTurnos(){
   const el=document.getElementById('listaTurnos');
-  const pend=servicios.filter(function(s){ return s.estado==='pendiente'; });
+  const pend=sortByCreatedAt(servicios.filter(function(s){ return s.estado==='pendiente'; }));
   if(!pend.length){ el.innerHTML='<div class="empty-state"><i class="fa-solid fa-calendar-xmark"></i><p>No hay turnos pendientes</p></div>'; return; }
   let html='';
   for(let i=0;i<pend.length;i++){
     const s=pend[i];
     const cl=s.vehiculos?.clientes?.nombre||'-';
     const vh=s.vehiculos?(s.vehiculos.marca+' '+(s.vehiculos.modelo||'')):'';
-    html+='<div class="list-item"><div class="list-item-left"><div class="list-icon" style="background:rgba(245,158,11,0.12);color:var(--amber);"><i class="fa-solid fa-clock"></i></div><div class="list-item-info"><h4>'+esc(s.tipo)+'</h4><p>'+esc(cl)+(vh?' &middot; '+esc(vh):'')+' &middot; '+timeAgo(s.created_at)+'</p></div></div><div style="display:flex;gap:5px;"><button class="btn-sm btn-blue" onclick="moverServicio(\''+s.id+'\',\'proceso\')"><i class="fa-solid fa-play"></i></button><button class="btn-sm btn-rose" onclick="eliminarServicio(\''+s.id+'\')"><i class="fa-solid fa-trash"></i></button></div></div>';
+    html+='<div class="list-item"><div class="list-item-left"><div class="list-icon" style="background:rgba(245,158,11,0.12);color:var(--amber);"><i class="fa-solid fa-clock"></i></div><div class="list-item-info"><h4>'+esc(s.tipo)+'</h4><p>'+esc(cl)+(vh?' · '+esc(vh):'')+' · '+timeAgo(s.created_at)+'</p></div></div><div style="display:flex;gap:5px;"><button class="btn-sm btn-blue" onclick="moverServicio(\''+s.id+'\',\'proceso\')"><i class="fa-solid fa-play"></i></button><button class="btn-sm btn-rose" onclick="eliminarServicio(\''+s.id+'\')"><i class="fa-solid fa-trash"></i></button></div></div>';
   }
   el.innerHTML=html;
+}
+
+// BUSCADOR CAJA
+function buscarCaja(){
+  renderCaja();
 }
 
 // RENDER CAJA
 function renderCaja(){
   const el=document.getElementById('listaCaja');
   const fv=document.getElementById('cx_filtro_vehiculo')?document.getElementById('cx_filtro_vehiculo').value:'';
+  const fc=document.getElementById('buscarCajaInput')?document.getElementById('buscarCajaInput').value.trim().toLowerCase():'';
   let filtered=movimientos;
-  if(fv){ filtered=movimientos.filter(function(m){ return m.vehiculo_id===fv; }); }
-  if(!filtered.length){ el.innerHTML='<div class="empty-state"><i class="fa-solid fa-receipt"></i><p>'+(fv?'No hay movimientos para este vehiculo':'No hay movimientos')+'</p></div>'; updateKPIs(); return; }
+  if(fv){ filtered=filtered.filter(function(m){ return m.vehiculo_id===fv; }); }
+  if(fc){
+    filtered=filtered.filter(function(m){
+      return (m.concepto||'').toLowerCase().includes(fc) || (m.servicio||'').toLowerCase().includes(fc);
+    });
+  }
+  if(!filtered.length){ el.innerHTML='<div class="empty-state"><i class="fa-solid fa-receipt"></i><p>'+(fv||fc?'No hay movimientos que coincidan':'No hay movimientos')+'</p></div>'; updateKPIs(); return; }
   const groups=new Map();
   const ungrouped=[];
   for(let i=0;i<filtered.length;i++){
@@ -1019,7 +1098,7 @@ function renderCaja(){
     const fd=ingreso?.created_at||items[0]?.created_at;
     const fs=fd?formatDate(fd):'';
     const servicio=ingreso?.servicio||items[0]?.servicio||'';
-    html+='<div class="caja-group-card"><div class="caja-group-header"><div class="list-item-left" style="gap:10px;"><div class="list-icon" style="background:var(--primary-soft);color:var(--primary);width:32px;height:32px;font-size:12px;border-radius:8px;"><i class="fa-solid fa-layer-group"></i></div><div class="list-item-info"><h4 style="font-size:13px;">'+esc(ingreso?.concepto||items[0]?.concepto||'-')+'</h4><p>'+fs+(vehLabel?' &middot; <i class="fa-solid fa-car" style="font-size:9px;"></i> '+esc(vehLabel):'')+(servicio?' &middot; '+esc(servicio):'')+'</p></div></div><div style="display:flex;align-items:center;gap:10px;"><div style="text-align:right;"><div style="font-size:10px;color:var(--text-muted);margin-bottom:1px;">Neto</div><div style="font-size:15px;font-weight:800;color:'+(neto>=0?'var(--primary)':'var(--rose)')+';">'+formatMoney(neto)+'</div></div><button class="btn-sm btn-rose" onclick="eliminarCajaGrupo(\''+esc(gid)+'\')"><i class="fa-solid fa-trash"></i></button></div></div><div class="caja-group-body">';
+    html+='<div class="caja-group-card"><div class="caja-group-header"><div class="list-item-left" style="gap:10px;"><div class="list-icon" style="background:var(--primary-soft);color:var(--primary);width:32px;height:32px;font-size:12px;border-radius:8px;"><i class="fa-solid fa-layer-group"></i></div><div class="list-item-info"><h4 style="font-size:13px;">'+esc(ingreso?.concepto||items[0]?.concepto||'-')+'</h4><p>'+fs+(vehLabel?' · <i class="fa-solid fa-car" style="font-size:9px;"></i> '+esc(vehLabel):'')+(servicio?' · '+esc(servicio):'')+'</p></div></div><div style="display:flex;align-items:center;gap:10px;"><div style="text-align:right;"><div style="font-size:10px;color:var(--text-muted);margin-bottom:1px;">Neto</div><div style="font-size:15px;font-weight:800;color:'+(neto>=0?'var(--primary)':'var(--rose)')+';">'+formatMoney(neto)+'</div></div><button class="btn-sm btn-rose" onclick="eliminarCajaGrupo(\''+esc(gid)+'\')"><i class="fa-solid fa-trash"></i></button></div></div><div class="caja-group-body">';
     if(ingreso){ html+='<div class="caja-group-row"><div class="caja-group-row-left"><i class="fa-solid fa-arrow-up" style="color:var(--emerald);"></i><span>Ingreso (cobrado)</span></div><div class="caja-group-row-right" style="color:var(--emerald);">+'+formatMoney(ingreso.monto)+'</div></div>'; }
     for(let ei=0;ei<egresos.length;ei++){
       const e=egresos[ei];
@@ -1051,7 +1130,7 @@ function renderGarantias(){
   for(let i=0;i<garantias.length;i++){
     const g=garantias[i];
     const fd=g.fecha_instalacion||g.created_at||'';
-    html+='<div class="gar-list-item"><div class="gar-list-icon"><i class="fa-solid fa-shield-halved"></i></div><div class="gar-list-info"><h4>'+esc(g.ppf_marca||'PPF')+' — '+(esc(g.cliente_nombre||g.vehiculo_desc||'-'))+'</h4><p>N° '+esc(g.numero||'-')+' &middot; '+(fd?formatDate(fd):'Sin fecha')+' &middot; Prod: '+(g.garantia_producto_anios||'?')+'a / Inst: '+(g.garantia_instalacion_anios||'?')+'a</p></div><div class="gar-list-actions"><button class="btn-sm btn-blue" onclick="reimprimirGarantia(\''+g.id+'\')"><i class="fa-solid fa-print"></i></button><button class="btn-sm btn-rose" onclick="eliminarGarantia(\''+g.id+'\')"><i class="fa-solid fa-trash"></i></button></div></div>';
+    html+='<div class="gar-list-item"><div class="gar-list-icon"><i class="fa-solid fa-shield-halved"></i></div><div class="gar-list-info"><h4>'+esc(g.ppf_marca||'PPF')+' — '+(esc(g.cliente_nombre||g.vehiculo_desc||'-'))+'</h4><p>N° '+esc(g.numero||'-')+' · '+(fd?formatDate(fd):'Sin fecha')+' · Prod: '+(g.garantia_producto_anios||'?')+'a / Inst: '+(g.garantia_instalacion_anios||'?')+'a</p></div><div class="gar-list-actions"><button class="btn-sm btn-blue" onclick="reimprimirGarantia(\''+g.id+'\')"><i class="fa-solid fa-print"></i></button><button class="btn-sm btn-rose" onclick="eliminarGarantia(\''+g.id+'\')"><i class="fa-solid fa-trash"></i></button></div></div>';
   }
   el.innerHTML=html;
 }
@@ -1469,9 +1548,7 @@ function buscarGarantia(){
   el.innerHTML=html;
 }
 
-// ============================================
 // GALERIA FUNCTIONS
-// ============================================
 function handleFileSelect(e){ pendingFiles=Array.from(e.target.files); renderUploadPreview(); }
 
 function renderUploadPreview(){
@@ -1499,171 +1576,52 @@ function renderUploadPreview(){
 
 function clearPendingFiles(){ pendingFiles=[]; document.getElementById('gal_files').value=''; document.getElementById('uploadPreview').innerHTML=''; }
 
-// GALERIA - SUBIR
 async function subirArchivos(){
-
-  const vehiculo_id =
-    document.getElementById('gal_vehiculo').value;
-
-  const descripcion =
-    document.getElementById('gal_descripcion').value.trim();
-
-  if(!vehiculo_id){
-    toast('Selecciona un vehiculo','error');
-    return;
-  }
-
-  if(!pendingFiles.length){
-    toast('Selecciona archivos para subir','error');
-    return;
-  }
-
-  if(pendingFiles.length > 10){
-    toast('Maximo 10 archivos a la vez','error');
-    return;
-  }
-
+  const vehiculo_id=document.getElementById('gal_vehiculo').value;
+  const descripcion=document.getElementById('gal_descripcion').value.trim();
+  if(!vehiculo_id){ toast('Selecciona un vehiculo','error'); return; }
+  if(!pendingFiles.length){ toast('Selecciona archivos para subir','error'); return; }
+  if(pendingFiles.length > 10){ toast('Maximo 10 archivos a la vez','error'); return; }
   let successCount = 0;
-
   for(let i = 0; i < pendingFiles.length; i++){
-
     const file = pendingFiles[i];
-
-    const isVideo =
-      file.type.startsWith('video/');
-
-    if(file.size > 20 * 1024 * 1024){
-
-      toast(
-        'Archivo muy grande: ' + file.name,
-        'error'
-      );
-
-      continue;
-    }
-
+    const isVideo = file.type.startsWith('video/');
+    if(file.size > 20 * 1024 * 1024){ toast('Archivo muy grande: ' + file.name,'error'); continue; }
     try{
-
-      // EXTENSION
-      const fileExt =
-        file.name.split('.').pop();
-
-      // NOMBRE UNICO
-      const fileName =
-        Date.now() +
-        '_' +
-        Math.random().toString(36).substring(2,9) +
-        '.' +
-        fileExt;
-
-      // PATH
-      const filePath =
-        vehiculo_id + '/' + fileName;
-
-      // SUBIR A STORAGE
-      const { error: uploadError } =
-        await sb.storage
-          .from('galeria')
-          .upload(filePath, file);
-
-      if(uploadError){
-
-        console.error(uploadError);
-
-        toast(
-          'Error subiendo archivo',
-          'error'
-        );
-
-        continue;
-      }
-
-      // OBTENER URL
-      const { data: publicData } =
-        sb.storage
-          .from('galeria')
-          .getPublicUrl(filePath);
-
-      // REGISTRO
+      const fileExt = file.name.split('.').pop();
+      const fileName = Date.now() + '_' + Math.random().toString(36).substring(2,9) + '.' + fileExt;
+      const filePath = vehiculo_id + '/' + fileName;
+      const { error: uploadError } = await sb.storage.from('galeria').upload(filePath, file);
+      if(uploadError){ toast('Error subiendo archivo','error'); continue; }
+      const { data: publicData } = sb.storage.from('galeria').getPublicUrl(filePath);
       const registro = {
-
-        id:
-          Date.now().toString() +
-          '_' +
-          Math.random().toString(36).substr(2,9),
-
+        id: Date.now().toString() + '_' + Math.random().toString(36).substr(2,9),
         vehiculo_id: vehiculo_id,
-
-        tipo:
-          isVideo ? 'video' : 'imagen',
-
+        tipo: isVideo ? 'video' : 'imagen',
         nombre: file.name,
-
         nombre_archivo: fileName,
-
         path: filePath,
-
         url: publicData.publicUrl,
-
         descripcion: descripcion,
-
-        created_at:
-          new Date().toISOString()
+        created_at: new Date().toISOString()
       };
-
-      // GUARDAR EN SUPABASE
-      const { error: dbError } =
-        await sb
-          .from('galeria')
-          .insert([registro]);
-
-      if(dbError){
-
-        console.error(dbError);
-
-        toast(
-          'Error guardando registro',
-          'error'
-        );
-
-        continue;
-      }
-
-      // LOCAL
+      const { error: dbError } = await sb.from('galeria').insert([registro]);
+      if(dbError){ toast('Error guardando registro','error'); continue; }
       galeria.unshift(registro);
-
       successCount++;
-
-    }catch(err){
-
-      console.error(
-        'Error subiendo archivo:',
-        err
-      );
-    }
+    }catch(err){ console.error('Error subiendo archivo:', err); }
   }
-
   if(successCount > 0){
-
-    toast(
-      successCount +
-      ' archivo(s) subido(s)',
-      'success'
-    );
-
-    document.getElementById(
-      'gal_descripcion'
-    ).value = '';
-
+    toast(successCount + ' archivo(s) subido(s)','success');
+    document.getElementById('gal_descripcion').value = '';
     clearPendingFiles();
-
     renderGaleria();
   }
 }
 
 function renderGaleria(){
   const el=document.getElementById('galeriaGrid');
-  const filtro=document.getElementById('gal_filtro_vehiculo')?.value||'';
+  const filtro=document.getElementById('gal_filtro_vehiculo')?document.getElementById('gal_filtro_vehiculo').value:'';
   let filtered=galeria;
   if(filtro){ filtered=galeria.filter(function(g){ return g.vehiculo_id===filtro; }); }
   if(!filtered.length){ el.innerHTML='<div class="empty-state"><i class="fa-solid fa-images"></i><p>'+(filtro?'No hay archivos para este vehiculo':'No hay archivos cargados')+'</p></div>'; return; }
@@ -1715,13 +1673,9 @@ function closeLightbox(){
 function lightboxPrev(){ if(currentLightboxIndex>0){ currentLightboxIndex--; renderLightboxItem(); } }
 function lightboxNext(){ if(currentLightboxIndex<currentLightboxItems.length-1){ currentLightboxIndex++; renderLightboxItem(); } }
 
-// ============================================
-// DESCARGA DE ARCHIVOS
-// ============================================
 function descargarArchivo(id){
   const item=galeria.find(function(g){ return g.id===id; });
   if(!item){ toast('Archivo no encontrado','error'); return; }
-  
   const link=document.createElement('a');
   link.href=item.url;
   link.download=item.nombre||('archivo_'+item.id+'.'+(item.tipo==='video'?'mp4':'jpg'));
@@ -1735,7 +1689,6 @@ function descargarArchivoActual(){
   if(!currentLightboxItems.length || currentLightboxIndex<0) return;
   const item=currentLightboxItems[currentLightboxIndex];
   if(!item){ toast('No hay archivo para descargar','error'); return; }
-  
   const link=document.createElement('a');
   link.href=item.url;
   link.download=item.nombre||('archivo_'+item.id+'.'+(item.tipo==='video'?'mp4':'jpg'));
@@ -1762,7 +1715,6 @@ async function eliminarGaleriaItem(id){
   });
 }
 
-// SETUP UPLOAD ZONE
 function setupUploadZone(){
   const uploadZone=document.getElementById('uploadZone');
   const fileInput=document.getElementById('gal_files');
@@ -1781,7 +1733,7 @@ function setupUploadZone(){
 }
 
 // INICIALIZACION
-(async function init(){
+(function init(){
   const now=new Date();
   const dias=['Domingo','Lunes','Martes','Miercoles','Jueves','Viernes','Sabado'];
   const meses=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
@@ -1798,9 +1750,8 @@ function setupUploadZone(){
 
   populatePPFSelect();
   setupUploadZone();
-  await refreshAll();
+  refreshAll();
 })();
 </script>
 
 </body>
-</html>
