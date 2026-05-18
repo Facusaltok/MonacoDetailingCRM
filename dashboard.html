@@ -1498,15 +1498,55 @@ function showCertificado(d){
   let html='<div class="cert-doc"><div class="cert-header"><div class="cert-logo-box">M</div><div class="cert-header-text"><h1>MONACO DETAILING</h1><p>Certificado de Garantia PPF</p></div><div class="cert-number"><span>Certificado N°</span><strong>'+esc(d.certNum)+'</strong></div></div>';
   html+='<p style="text-align:justify; line-height:1.7; color:#444;">Por el presente, <strong>MONACO DETAILING</strong>, con domicilio comercial en Antonio Malaver 3545, Munro, Vicente Lopez, Provincia de Buenos Aires, garantiza al cliente abajo detallado la correcta calidad y aplicacion del Film de Proteccion de Pintura (PPF) instalado en el vehiculo indicado.</p>';
   html+='<h2>DATOS DEL CLIENTE Y DEL VEHICULO</h2><table class="cert-data-table"><tr><td>Nombre completo del cliente</td><td>'+esc(d.clienteNombre)+'</td></tr><tr><td>Telefono</td><td>'+esc(d.clienteTel||'-')+'</td></tr><tr><td>Vehiculo</td><td>'+esc(d.vehDesc)+'</td></tr><tr><td>Patente</td><td>'+esc(d.vehPatente||'-')+'</td></tr><tr><td>Fecha de instalacion</td><td>'+fechaFormatted+'</td></tr><tr><td>Servicio</td><td>PPF - Paint Protection Film</td></tr><tr><td>Marca / Rollo de PPF</td><td>'+esc(d.ppfMarca)+'</td></tr><tr><td>Codigo del producto</td><td>'+esc(d.codigo||'-')+'</td></tr></table>';
-  html+='<h2 style="margin-top:28px;">ALCANCE DE LA GARANTIA</h2>';
-  html+='<h3 style="margin-top:20px;">Garantia por fallas del producto - '+prodWord+' ('+d.aniosProd+') años</h3>';
-  html+='<p style="text-align:justify; line-height:1.9; color:#444;">Se otorga garantia de <strong>'+prodWord+' ('+d.aniosProd+') años</strong> sobre el PPF aplicado al vehiculo. Cubre defectos atribuibles a la fabricacion del material.</p>';
-  html+='<p style="font-size:11px; color:#777; margin-top:8px;">Vencimiento: <strong>'+formatDateShort(vencProd)+'</strong></p>';
-  html+='<hr style="margin:22px 0; border:none; border-top:1px solid #ddd;">';
-  html+='<h3>Garantia por falla en la instalacion - '+instWord+' ('+d.aniosInst+') año'+(d.aniosInst!==1?'s':'')+'</h3>';
-  html+='<p style="text-align:justify; line-height:1.9; color:#444;">Se otorga garantia de <strong>'+instWord+' ('+d.aniosInst+') año'+(d.aniosInst!==1?'s':'')+'</strong> sobre la correcta instalacion del PPF.</p>';
-  html+='<p style="font-size:11px; color:#777; margin-top:8px;">Vencimiento: <strong>'+formatDateShort(vencInst)+'</strong></p>';
-  html+='<div class="cert-footer-note">Documento oficial emitido por Monaco Detailing</div></div>';
+  html+='<h2 style="margin-top:28px; letter-spacing:1px;">ALCANCE DE LA GARANTIA</h2>';
+
+html+='<h3 style="margin-top:20px;">Garantia por fallas del producto - '+prodWord+' ('+d.aniosProd+') años</h3>';
+
+html+='<p style="text-align:justify; line-height:1.9; color:#444;">Se otorga garantia de <strong>'+prodWord+' ('+d.aniosProd+') años</strong> sobre el Film de Proteccion de Pintura (PPF) aplicado al vehiculo detallado en el presente certificado. La misma cubre exclusivamente defectos atribuibles a la fabricacion del material, incluyendo:</p>';
+
+html+='<ul style="line-height:1.9; padding-left:24px; list-style-type:disc; color:#444;">';
+html+='<li>Amarilleo prematuro del film.</li>';
+html+='<li>Agrietamiento, cuarteo o deterioro anormal del material.</li>';
+html+='<li>Deslaminacion o separacion de capas del film.</li>';
+html+='<li>Perdida anormal de propiedades fisicas atribuibles al fabricante.</li>';
+html+='</ul>';
+
+html+='<p style="text-align:justify; line-height:1.9; color:#444;">La presente cobertura se encuentra sujeta al correcto uso, mantenimiento y cuidado del vehiculo, conforme a las recomendaciones indicadas por Monaco Detailing y el fabricante del PPF instalado.</p>';
+
+html+='<p style="font-size:11px; color:#777; margin-top:8px;">Vencimiento de garantia de producto: <strong>'+formatDateShort(vencProd)+'</strong></p>';
+
+html+='<hr style="margin:22px 0; border:none; border-top:1px solid #ddd;">';
+
+html+='<h3>Garantia por falla en la instalacion - '+instWord+' ('+d.aniosInst+') año'+(d.aniosInst!==1 ? 's' : '')+'</h3>';
+
+html+='<p style="text-align:justify; line-height:1.9; color:#444;">Se otorga garantia de <strong>'+instWord+' ('+d.aniosInst+') año'+(d.aniosInst!==1 ? 's' : '')+'</strong> sobre la correcta instalacion del PPF realizada por Monaco Detailing, cubriendo defectos derivados exclusivamente del proceso de aplicacion.</p>';
+
+html+='<ul style="line-height:1.9; padding-left:24px; list-style-type:disc; color:#444;">';
+html+='<li>Despegues del material atribuibles a una incorrecta instalacion.</li>';
+html+='<li>Levantamiento de bordes o formacion de burbujas por falla de aplicacion.</li>';
+html+='<li>Fallas de adherencia no relacionadas con golpes, impactos o uso indebido.</li>';
+html+='</ul>';
+
+html+='<p style="font-size:11px; color:#777; margin-top:8px;">Vencimiento de garantia de instalacion: <strong>'+formatDateShort(vencInst)+'</strong></p>';
+
+html+='<hr style="margin:22px 0; border:none; border-top:1px solid #ddd;">';
+
+html+='<h2 style="margin-top:10px; letter-spacing:1px;">EXCLUSIONES DE LA GARANTIA</h2>';
+
+html+='<p style="text-align:justify; line-height:1.9; color:#444;">La presente garantia no cubre daños o deterioros ocasionados por factores externos, mantenimiento inadecuado, uso indebido del vehiculo o intervenciones ajenas a Monaco Detailing. Se excluyen especificamente los siguientes casos:</p>';
+
+html+='<ul style="line-height:1.95; padding-left:24px; list-style-type:disc; color:#444;">';
+html+='<li>Daños ocasionados por golpes, rayones, impactos, vandalismo, accidentes o agentes externos.</li>';
+html+='<li>Daños provocados por lavado inadecuado o utilizacion de productos abrasivos, corrosivos o no recomendados.</li>';
+html+='<li>Daños derivados de uso indebido del vehiculo o exposicion prolongada a condiciones extremas.</li>';
+html+='<li>Alteraciones, reparaciones o intervenciones sobre el PPF realizadas por terceros ajenos a Monaco Detailing.</li>';
+html+='<li>Contaminacion quimica, manchas producidas por excremento de aves, savia de arboles, insectos o agentes corrosivos no removidos en tiempo y forma.</li>';
+html+='</ul>';
+
+html+='<p style="margin-top:24px; font-size:11px; color:#777; text-align:justify; line-height:1.7;">Monaco Detailing se reserva el derecho de inspeccionar el vehiculo antes de proceder con cualquier reclamo de garantia, a fin de verificar las condiciones de instalacion, uso y mantenimiento del PPF aplicado.</p>';
+  html+='<div class="cert-footer-note">Documento oficial emitido por Monaco Detailing</div>';
+  html+='</div>';
+
   document.getElementById('certContent').innerHTML=html;
   document.getElementById('certOverlay').classList.add('show');
 }
