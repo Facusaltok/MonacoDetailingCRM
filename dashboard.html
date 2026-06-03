@@ -132,9 +132,35 @@ body::after{
 
 .form-group {margin-bottom:13px;}
 .form-label {display:block;font-size:11px;font-weight:600;color:var(--text-secondary);margin-bottom:5px;text-transform:uppercase;letter-spacing:0.5px;}
-.form-input {
-  width:100%;background:var(--bg-input);border:1px solid rgba(255,255,255,0.1);padding:10px 13px;
-  border-radius:9px;color:var(--text-primary);font-size:13px;font-family:inherit;transition:all 0.2s;outline:none;
+.form-input{
+  width:100%;
+  background:#ffffff;
+  border:2px solid #d1d5db;
+  padding:12px 14px;
+  border-radius:10px;
+  color:#111827;
+  font-size:13px;
+  font-family:inherit;
+  transition:all .25s ease;
+  outline:none;
+}
+
+.form-input:hover{
+  border-color:#9ca3af;
+}
+
+.form-input:focus{
+  border-color:#10b981;
+  box-shadow:0 0 0 4px rgba(16,185,129,.15);
+}
+
+.form-input::placeholder{
+  color:#9ca3af;
+}
+
+select.form-input{
+  cursor:pointer;
+  background:#ffffff;
 }
 .form-input:focus {border-color:var(--border-focus);box-shadow:0 0 0 3px rgba(16,185,129,0.08);}
 .form-input::placeholder {color:var(--text-muted);}
