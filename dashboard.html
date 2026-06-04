@@ -334,21 +334,7 @@ select.form-input {cursor:pointer;appearance:auto;}
 .cert-doc::after {content:'';position:absolute;bottom:0;left:0;right:0;height:4px;background:linear-gradient(90deg,#10B981,#059669,#10B981);border-radius:0 0 8px 8px;}
 
 .cert-header {display:flex;align-items:center;gap:14px;margin-bottom:24px;padding-bottom:18px;border-bottom:2px solid #10B981;}
-.cert-logo-box{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:transparent;
-  width:90px;
-  height:90px;
-  border-radius:0;
-  box-shadow:none;
-}
-  .cert-logo-box img{
-  width:100%;
-  height:100%;
-  object-fit:contain;
-}
+.cert-logo-box {width:52px;height:52px;background:linear-gradient(135deg,#10B981,#059669);border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:22px;color:#000;font-weight:800;flex-shrink:0;}
 .cert-header-text h1 {font-size:19px;font-weight:800;color:#1a1a1a;letter-spacing:-0.5px;margin:0;}
 .cert-header-text p {font-size:9.5px;text-transform:uppercase;letter-spacing:3px;color:#666;font-weight:600;margin:2px 0 0;}
 .cert-number {margin-left:auto;text-align:right;}
@@ -1595,9 +1581,7 @@ function showCertificado(d){
   const fInst=new Date(d.fecha);
   const vencProd=new Date(fInst); vencProd.setFullYear(vencProd.getFullYear()+d.aniosProd);
   const vencInst=new Date(fInst); vencInst.setFullYear(vencInst.getFullYear()+d.aniosInst);
-  let html='<div class="cert-doc"><div class="cert-header"><div class="cert-logo-box">
-  <img src="logo.png" style="height:70px;width:auto;">
-</div><div class="cert-header-text"><h1>MONACO DETAILING</h1><p>Certificado de Garantia PPF</p></div><div class="cert-number"><span>Certificado N°</span><strong>'+esc(d.certNum)+'</strong></div></div>';
+  let html='<div class="cert-doc"><div class="cert-header"><div class="cert-logo-box">M</div><div class="cert-header-text"><h1>MONACO DETAILING</h1><p>Certificado de Garantia PPF</p></div><div class="cert-number"><span>Certificado N°</span><strong>'+esc(d.certNum)+'</strong></div></div>';
   html+='<p style="text-align:justify; line-height:1.7; color:#444;">Por el presente, <strong>MONACO DETAILING</strong>, con domicilio comercial en Antonio Malaver 3545, Munro, Vicente Lopez, Provincia de Buenos Aires, garantiza al cliente abajo detallado la correcta calidad y aplicacion del Film de Proteccion de Pintura (PPF) instalado en el vehiculo indicado.</p>';
   html+='<h2>DATOS DEL CLIENTE Y DEL VEHICULO</h2><table class="cert-data-table"><tr><td>Nombre completo del cliente</td><td>'+esc(d.clienteNombre)+'</td></tr><tr><td>Telefono</td><td>'+esc(d.clienteTel||'-')+'</td></tr><tr><td>Vehiculo</td><td>'+esc(d.vehDesc)+'</td></tr><tr><td>Patente</td><td>'+esc(d.vehPatente||'-')+'</td></tr><tr><td>Fecha de instalacion</td><td>'+fechaFormatted+'</td></tr><tr><td>Servicio</td><td>PPF - Paint Protection Film</td></tr><tr><td>Marca / Rollo de PPF</td><td>'+esc(d.ppfMarca)+'</td></tr><tr><td>Codigo del producto</td><td>'+esc(d.codigo||'-')+'</td></tr></table>';
   html+='<h2 style="margin-top:28px; letter-spacing:1px;">ALCANCE DE LA GARANTIA</h2>';
