@@ -3,13 +3,18 @@
 
 <head>
 <link rel="manifest" href="manifest.json">
+
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
+
 <meta name="theme-color" content="#10B981">
+
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Monaco CRM">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Monaco Detailing</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
@@ -23,15 +28,19 @@
   --bg-card: #FFFFFF;
   --bg-card-hover: #F8FAFC;
   --bg-input: #FFFFFF;
+
   --border: #E2E8F0;
   --border-focus: rgba(16,185,129,.35);
+
   --primary: #10B981;
   --primary-soft: rgba(16,185,129,.10);
   --primary-glow: rgba(16,185,129,.20);
+
   --emerald: #10B981;
   --blue: #3B82F6;
   --amber: #F59E0B;
   --rose: #F43F5E;
+
   --text-primary: #0F172A;
   --text-secondary: #475569;
   --text-muted: #64748B;
@@ -43,6 +52,15 @@ body {
   color: var(--text-primary);
   min-height: 100vh;
   overflow-x: hidden;
+}
+body::before,
+body::after{
+    display:none;
+}
+@keyframes floatOrb {
+  0%,100%{transform:translate(0,0) scale(1);}
+  33%{transform:translate(40px,-30px) scale(1.05);}
+  66%{transform:translate(-20px,40px) scale(0.95);}
 }
 
 .sidebar {
@@ -107,6 +125,7 @@ body {
   display:flex;
   align-items:center;
   justify-content:space-between;
+
   background:#FFFFFF;
   border-bottom:1px solid var(--border);
   box-shadow:0 2px 12px rgba(15,23,42,0.05);
@@ -136,14 +155,12 @@ body {
 .kpi-card.kpi-primary::before {background:linear-gradient(90deg,var(--primary),transparent);}
 .kpi-card.kpi-amber::before {background:linear-gradient(90deg,var(--amber),transparent);}
 .kpi-card.kpi-rose::before {background:linear-gradient(90deg,var(--rose),transparent);}
-.kpi-card.kpi-purple::before {background:linear-gradient(90deg,#8B5CF6,transparent);}
 .kpi-icon {width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:15px;margin-bottom:12px;}
 .kpi-blue .kpi-icon {background:rgba(59,130,246,0.12);color:var(--blue);}
 .kpi-emerald .kpi-icon {background:rgba(16,185,129,0.12);color:var(--emerald);}
 .kpi-primary .kpi-icon {background:var(--primary-soft);color:var(--primary);}
 .kpi-amber .kpi-icon {background:rgba(245,158,11,0.12);color:var(--amber);}
 .kpi-rose .kpi-icon {background:rgba(244,63,94,0.12);color:var(--rose);}
-.kpi-purple .kpi-icon {background:rgba(139,92,246,0.12);color:#8B5CF6;}
 .kpi-value {font-size:26px;font-weight:800;letter-spacing:-1px;line-height:1;}
 .kpi-label {font-size:11.5px;color:var(--text-secondary);margin-top:5px;font-weight:500;}
 
@@ -167,11 +184,26 @@ body {
   outline:none;
 }
 
-.form-input:hover{border-color:#9ca3af;}
-.form-input:focus{border-color:#10b981;box-shadow:0 0 0 4px rgba(16,185,129,.15);}
-.form-input::placeholder{color:#9ca3af;}
+.form-input:hover{
+  border-color:#9ca3af;
+}
 
-select.form-input{cursor:pointer;background:#ffffff;}
+.form-input:focus{
+  border-color:#10b981;
+  box-shadow:0 0 0 4px rgba(16,185,129,.15);
+}
+
+.form-input::placeholder{
+  color:#9ca3af;
+}
+
+select.form-input{
+  cursor:pointer;
+  background:#ffffff;
+}
+.form-input:focus {border-color:var(--border-focus);box-shadow:0 0 0 3px rgba(16,185,129,0.08);}
+.form-input::placeholder {color:var(--text-muted);}
+select.form-input {cursor:pointer;appearance:auto;}
 
 .btn-gold {
   background:linear-gradient(135deg,var(--primary),#059669);color:#000;padding:10px 20px;border-radius:9px;border:none;
@@ -183,7 +215,7 @@ select.form-input{cursor:pointer;background:#ffffff;}
   background:transparent;color:var(--text-secondary);padding:8px 14px;border-radius:8px;border:1px solid var(--border);
   font-size:12px;cursor:pointer;font-family:inherit;transition:all 0.2s;display:inline-flex;align-items:center;gap:6px;
 }
-.btn-ghost:hover {border-color:rgba(16,185,129,0.3);color:var(--text-primary);}
+.btn-ghost:hover {border-color:rgba(255,255,255,0.18);color:var(--text-primary);}
 .btn-sm {
   padding:5px 10px;border-radius:7px;border:none;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;
   transition:all 0.15s;display:inline-flex;align-items:center;gap:4px;
@@ -209,7 +241,7 @@ select.form-input{cursor:pointer;background:#ffffff;}
 .kanban-body {padding:10px;flex:1;display:flex;flex-direction:column;gap:8px;overflow-y:auto;}
 
 .task-card {background:var(--bg-card);border:1px solid var(--border);border-radius:11px;padding:13px;transition:all 0.2s;}
-.task-card:hover {border-color:rgba(16,185,129,0.3);transform:translateY(-1px);}
+.task-card:hover {border-color:rgba(255,255,255,0.12);transform:translateY(-1px);}
 .task-service {font-size:13px;font-weight:700;margin-bottom:6px;}
 .task-meta {font-size:11px;color:var(--text-muted);display:flex;align-items:center;gap:5px;margin-bottom:8px;}
 .task-meta i {font-size:10px;}
@@ -217,7 +249,7 @@ select.form-input{cursor:pointer;background:#ffffff;}
 
 .list-item {display:flex;align-items:center;justify-content:space-between;padding:11px 16px;border-bottom:1px solid var(--border);transition:background 0.15s;}
 .list-item:last-child {border-bottom:none;}
-.list-item:hover {background:rgba(16,185,129,0.03);}
+.list-item:hover {background:rgba(255,255,255,0.03);}
 .list-item-left {display:flex;align-items:center;gap:12px;flex:1;min-width:0;}
 .list-icon {width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
 .list-item-info {flex:1;min-width:0;}
@@ -230,9 +262,6 @@ select.form-input{cursor:pointer;background:#ffffff;}
 .badge-pendiente {background:rgba(245,158,11,0.12);color:var(--amber);}
 .badge-proceso {background:rgba(59,130,246,0.12);color:var(--blue);}
 .badge-terminado {background:rgba(16,185,129,0.12);color:var(--emerald);}
-.badge-factura-a {background:rgba(59,130,246,0.15);color:var(--blue);}
-.badge-factura-b {background:rgba(139,92,246,0.15);color:#8B5CF6;}
-.badge-factura-c {background:rgba(16,185,129,0.15);color:var(--emerald);}
 
 .toast-container {position:fixed;top:20px;right:20px;z-index:9999;display:flex;flex-direction:column;gap:10px;pointer-events:none;}
 .toast {
@@ -252,13 +281,11 @@ select.form-input{cursor:pointer;background:#ffffff;}
   display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.25s;
 }
 .modal-overlay.show {opacity:1;pointer-events:auto;}
-.modal-box {background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:28px;max-width:450px;width:90%;transform:scale(0.95);transition:transform 0.25s;}
+.modal-box {background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:28px;max-width:400px;width:90%;transform:scale(0.95);transition:transform 0.25s;}
 .modal-overlay.show .modal-box {transform:scale(1);}
 .modal-box h3 {font-size:16px;font-weight:700;margin-bottom:8px;}
 .modal-box p {font-size:13px;color:var(--text-secondary);margin-bottom:20px;}
 .modal-actions {display:flex;gap:10px;justify-content:flex-end;}
-
-.modal-box-lg {max-width:600px;}
 
 .empty-state {text-align:center;padding:36px 20px;color:var(--text-muted);}
 .empty-state i {font-size:30px;margin-bottom:10px;opacity:0.4;display:block;}
@@ -267,6 +294,14 @@ select.form-input{cursor:pointer;background:#ffffff;}
 .section-header {display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;}
 .section-header h2 {font-size:17px;font-weight:700;}
 .section-header-sub {font-size:12px;color:var(--text-muted);margin-top:2px;}
+
+.setup-banner {
+  background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.25);border-radius:12px;padding:14px 18px;
+  margin-bottom:14px;font-size:12px;color:var(--primary);display:none;align-items:flex-start;gap:10px;line-height:1.6;
+}
+.setup-banner.show {display:flex;}
+.setup-banner i {margin-top:2px;flex-shrink:0;}
+.setup-banner code {background:rgba(0,0,0,0.5);padding:1px 6px;border-radius:4px;font-size:11px;color:#fff;}
 
 .ppf-info-card {
   background:rgba(16,185,129,0.06);border:1px solid rgba(16,185,129,0.18);border-radius:10px;
@@ -288,7 +323,7 @@ select.form-input{cursor:pointer;background:#ffffff;}
 .cert-actions button {padding:10px 22px;border-radius:9px;border:none;font-family:inherit;font-weight:700;font-size:13px;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:all 0.2s;}
 .cert-btn-print {background:var(--primary);color:#000;}
 .cert-btn-print:hover {box-shadow:0 4px 20px var(--primary-glow);transform:translateY(-1px);}
-.cert-btn-close {background:rgba(255,255,255,0.1);color:#fff;}
+.cert-btn-close {background:rgba(255,255,255,0.1);color:var(--text-primary);}
 .cert-btn-close:hover {background:rgba(255,255,255,0.18);}
 
 .cert-doc {
@@ -315,11 +350,16 @@ select.form-input{cursor:pointer;background:#ffffff;}
 .cert-data-table td:first-child {font-weight:600;color:#666;width:42%;background:#fafafa;}
 .cert-data-table td:last-child {color:#1a1a1a;font-weight:500;}
 
+.cert-exclusions {list-style:none;padding:0;margin:0 0 14px;}
+.cert-exclusions li {padding:5px 0 5px 18px;position:relative;font-size:11.5px;color:#333;}
+.cert-exclusions li::before {content:'\f00d';font-family:'Font Awesome 6 Free';font-weight:900;position:absolute;left:0;color:#c0392b;font-size:8px;top:7px;}
+
 .cert-sig-area {display:flex;gap:36px;margin-top:32px;padding-top:20px;border-top:1px solid #ddd;}
 .cert-sig-block {flex:1;text-align:center;}
 .cert-sig-line {height:1px;background:#999;margin:36px 0 7px;}
 .cert-sig-label {font-size:9.5px;color:#666;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;margin:3px 0 1px;}
 .cert-sig-name {font-size:11.5px;color:#1a1a1a;font-weight:600;}
+
 .cert-footer-note {margin-top:20px;padding-top:10px;border-top:1px solid #eee;font-size:9px;color:#999;text-align:center;font-style:italic;}
 
 .gar-list-item {display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--border);transition:background 0.15s;}
@@ -348,20 +388,20 @@ select.form-input{cursor:pointer;background:#ffffff;}
 .caja-net-label {color:var(--text-secondary);}
 .caja-net-val {font-weight:700;}
 .caja-net-val.neg {color:var(--rose);}
-.caja-net-div {border-top:1px dashed rgba(16,185,129,0.3);margin:8px 0;padding-top:8px;}
+.caja-net-div {border-top:1px dashed rgba(255,255,255,0.1);margin:8px 0;padding-top:8px;}
 .caja-net-total {font-size:16px;font-weight:800;color:var(--primary);}
 
 .caja-group-card {
   background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:11px;
   margin-bottom:10px;overflow:hidden;transition:border-color 0.2s;
 }
-.caja-group-card:hover {border-color:rgba(16,185,129,0.3);}
+.caja-group-card:hover {border-color:rgba(255,255,255,0.12);}
 .caja-group-header {
   display:flex;align-items:center;justify-content:space-between;padding:13px 16px;
   border-bottom:1px solid var(--border);flex-wrap:wrap;gap:8px;
 }
 .caja-group-body {padding:6px 16px 10px;}
-.caja-group-row {display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid rgba(0,0,0,0.03);}
+.caja-group-row {display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.04);}
 .caja-group-row:last-child {border-bottom:none;}
 .caja-group-row-left {display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text-secondary);}
 .caja-group-row-left i {font-size:10px;}
@@ -372,7 +412,7 @@ select.form-input{cursor:pointer;background:#ffffff;}
 .mode-btn-trabajo.active {background:linear-gradient(135deg,var(--primary),#059669);color:#000;box-shadow:0 2px 12px rgba(16,185,129,0.2);}
 .mode-btn-egreso.active {background:var(--rose);color:#fff;box-shadow:0 2px 12px rgba(244,63,94,0.2);}
 .mode-btn:not(.active) {background:transparent;color:var(--text-muted);}
-.mode-btn:not(.active):hover {color:var(--text-secondary);background:rgba(0,0,0,0.03);}
+.mode-btn:not(.active):hover {color:var(--text-secondary);background:rgba(255,255,255,0.04);}
 
 .search-box {
   display:flex;align-items:center;gap:8px;background:var(--bg-input);border:1px solid var(--border);
@@ -397,7 +437,7 @@ select.form-input{cursor:pointer;background:#ffffff;}
 .gallery-item-type.video {background:rgba(59,130,246,0.8);}
 .gallery-item-type.imagen {background:rgba(16,185,129,0.8);}
 
-.upload-zone {border:2px dashed rgba(0,0,0,0.12);border-radius:12px;padding:30px;text-align:center;transition:all 0.2s;cursor:pointer;background:rgba(255,255,255,0.5);}
+.upload-zone {border:2px dashed rgba(255,255,255,0.12);border-radius:12px;padding:30px;text-align:center;transition:all 0.2s;cursor:pointer;background:rgba(255,255,255,0.01);}
 .upload-zone:hover {border-color:var(--primary);background:rgba(16,185,129,0.03);}
 .upload-zone.dragover {border-color:var(--primary);background:rgba(16,185,129,0.08);}
 .upload-zone i {font-size:32px;color:var(--text-muted);margin-bottom:10px;}
@@ -416,16 +456,6 @@ select.form-input{cursor:pointer;background:#ffffff;}
 .lightbox-next {right:-60px;}
 .lightbox-download {position:absolute;top:-40px;right:50px;background:var(--primary);color:#000;border:none;padding:8px 16px;border-radius:8px;font-weight:700;font-size:12px;cursor:pointer;display:flex;align-items:center;gap:6px;transition:all 0.2s;}
 .lightbox-download:hover {box-shadow:0 4px 15px rgba(16,185,129,0.3);transform:translateY(-1px);}
-
-/* Factura Styles */
-.factura-doc {
-  background:#fff;color:#1a1a1a;border-radius:8px;padding:40px;
-  box-shadow:0 20px 60px rgba(0,0,0,0.2);font-size:12px;line-height:1.6;
-}
-.factura-header {display:flex;justify-content:space-between;border-bottom:2px solid var(--primary);padding-bottom:20px;margin-bottom:20px;}
-.factura-tabla {width:100%;border-collapse:collapse;margin:20px 0;}
-.factura-tabla th {background:var(--primary);color:#000;padding:8px;text-align:left;}
-.factura-tabla td {padding:8px;border-bottom:1px solid #eee;}
 
 @media(max-width:1024px){
   .sidebar {transform:translateX(-100%);}
@@ -449,6 +479,7 @@ select.form-input{cursor:pointer;background:#ffffff;}
 
 @media print {
   body {background:#fff !important;}
+  body::before, body::after {display:none !important;}
   .sidebar, .top-bar, .page-body, .toast-container, .modal-overlay, .lightbox-overlay {display:none !important;}
   .cert-overlay {position:static !important;background:none !important;padding:0 !important;backdrop-filter:none !important;opacity:1 !important;pointer-events:auto !important;}
   .cert-actions {display:none !important;}
@@ -459,23 +490,30 @@ select.form-input{cursor:pointer;background:#ffffff;}
 
 ::-webkit-scrollbar {width:5px;}
 ::-webkit-scrollbar-track {background:transparent;}
-::-webkit-scrollbar-thumb {background:rgba(0,0,0,0.12);border-radius:10px;}
+::-webkit-scrollbar-thumb {background:rgba(255,255,255,0.12);border-radius:10px;}
 </style>
 </head>
 
 <body>
 
 <aside class="sidebar" id="sidebar">
+
   <div class="sidebar-logo">
+
     <div class="logo-icon">
       <img src="logo.png" alt="Monaco Detailing">
     </div>
+
     <div>
       <div class="logo-text">Monaco Detailing</div>
     </div>
+
   </div>
   <nav class="sidebar-nav">
-    <div class="nav-item active" data-tab="dashboard" onclick="switchTab('dashboard',this)"><i class="fa-solid fa-gauge-high"></i> Dashboard</div>
+
+    <div class="nav-item active" data-tab="dashboard" onclick="switchTab('dashboard',this)">
+      <i class="fa-solid fa-gauge-high"></i> Dashboard
+    </div>
     <div class="nav-item" data-tab="operaciones" onclick="switchTab('operaciones',this)"><i class="fa-solid fa-arrows-spin"></i> Operaciones</div>
     <div class="nav-item" data-tab="turnos" onclick="switchTab('turnos',this)"><i class="fa-solid fa-calendar-check"></i> Turnos</div>
     <div class="nav-item" data-tab="clientes" onclick="switchTab('clientes',this)"><i class="fa-solid fa-user-group"></i> Clientes</div>
@@ -483,7 +521,6 @@ select.form-input{cursor:pointer;background:#ffffff;}
     <div class="nav-item" data-tab="galeria" onclick="switchTab('galeria',this)"><i class="fa-solid fa-images"></i> Galeria</div>
     <div class="nav-item" data-tab="garantia" onclick="switchTab('garantia',this)"><i class="fa-solid fa-shield-halved"></i> Garantia PPF</div>
     <div class="nav-item" data-tab="caja" onclick="switchTab('caja',this)"><i class="fa-solid fa-vault"></i> Caja</div>
-    <div class="nav-item" data-tab="facturacion" onclick="switchTab('facturacion',this)"><i class="fa-solid fa-file-invoice-dollar"></i> Facturacion</div>
   </nav>
   <div class="sidebar-footer">
     <div class="avatar">A</div>
@@ -516,8 +553,8 @@ select.form-input{cursor:pointer;background:#ffffff;}
         <div class="card"><div class="card-title"><i class="fa-solid fa-clock-rotate-left"></i> Servicios Recientes</div><div id="recentServices"><div class="empty-state"><i class="fa-solid fa-inbox"></i><p>Cargando...</p></div></div></div>
         <div class="card">
           <div class="card-title"><i class="fa-solid fa-chart-line"></i> Resumen Financiero</div>
-          <div style="margin-bottom:16px;"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:7px;"><span style="font-size:12px;color:var(--text-secondary);">Ingresos</span><span style="font-size:14px;font-weight:700;color:var(--emerald);" id="dash_ingresos">$0</span></div><div style="height:5px;background:rgba(0,0,0,0.06);border-radius:10px;overflow:hidden;"><div id="bar_ingresos" style="height:100%;background:var(--emerald);border-radius:10px;width:0%;transition:width 0.8s ease;"></div></div></div>
-          <div style="margin-bottom:16px;"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:7px;"><span style="font-size:12px;color:var(--text-secondary);">Egresos</span><span style="font-size:14px;font-weight:700;color:var(--rose);" id="dash_egresos">$0</span></div><div style="height:5px;background:rgba(0,0,0,0.06);border-radius:10px;overflow:hidden;"><div id="bar_egresos" style="height:100%;background:var(--rose);border-radius:10px;width:0%;transition:width 0.8s ease;"></div></div></div>
+          <div style="margin-bottom:16px;"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:7px;"><span style="font-size:12px;color:var(--text-secondary);">Ingresos</span><span style="font-size:14px;font-weight:700;color:var(--emerald);" id="dash_ingresos">$0</span></div><div style="height:5px;background:rgba(255,255,255,0.06);border-radius:10px;overflow:hidden;"><div id="bar_ingresos" style="height:100%;background:var(--emerald);border-radius:10px;width:0%;transition:width 0.8s ease;"></div></div></div>
+          <div style="margin-bottom:16px;"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:7px;"><span style="font-size:12px;color:var(--text-secondary);">Egresos</span><span style="font-size:14px;font-weight:700;color:var(--rose);" id="dash_egresos">$0</span></div><div style="height:5px;background:rgba(255,255,255,0.06);border-radius:10px;overflow:hidden;"><div id="bar_egresos" style="height:100%;background:var(--rose);border-radius:10px;width:0%;transition:width 0.8s ease;"></div></div></div>
           <div style="padding-top:12px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;"><span style="font-size:12px;color:var(--text-secondary);">Balance</span><span style="font-size:17px;font-weight:800;color:var(--primary);" id="dash_balance">$0</span></div>
         </div>
       </div>
@@ -565,13 +602,14 @@ select.form-input{cursor:pointer;background:#ffffff;}
           <input type="hidden" id="c_edit_id" value="">
           <div class="form-group"><label class="form-label">Nombre completo</label><input id="c_nombre" class="form-input" placeholder="Juan Perez"></div>
           <div class="form-group"><label class="form-label">Telefono</label><input id="c_tel" class="form-input" placeholder="11-1234-5678"></div>
-          <div class="form-group"><label class="form-label">CUIT (para facturacion)</label><input id="c_cuit" class="form-input" placeholder="20-12345678-9"></div>
-          <div class="form-group"><label class="form-label">Condicion IVA</label><select id="c_iva" class="form-input"><option>Consumidor Final</option><option>Responsable Inscripto</option><option>Monotributista</option><option>Exento</option></select></div>
           <div style="display:flex;gap:10px;"><button onclick="guardarCliente()" class="btn-gold" style="flex:1;justify-content:center;"><i class="fa-solid fa-check"></i> <span id="clienteBtnText">Guardar</span></button><button onclick="cancelarEditCliente()" class="btn-ghost" id="btnCancelEdit" style="display:none;">Cancelar</button></div>
         </div>
         <div class="card">
           <div class="card-title"><i class="fa-solid fa-address-book"></i> Todos los Clientes</div>
-          <div class="search-box"><i class="fa-solid fa-magnifying-glass"></i><input type="text" id="buscarClienteInput" placeholder="Buscar por nombre o telefono..." oninput="buscarClientes()"></div>
+          <div class="search-box">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="buscarClienteInput" placeholder="Buscar por nombre o telefono..." oninput="buscarClientes()">
+          </div>
           <div id="listaClientes"><div class="empty-state"><i class="fa-solid fa-user-slash"></i><p>No hay clientes</p></div></div>
         </div>
       </div>
@@ -582,17 +620,18 @@ select.form-input{cursor:pointer;background:#ffffff;}
       <div class="section-header"><div><h2>Vehiculos</h2><div class="section-header-sub">Registro de vehiculos</div></div></div>
       <div class="two-col" style="display:grid;grid-template-columns:1fr 1.5fr;gap:18px;">
         <div class="card">
-          <div class="card-title"><i class="fa-solid fa-car-side"></i> <span id="vehiculoFormTitle">Agregar Vehiculo</span></div>
-          <input type="hidden" id="v_edit_id" value="">
+          <div class="card-title"><i class="fa-solid fa-car-side"></i> Agregar Vehiculo</div>
           <div class="form-group"><label class="form-label">Propietario</label><select id="v_cliente" class="form-input"><option value="">-- Seleccionar cliente --</option></select></div>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;"><div class="form-group"><label class="form-label">Marca</label><input id="v_marca" class="form-input" placeholder="BMW"></div><div class="form-group"><label class="form-label">Modelo</label><input id="v_modelo" class="form-input" placeholder="M3"></div></div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;"><div class="form-group"><label class="form-label">Patente</label><input id="v_patente" class="form-input" placeholder="AB 123 CD"></div><div class="form-group"><label class="form-label">Año</label><input id="v_anio" class="form-input" placeholder="2024"></div></div>
-          <div class="form-group"><label class="form-label">Color</label><input id="v_color" class="form-input" placeholder="Blanco"></div>
-          <div style="display:flex;gap:10px;"><button onclick="guardarVehiculo()" class="btn-gold" style="flex:1;justify-content:center;"><i class="fa-solid fa-check"></i> Guardar</button><button onclick="cancelarEditVehiculo()" class="btn-ghost" id="btnCancelEditVeh" style="display:none;">Cancelar</button></div>
+          <div class="form-group"><label class="form-label">Patente</label><input id="v_patente" class="form-input" placeholder="AB 123 CD"></div>
+          <button onclick="crearVehiculo()" class="btn-gold" style="width:100%;justify-content:center;"><i class="fa-solid fa-plus"></i> Guardar Vehiculo</button>
         </div>
         <div class="card">
           <div class="card-title"><i class="fa-solid fa-warehouse"></i> Todos los Vehiculos</div>
-          <div class="search-box"><i class="fa-solid fa-magnifying-glass"></i><input type="text" id="buscarVehiculoInput" placeholder="Buscar por marca, modelo, patente o propietario..." oninput="buscarVehiculos()"></div>
+          <div class="search-box">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="buscarVehiculoInput" placeholder="Buscar por marca, modelo, patente o propietario..." oninput="buscarVehiculos()">
+          </div>
           <div id="listaVehiculos"><div class="empty-state"><i class="fa-solid fa-car-burst"></i><p>No hay vehiculos</p></div></div>
         </div>
       </div>
@@ -604,9 +643,21 @@ select.form-input{cursor:pointer;background:#ffffff;}
       <div class="two-col" style="display:grid;grid-template-columns:1fr 1.5fr;gap:18px;">
         <div class="card">
           <div class="card-title"><i class="fa-solid fa-upload"></i> Subir Archivos</div>
-          <div class="form-group"><label class="form-label">Vehiculo</label><select id="gal_vehiculo" class="form-input"><option value="">-- Seleccionar vehiculo --</option></select></div>
-          <div class="form-group"><label class="form-label">Descripcion (opcional)</label><input id="gal_descripcion" class="form-input" placeholder="Ej: Antes del PPF"></div>
-          <div class="upload-zone" id="uploadZone"><i class="fa-solid fa-cloud-arrow-up"></i><p>Haz clic para seleccionar archivos</p><small>Imagenes (JPG, PNG) y Videos (MP4) - Max 20MB</small></div>
+          <div class="form-group">
+            <label class="form-label">Vehiculo</label>
+            <select id="gal_vehiculo" class="form-input">
+              <option value="">-- Seleccionar vehiculo --</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Descripcion (opcional)</label>
+            <input id="gal_descripcion" class="form-input" placeholder="Ej: Antes del PPF">
+          </div>
+          <div class="upload-zone" id="uploadZone">
+            <i class="fa-solid fa-cloud-arrow-up"></i>
+            <p>Haz clic para seleccionar archivos</p>
+            <small>Imagenes (JPG, PNG) y Videos (MP4) - Max 20MB</small>
+          </div>
           <input type="file" id="gal_files" multiple accept="image/*,video/*" style="display:none;">
           <div id="uploadPreview" style="margin-top:14px;"></div>
           <button onclick="subirArchivos()" class="btn-gold" style="width:100%;justify-content:center;margin-top:14px;"><i class="fa-solid fa-upload"></i> Subir Archivos</button>
@@ -614,7 +665,9 @@ select.form-input{cursor:pointer;background:#ffffff;}
         <div class="card">
           <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:10px;">
             <div class="card-title" style="margin-bottom:0;"><i class="fa-solid fa-images"></i> Archivos</div>
-            <select id="gal_filtro_vehiculo" class="form-input" style="width:auto;min-width:200px;" onchange="renderGaleria()"><option value="">Todos los vehiculos</option></select>
+            <select id="gal_filtro_vehiculo" class="form-input" style="width:auto;min-width:200px;" onchange="renderGaleria()">
+              <option value="">Todos los vehiculos</option>
+            </select>
           </div>
           <div id="galeriaGrid"><div class="empty-state"><i class="fa-solid fa-images"></i><p>No hay archivos cargados</p></div></div>
         </div>
@@ -624,13 +677,17 @@ select.form-input{cursor:pointer;background:#ffffff;}
     <!-- GARANTIA PPF -->
     <div class="tab-section" id="sec-garantia">
       <div class="section-header"><div><h2>Garantia PPF</h2><div class="section-header-sub">Genera certificados de garantia para Film de Proteccion de Pintura</div></div></div>
+      <div class="setup-banner" id="garSetupBanner"><i class="fa-solid fa-triangle-exclamation"></i><div id="garSetupMsg">Para guardar certificados, crea la tabla <code>garantias</code> en Supabase.</div></div>
       <div class="two-col" style="display:grid;grid-template-columns:1fr 1.5fr;gap:18px;">
         <div class="card">
           <div class="card-title"><i class="fa-solid fa-file-shield"></i> Nuevo Certificado</div>
           <div class="form-group"><label class="form-label">Cliente *</label><select id="g_cliente" class="form-input" onchange="onGarClienteChange()"><option value="">-- Seleccionar --</option></select></div>
           <div class="form-group"><label class="form-label">Vehiculo *</label><select id="g_vehiculo" class="form-input"><option value="">-- Seleccionar cliente primero --</option></select></div>
           <div class="form-group"><label class="form-label">Marca / Rollo de PPF *</label><select id="g_ppf_marca" class="form-input" onchange="onPPFBrandChange()"><option value="">-- Seleccionar marca --</option></select></div>
-          <div class="ppf-info-card" id="ppfInfoCard"><h4><i class="fa-solid fa-circle-info"></i> <span id="ppfInfoName">-</span></h4><p>Garantia producto: <span class="ppf-year-big" id="ppfInfoProdYears">-</span> años | Garantia instalacion: <span class="ppf-year-big" id="ppfInfoInstYears">-</span> año(s)</p></div>
+          <div class="ppf-info-card" id="ppfInfoCard">
+            <h4><i class="fa-solid fa-circle-info"></i> <span id="ppfInfoName">-</span></h4>
+            <p>Garantia producto: <span class="ppf-year-big" id="ppfInfoProdYears">-</span> años | Garantia instalacion: <span class="ppf-year-big" id="ppfInfoInstYears">-</span> año(s)</p>
+          </div>
           <div class="form-group"><label class="form-label">Codigo del producto</label><input id="g_codigo" class="form-input" placeholder="Ej: NG-CL-2025"></div>
           <div class="form-group"><label class="form-label">Fecha de instalacion *</label><input id="g_fecha" type="date" class="form-input"></div>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
@@ -697,7 +754,10 @@ select.form-input{cursor:pointer;background:#ffffff;}
           <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:10px;">
             <div class="card-title" style="margin-bottom:0;"><i class="fa-solid fa-clock-rotate-left"></i> Historial</div>
             <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
-              <div class="search-box" style="margin-bottom:0;flex:1;min-width:180px;"><i class="fa-solid fa-magnifying-glass"></i><input type="text" id="buscarCajaInput" placeholder="Buscar movimiento..." oninput="buscarCaja()"></div>
+              <div class="search-box" style="margin-bottom:0;flex:1;min-width:180px;">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="buscarCajaInput" placeholder="Buscar movimiento..." oninput="buscarCaja()">
+              </div>
               <select id="cx_filtro_vehiculo" class="form-input" style="width:auto;min-width:150px;padding:7px 10px;font-size:11px;" onchange="renderCaja()"><option value="">Todos los vehiculos</option></select>
             </div>
           </div>
@@ -706,65 +766,24 @@ select.form-input{cursor:pointer;background:#ffffff;}
       </div>
     </div>
 
-    <!-- FACTURACION ARCA -->
-    <div class="tab-section" id="sec-facturacion">
-      <div class="section-header"><div><h2>Facturacion ARCA</h2><div class="section-header-sub">Emite comprobantes fiscales</div></div></div>
-      <div class="kpi-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;">
-        <div class="kpi-card kpi-blue"><div class="kpi-icon"><i class="fa-solid fa-file-invoice"></i></div><div class="kpi-value" id="kpi_facturas">0</div><div class="kpi-label">Facturas Emitidas</div></div>
-        <div class="kpi-card kpi-purple"><div class="kpi-icon"><i class="fa-solid fa-receipt"></i></div><div class="kpi-value" id="kpi_facturado">$0</div><div class="kpi-label">Total Facturado</div></div>
-        <div class="kpi-card kpi-emerald"><div class="kpi-icon"><i class="fa-solid fa-calculator"></i></div><div class="kpi-value" id="kpi_iva_total">$0</div><div class="kpi-label">IVA Total</div></div>
-        <div class="kpi-card kpi-amber"><div class="kpi-icon"><i class="fa-solid fa-clock"></i></div><div class="kpi-value" id="kpi_pendientes">0</div><div class="kpi-label">Pendientes Facturar</div></div>
-      </div>
-      <div class="two-col" style="display:grid;grid-template-columns:1fr 1.5fr;gap:18px;">
-        <div class="card">
-          <div class="card-title"><i class="fa-solid fa-file-invoice-dollar"></i> <span id="facturaFormTitle">Nueva Factura</span></div>
-          <input type="hidden" id="f_edit_id" value="">
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
-            <div class="form-group"><label class="form-label">Punto de Venta</label><input id="f_pv" type="number" class="form-input" placeholder="1" value="1" min="1"></div>
-            <div class="form-group"><label class="form-label">N° Comprobante</label><input id="f_num" type="number" class="form-input" placeholder="Autogenerado" readonly style="background:#f8fafc;"></div>
-          </div>
-          <div class="form-group"><label class="form-label">Tipo de Comprobante</label><select id="f_tipo" class="form-input" onchange="calcularFactura()"><option value="C">Factura C</option><option value="B">Factura B</option><option value="A">Factura A</option></select></div>
-          <div class="form-group"><label class="form-label">Cliente</label><select id="f_cliente" class="form-input" onchange="onFacturaClienteChange()"><option value="">-- Seleccionar cliente --</option></select></div>
-          <div id="datosClienteFact" style="display:none;background:rgba(59,130,246,0.05);border:1px solid rgba(59,130,246,0.2);border-radius:8px;padding:12px;margin-bottom:12px;">
-            <p style="font-size:11px;color:var(--text-secondary);margin:0;"><strong id="f_cliente_nombre">-</strong></p>
-            <p style="font-size:10px;color:var(--text-muted);margin:4px 0 0;"><span id="f_cliente_cuit">-</span> | <span id="f_cliente_iva">-</span></p>
-          </div>
-          <div class="form-group"><label class="form-label">Concepto / Descripcion</label><input id="f_concepto" class="form-input" placeholder="Ej: PPF Completo BMW M3"></div>
-          <div class="form-group"><label class="form-label">Trabajo relacionado (opcional)</label><select id="f_trabajo" class="form-input" onchange="onTrabajoFacturaSelect()"><option value="">-- Sin relacionar --</option></select></div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-            <div class="form-group"><label class="form-label">Importe Neto ($)</label><input id="f_neto" class="form-input" placeholder="100000" inputmode="decimal" oninput="calcularFactura()"></div>
-            <div class="form-group"><label class="form-label">IVA (21%)</label><input id="f_iva" class="form-input" placeholder="0" readonly style="background:#f8fafc;"></div>
-          </div>
-          <div style="background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.2);border-radius:8px;padding:12px;margin-bottom:12px;">
-            <div style="display:flex;justify-content:space-between;align-items:center;">
-              <span style="font-size:12px;color:var(--text-secondary);">Total a Facturar</span>
-              <span style="font-size:20px;font-weight:800;color:var(--primary);" id="f_total">$0</span>
-            </div>
-          </div>
-          <div class="form-group"><label class="form-label">Fecha de Emision</label><input id="f_fecha" type="date" class="form-input"></div>
-          <button onclick="guardarFactura()" class="btn-gold" style="width:100%;justify-content:center;margin-top:4px;"><i class="fa-solid fa-check"></i> Emitir Factura</button>
-        </div>
-        <div class="card">
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:10px;">
-            <div class="card-title" style="margin-bottom:0;"><i class="fa-solid fa-file-lines"></i> Comprobantes Emitidos</div>
-            <div style="display:flex;gap:8px;flex-wrap:wrap;">
-              <select id="f_filtro_tipo" class="form-input" style="width:auto;min-width:100px;padding:7px 10px;font-size:11px;" onchange="renderFacturas()"><option value="">Todos</option><option value="A">Factura A</option><option value="B">Factura B</option><option value="C">Factura C</option></select>
-              <div class="search-box" style="margin-bottom:0;flex:1;min-width:150px;"><i class="fa-solid fa-magnifying-glass"></i><input type="text" id="buscarFacturaInput" placeholder="Buscar..." oninput="renderFacturas()"></div>
-            </div>
-          </div>
-          <div id="listaFacturas"><div class="empty-state"><i class="fa-solid fa-file-invoice"></i><p>No hay comprobantes emitidos</p></div></div>
-        </div>
-      </div>
-    </div>
-
   </div>
 </div>
 
-<!-- MODALS -->
-<div class="modal-overlay" id="modalOverlay"><div class="modal-box"><h3 id="modalTitle">Confirmar</h3><p id="modalMsg"></p><div class="modal-actions"><button class="btn-ghost" onclick="closeModal()">Cancelar</button><button class="btn-sm btn-rose" id="modalConfirmBtn" style="padding:9px 18px;font-size:12px;" onclick="confirmModal()">Eliminar</button></div></div></div>
-<div class="modal-overlay" id="modalCajaOverlay"><div class="modal-box modal-box-lg"><h3>Editar Movimiento</h3><div id="modalCajaContent"></div><div class="modal-actions"><button class="btn-ghost" onclick="closeModalCaja()">Cancelar</button><button class="btn-sm btn-emerald" style="padding:9px 18px;font-size:12px;" onclick="guardarEdicionCaja()">Guardar</button></div></div></div>
-<div class="cert-overlay" id="certOverlay"><div class="cert-wrapper"><div class="cert-actions"><button class="cert-btn-print" onclick="printCertificado()"><i class="fa-solid fa-print"></i> Imprimir</button><button class="cert-btn-close" onclick="closeCertificado()"><i class="fa-solid fa-xmark"></i> Cerrar</button></div><div id="certContent"></div></div></div>
-<div class="cert-overlay" id="facturaOverlay"><div class="cert-wrapper"><div class="cert-actions"><button class="cert-btn-print" onclick="window.print()"><i class="fa-solid fa-print"></i> Imprimir</button><button class="cert-btn-close" onclick="closeFacturaView()"><i class="fa-solid fa-xmark"></i> Cerrar</button></div><div id="facturaContent"></div></div></div>
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal-box"><h3 id="modalTitle">Confirmar</h3><p id="modalMsg"></p><div class="modal-actions"><button class="btn-ghost" onclick="closeModal()">Cancelar</button><button class="btn-sm btn-rose" id="modalConfirmBtn" style="padding:9px 18px;font-size:12px;" onclick="confirmModal()">Eliminar</button></div></div>
+</div>
+
+<!-- CERTIFICATE OVERLAY -->
+<div class="cert-overlay" id="certOverlay">
+  <div class="cert-wrapper">
+    <div class="cert-actions">
+      <button class="cert-btn-print" onclick="printCertificado()"><i class="fa-solid fa-print"></i> Imprimir Certificado</button>
+      <button class="cert-btn-close" onclick="closeCertificado()"><i class="fa-solid fa-xmark"></i> Cerrar</button>
+    </div>
+    <div id="certContent"></div>
+  </div>
+</div>
 
 <!-- LIGHTBOX -->
 <div class="lightbox-overlay" id="lightboxOverlay" onclick="closeLightbox()">
@@ -793,15 +812,12 @@ let servicios = [];
 let movimientos = [];
 let garantias = [];
 let galeria = [];
-let facturas = [];
 let modalCallback = null;
 let cajaMode = 'trabajo';
 let pendingFiles = [];
 let currentLightboxIndex = 0;
 let currentLightboxItems = [];
 let currentLightboxFiltro = '';
-let editingCajaId = null;
-let editingCajaGrupo = null;
 
 // CONFIG PPF
 const ppfBrands = [
@@ -833,6 +849,8 @@ function numToWord(n){
   if(n>=0 && n<=30) return w[n]; 
   return n.toString();
 }
+
+// ORDENAMIENTO POR FECHA DE CREACION (mas recientes primero)
 function sortByCreatedAt(arr){
   return arr.slice().sort(function(a,b){
     const da = a.created_at ? new Date(a.created_at).getTime() : 0;
@@ -862,14 +880,8 @@ function showModal(title,msg,cb){
 function closeModal(){ document.getElementById('modalOverlay').classList.remove('show'); modalCallback=null; }
 function confirmModal(){ if(modalCallback) modalCallback(); closeModal(); }
 
-function closeModalCaja(){ 
-  document.getElementById('modalCajaOverlay').classList.remove('show'); 
-  editingCajaId = null;
-  editingCajaGrupo = null;
-}
-
 // NAVEGACION
-const tabNames={dashboard:'Dashboard',operaciones:'Operaciones',turnos:'Turnos',clientes:'Clientes',vehiculos:'Vehiculos',galeria:'Galeria',garantia:'Garantia PPF',caja:'Caja',facturacion:'Facturacion ARCA'};
+const tabNames={dashboard:'Dashboard',operaciones:'Operaciones',turnos:'Turnos',clientes:'Clientes',vehiculos:'Vehiculos',galeria:'Galeria',garantia:'Garantia PPF',caja:'Caja'};
 
 function switchTab(id,el){
   document.querySelectorAll('.tab-section').forEach(function(s){ s.classList.remove('active'); });
@@ -910,26 +922,22 @@ function calcularNeto(){
   } else { box.style.display='none'; }
 }
 
-// CALCULO FACTURA
-function calcularFactura(){
-  const tipo = document.getElementById('f_tipo').value;
-  let neto = parseFloat(document.getElementById('f_neto').value)||0;
-  let iva = 0;
-  if(tipo === 'A') { iva = Math.round(neto * 0.21); }
-  document.getElementById('f_iva').value = iva;
-  document.getElementById('f_total').textContent = formatMoney(neto + iva);
-}
-
 // CARGA DE DATOS
 async function loadClientes(){
-  try{ const res=await sb.from('clientes').select('*'); clientes=res.data||[]; }catch(e){ clientes=[]; }
+  try{
+    const res=await sb.from('clientes').select('*');
+    clientes=res.data||[];
+  }catch(e){ clientes=[]; }
   clientes = sortByCreatedAt(clientes);
   renderClientes();
   populateClienteSelects();
 }
 
 async function loadVehiculos(){
-  try{ const res=await sb.from('vehiculos').select('*, clientes(nombre)'); vehiculos=res.data||[]; }catch(e){ vehiculos=[]; }
+  try{
+    const res=await sb.from('vehiculos').select('*, clientes(nombre)');
+    vehiculos=res.data||[];
+  }catch(e){ vehiculos=[]; }
   vehiculos = sortByCreatedAt(vehiculos);
   renderVehiculos();
   populateCajaVehiculoSelects();
@@ -937,7 +945,10 @@ async function loadVehiculos(){
 }
 
 async function loadServicios(){
-  try{ const res=await sb.from('servicios').select('id,tipo,estado,created_at,vehiculos(id,marca,modelo,clientes(id,nombre,telefono))'); servicios=res.data||[]; }catch(e){ servicios=[]; }
+  try{
+    const res=await sb.from('servicios').select('id,tipo,estado,created_at,vehiculos(id,marca,modelo,clientes(id,nombre,telefono))');
+    servicios=res.data||[];
+  }catch(e){ servicios=[]; }
   servicios = sortByCreatedAt(servicios);
   renderKanban();
   renderRecentServices();
@@ -946,14 +957,20 @@ async function loadServicios(){
 }
 
 async function loadCaja(){
-  try{ const res=await sb.from('caja').select('*'); movimientos=res.data||[]; }catch(e){ movimientos=[]; }
+  try{
+    const res=await sb.from('caja').select('*');
+    movimientos=res.data||[];
+  }catch(e){ movimientos=[]; }
   movimientos = sortByCreatedAt(movimientos);
   renderCaja();
   updateKPIs();
 }
 
 async function loadGarantias(){
-  try{ const res=await sb.from('garantias').select('*'); garantias=res.data||[]; }catch(e){ garantias=[]; }
+  try{
+    const res=await sb.from('garantias').select('*');
+    garantias=res.data||[];
+  }catch(e){ garantias=[]; }
   garantias = sortByCreatedAt(garantias);
   renderGarantias();
 }
@@ -962,21 +979,30 @@ async function loadGaleria(){
   const localData = JSON.parse(localStorage.getItem('monaco_galeria')||'[]');
   try{
     const res = await sb.from('galeria').select('*');
-    galeria = res.error ? localData : (res.data || localData);
-  }catch(e){ galeria = localData; }
+    if(res.error){
+      galeria = localData;
+    } else {
+      const supabaseData = res.data || [];
+      if(supabaseData.length > 0){
+        const supabaseIds = new Set(supabaseData.map(g => g.id));
+        const onlyLocalItems = localData.filter(g => !supabaseIds.has(g.id));
+        galeria = [...supabaseData, ...onlyLocalItems];
+      } else {
+        galeria = localData;
+      }
+    }
+  }catch(e){
+    galeria = localData;
+  }
   galeria = sortByCreatedAt(galeria);
+  if(galeria.length > 0){
+    localStorage.setItem('monaco_galeria', JSON.stringify(galeria));
+  }
   renderGaleria();
 }
 
-async function loadFacturas(){
-  try{ const res = await sb.from('facturas').select('*'); facturas = res.data || []; }catch(e){ facturas = []; }
-  facturas = sortByCreatedAt(facturas);
-  renderFacturas();
-  updateFacturaKPIs();
-}
-
 async function refreshAll(){
-  await Promise.all([loadClientes(),loadVehiculos(),loadServicios(),loadCaja(),loadGarantias(),loadGaleria(),loadFacturas()]);
+  await Promise.all([loadClientes(),loadVehiculos(),loadServicios(),loadCaja(),loadGarantias(),loadGaleria()]);
   toast('Datos actualizados','success');
 }
 
@@ -998,21 +1024,20 @@ function updateKPIs(){
     document.getElementById('bar_ingresos').style.width=(ing/mx*100)+'%';
     document.getElementById('bar_egresos').style.width=(egr/mx*100)+'%';
   },100);
-  document.getElementById('caja_ingresos').textContent=formatMoney(ing);
-  document.getElementById('caja_egresos').textContent=formatMoney(egr);
-  document.getElementById('caja_balance').textContent=formatMoney(ing-egr);
-}
-
-function updateFacturaKPIs(){
-  const totalFacturas = facturas.length;
-  const totalFacturado = facturas.reduce(function(a,f){ return a+Number(f.total||0); },0);
-  const totalIVA = facturas.reduce(function(a,f){ return a+Number(f.iva||0); },0);
-  const trabajosFacturados = new Set(facturas.filter(f => f.trabajo_id).map(f => f.trabajo_id));
-  const trabajosSinFacturar = servicios.filter(s => s.estado === 'terminado' && !trabajosFacturados.has(s.id)).length;
-  document.getElementById('kpi_facturas').textContent = totalFacturas;
-  document.getElementById('kpi_facturado').textContent = formatMoney(totalFacturado);
-  document.getElementById('kpi_iva_total').textContent = formatMoney(totalIVA);
-  document.getElementById('kpi_pendientes').textContent = trabajosSinFacturar;
+  const fv=document.getElementById('cx_filtro_vehiculo')?document.getElementById('cx_filtro_vehiculo').value:'';
+  const fc=document.getElementById('buscarCajaInput')?document.getElementById('buscarCajaInput').value.trim().toLowerCase():'';
+  let movSet=movimientos;
+  if(fv){ movSet=movSet.filter(function(m){ return m.vehiculo_id===fv; }); }
+  if(fc){
+    movSet=movSet.filter(function(m){
+      return (m.concepto||'').toLowerCase().includes(fc) || (m.servicio||'').toLowerCase().includes(fc);
+    });
+  }
+  const cIng=movSet.filter(function(m){ return m.tipo==='ingreso'; }).reduce(function(a,m){ return a+Number(m.monto||0); },0);
+  const cEgr=movSet.filter(function(m){ return m.tipo==='egreso'; }).reduce(function(a,m){ return a+Number(m.monto||0); },0);
+  document.getElementById('caja_ingresos').textContent=formatMoney(cIng);
+  document.getElementById('caja_egresos').textContent=formatMoney(cEgr);
+  document.getElementById('caja_balance').textContent=formatMoney(cIng-cEgr);
 }
 
 // BUSCADOR CLIENTES
@@ -1024,14 +1049,19 @@ function buscarClientes(){
 // RENDER CLIENTES
 function renderClientes(filtro){
   filtro = filtro || '';
-  let lista = filtro ? clientes.filter(function(c){ return (c.nombre||'').toLowerCase().includes(filtro) || (c.telefono||'').toLowerCase().includes(filtro); }) : clientes;
+  let lista = clientes;
+  if(filtro){
+    lista = clientes.filter(function(c){
+      return (c.nombre||'').toLowerCase().includes(filtro) || (c.telefono||'').toLowerCase().includes(filtro);
+    });
+  }
   const el=document.getElementById('listaClientes');
   if(!lista.length){ el.innerHTML='<div class="empty-state"><i class="fa-solid fa-user-slash"></i><p>'+(filtro?'No se encontraron resultados':'No hay clientes')+'</p></div>'; return; }
   let html='';
   for(let i=0;i<lista.length;i++){
     const c=lista[i];
     const vc=vehiculos.filter(function(v){ return v.cliente_id===c.id; }).length;
-    html+='<div class="list-item"><div class="list-item-left"><div class="list-icon" style="background:var(--primary-soft);color:var(--primary);"><i class="fa-solid fa-user"></i></div><div class="list-item-info"><h4>'+esc(c.nombre)+'</h4><p><i class="fa-solid fa-phone" style="font-size:9px;margin-right:3px;"></i>'+esc(c.telefono||'-')+(c.cuit?' · CUIT: '+esc(c.cuit):'')+' · '+vc+' veh.</p></div></div><div style="display:flex;gap:5px;"><button class="btn-sm btn-amber" onclick="editarCliente(\''+c.id+'\')"><i class="fa-solid fa-pen"></i></button><button class="btn-sm btn-rose" onclick="eliminarCliente(\''+c.id+'\')"><i class="fa-solid fa-trash"></i></button></div></div>';
+    html+='<div class="list-item"><div class="list-item-left"><div class="list-icon" style="background:var(--primary-soft);color:var(--primary);"><i class="fa-solid fa-user"></i></div><div class="list-item-info"><h4>'+esc(c.nombre)+'</h4><p><i class="fa-solid fa-phone" style="font-size:9px;margin-right:3px;"></i>'+esc(c.telefono||'-')+' · '+vc+' veh.</p></div></div><div style="display:flex;gap:5px;"><button class="btn-sm btn-amber" onclick="editarCliente(\''+c.id+'\')"><i class="fa-solid fa-pen"></i></button><button class="btn-sm btn-rose" onclick="eliminarCliente(\''+c.id+'\')"><i class="fa-solid fa-trash"></i></button></div></div>';
   }
   el.innerHTML=html;
 }
@@ -1045,13 +1075,18 @@ function buscarVehiculos(){
 // RENDER VEHICULOS
 function renderVehiculos(filtro){
   filtro = filtro || '';
-  let lista = filtro ? vehiculos.filter(function(v){ return (v.marca||'').toLowerCase().includes(filtro) || (v.modelo||'').toLowerCase().includes(filtro) || (v.patente||'').toLowerCase().includes(filtro) || (v.clientes?.nombre||'').toLowerCase().includes(filtro); }) : vehiculos;
+  let lista = vehiculos;
+  if(filtro){
+    lista = vehiculos.filter(function(v){
+      return (v.marca||'').toLowerCase().includes(filtro) || (v.modelo||'').toLowerCase().includes(filtro) || (v.patente||'').toLowerCase().includes(filtro) || (v.clientes?.nombre||'').toLowerCase().includes(filtro);
+    });
+  }
   const el=document.getElementById('listaVehiculos');
   if(!lista.length){ el.innerHTML='<div class="empty-state"><i class="fa-solid fa-car-burst"></i><p>'+(filtro?'No se encontraron resultados':'No hay vehiculos')+'</p></div>'; return; }
   let html='';
   for(let i=0;i<lista.length;i++){
     const v=lista[i];
-    html+='<div class="list-item"><div class="list-item-left"><div class="list-icon" style="background:rgba(59,130,246,0.12);color:var(--blue);"><i class="fa-solid fa-car"></i></div><div class="list-item-info"><h4>'+esc(v.marca)+' '+(esc(v.modelo)||'')+'</h4><p><i class="fa-solid fa-user" style="font-size:9px;margin-right:3px;"></i>'+(esc(v.clientes?.nombre)||'-')+(v.patente?' · '+esc(v.patente):'')+(v.anio?' · '+v.anio:'')+(v.color?' · '+esc(v.color):'')+'</p></div></div><div style="display:flex;gap:5px;"><button class="btn-sm btn-amber" onclick="editarVehiculo(\''+v.id+'\')"><i class="fa-solid fa-pen"></i></button><button class="btn-sm btn-rose" onclick="eliminarVehiculo(\''+v.id+'\')"><i class="fa-solid fa-trash"></i></button></div></div>';
+    html+='<div class="list-item"><div class="list-item-left"><div class="list-icon" style="background:rgba(59,130,246,0.12);color:var(--blue);"><i class="fa-solid fa-car"></i></div><div class="list-item-info"><h4>'+esc(v.marca)+' '+(esc(v.modelo)||'')+'</h4><p><i class="fa-solid fa-user" style="font-size:9px;margin-right:3px;"></i>'+(esc(v.clientes?.nombre)||'-')+(v.patente?' · '+esc(v.patente):'')+'</p></div></div><button class="btn-sm btn-rose" onclick="eliminarVehiculo(\''+v.id+'\')"><i class="fa-solid fa-trash"></i></button></div>';
   }
   el.innerHTML=html;
 }
@@ -1113,7 +1148,9 @@ function renderTurnos(){
 }
 
 // BUSCADOR CAJA
-function buscarCaja(){ renderCaja(); }
+function buscarCaja(){
+  renderCaja();
+}
 
 // RENDER CAJA
 function renderCaja(){
@@ -1122,7 +1159,11 @@ function renderCaja(){
   const fc=document.getElementById('buscarCajaInput')?document.getElementById('buscarCajaInput').value.trim().toLowerCase():'';
   let filtered=movimientos;
   if(fv){ filtered=filtered.filter(function(m){ return m.vehiculo_id===fv; }); }
-  if(fc){ filtered=filtered.filter(function(m){ return (m.concepto||'').toLowerCase().includes(fc) || (m.servicio||'').toLowerCase().includes(fc); }); }
+  if(fc){
+    filtered=filtered.filter(function(m){
+      return (m.concepto||'').toLowerCase().includes(fc) || (m.servicio||'').toLowerCase().includes(fc);
+    });
+  }
   if(!filtered.length){ el.innerHTML='<div class="empty-state"><i class="fa-solid fa-receipt"></i><p>'+(fv||fc?'No hay movimientos que coincidan':'No hay movimientos')+'</p></div>'; updateKPIs(); return; }
   const groups=new Map();
   const ungrouped=[];
@@ -1143,7 +1184,7 @@ function renderCaja(){
     const fd=ingreso?.created_at||items[0]?.created_at;
     const fs=fd?formatDate(fd):'';
     const servicio=ingreso?.servicio||items[0]?.servicio||'';
-    html+='<div class="caja-group-card"><div class="caja-group-header"><div class="list-item-left" style="gap:10px;"><div class="list-icon" style="background:var(--primary-soft);color:var(--primary);width:32px;height:32px;font-size:12px;border-radius:8px;"><i class="fa-solid fa-layer-group"></i></div><div class="list-item-info"><h4 style="font-size:13px;">'+esc(ingreso?.concepto||items[0]?.concepto||'-')+'</h4><p>'+fs+(vehLabel?' · <i class="fa-solid fa-car" style="font-size:9px;"></i> '+esc(vehLabel):'')+(servicio?' · '+esc(servicio):'')+'</p></div></div><div style="display:flex;align-items:center;gap:10px;"><div style="text-align:right;"><div style="font-size:10px;color:var(--text-muted);margin-bottom:1px;">Neto</div><div style="font-size:15px;font-weight:800;color:'+(neto>=0?'var(--primary)':'var(--rose)')+';">'+formatMoney(neto)+'</div></div><button class="btn-sm btn-amber" onclick="editarCajaGrupo(\''+esc(gid)+'\')"><i class="fa-solid fa-pen"></i></button><button class="btn-sm btn-rose" onclick="eliminarCajaGrupo(\''+esc(gid)+'\')"><i class="fa-solid fa-trash"></i></button></div></div><div class="caja-group-body">';
+    html+='<div class="caja-group-card"><div class="caja-group-header"><div class="list-item-left" style="gap:10px;"><div class="list-icon" style="background:var(--primary-soft);color:var(--primary);width:32px;height:32px;font-size:12px;border-radius:8px;"><i class="fa-solid fa-layer-group"></i></div><div class="list-item-info"><h4 style="font-size:13px;">'+esc(ingreso?.concepto||items[0]?.concepto||'-')+'</h4><p>'+fs+(vehLabel?' · <i class="fa-solid fa-car" style="font-size:9px;"></i> '+esc(vehLabel):'')+(servicio?' · '+esc(servicio):'')+'</p></div></div><div style="display:flex;align-items:center;gap:10px;"><div style="text-align:right;"><div style="font-size:10px;color:var(--text-muted);margin-bottom:1px;">Neto</div><div style="font-size:15px;font-weight:800;color:'+(neto>=0?'var(--primary)':'var(--rose)')+';">'+formatMoney(neto)+'</div></div><button class="btn-sm btn-rose" onclick="eliminarCajaGrupo(\''+esc(gid)+'\')"><i class="fa-solid fa-trash"></i></button></div></div><div class="caja-group-body">';
     if(ingreso){ html+='<div class="caja-group-row"><div class="caja-group-row-left"><i class="fa-solid fa-arrow-up" style="color:var(--emerald);"></i><span>Ingreso (cobrado)</span></div><div class="caja-group-row-right" style="color:var(--emerald);">+'+formatMoney(ingreso.monto)+'</div></div>'; }
     for(let ei=0;ei<egresos.length;ei++){
       const e=egresos[ei];
@@ -1158,7 +1199,10 @@ function renderCaja(){
     const fs=fd?formatDate(fd):'';
     let vehLabel='';
     if(m.vehiculo_id){ const v=vehiculos.find(function(x){ return x.id===m.vehiculo_id; }); if(v) vehLabel=(v.marca+' '+(v.modelo||'')).trim()+(v.patente?' ('+v.patente+')':''); }
-    html+='<div class="list-item" style="flex-wrap:wrap;"><div class="list-item-left" style="flex:1;min-width:0;"><div class="list-icon" style="background:'+(isIn?'rgba(16,185,129,0.12)':'rgba(244,63,94,0.12)')+';color:'+(isIn?'var(--emerald)':'var(--rose)')+';"><i class="fa-solid '+(isIn?'fa-arrow-up':'fa-arrow-down')+'"></i></div><div class="list-item-info" style="flex:1;min-width:0;"><h4>'+esc(m.concepto)+'</h4><p>'+(fs||'Sin fecha')+'</p></div></div><div style="display:flex;align-items:center;gap:8px;flex-shrink:0;"><span style="font-weight:700;color:'+(isIn?'var(--emerald)':'var(--rose)')+';">'+(isIn?'+':'-')+formatMoney(m.monto)+'</span><button class="btn-sm btn-amber" onclick="editarCaja(\''+m.id+'\')"><i class="fa-solid fa-pen"></i></button><button class="btn-sm btn-rose" onclick="eliminarCaja(\''+m.id+'\')"><i class="fa-solid fa-trash"></i></button></div></div>';
+    let tags='';
+    if(vehLabel) tags+='<span class="caja-tag caja-tag-veh"><i class="fa-solid fa-car" style="font-size:8px;margin-right:3px;"></i>'+esc(vehLabel)+'</span>';
+    if(m.servicio) tags+='<span class="caja-tag caja-tag-serv">'+esc(m.servicio)+'</span>';
+    html+='<div class="list-item" style="flex-wrap:wrap;"><div class="list-item-left" style="flex:1;min-width:0;"><div class="list-icon" style="background:'+(isIn?'rgba(16,185,129,0.12)':'rgba(244,63,94,0.12)')+';color:'+(isIn?'var(--emerald)':'var(--rose)')+';"><i class="fa-solid '+(isIn?'fa-arrow-up':'fa-arrow-down')+'"></i></div><div class="list-item-info" style="flex:1;min-width:0;"><h4>'+esc(m.concepto)+'</h4><p>'+(fs||'Sin fecha')+'</p>'+(tags?'<div class="caja-detail-row">'+tags+'</div>':'')+'</div></div><div style="display:flex;align-items:center;gap:8px;flex-shrink:0;"><span style="font-weight:700;color:'+(isIn?'var(--emerald)':'var(--rose)')+';">'+(isIn?'+':'-')+formatMoney(m.monto)+'</span><button class="btn-sm btn-rose" onclick="eliminarCaja(\''+m.id+'\')"><i class="fa-solid fa-trash"></i></button></div></div>';
   }
   el.innerHTML=html;
   updateKPIs();
@@ -1177,29 +1221,9 @@ function renderGarantias(){
   el.innerHTML=html;
 }
 
-// RENDER FACTURAS
-function renderFacturas(){
-  const el=document.getElementById('listaFacturas');
-  const filtroTipo = document.getElementById('f_filtro_tipo')?document.getElementById('f_filtro_tipo').value:'';
-  const buscar = document.getElementById('buscarFacturaInput')?document.getElementById('buscarFacturaInput').value.trim().toLowerCase():'';
-  let filtered = facturas;
-  if(filtroTipo){ filtered = filtered.filter(f => f.tipo === filtroTipo); }
-  if(buscar){ filtered = filtered.filter(f => (f.numero||'').toLowerCase().includes(buscar) || (f.cliente_nombre||'').toLowerCase().includes(buscar) || (f.concepto||'').toLowerCase().includes(buscar)); }
-  if(!filtered.length){ el.innerHTML='<div class="empty-state"><i class="fa-solid fa-file-invoice"></i><p>'+(filtroTipo||buscar?'No se encontraron comprobantes':'No hay comprobantes emitidos')+'</p></div>'; return; }
-  let html='';
-  for(let i=0;i<filtered.length;i++){
-    const f=filtered[i];
-    const tipoBadge = f.tipo === 'A'?'badge-factura-a':f.tipo === 'B'?'badge-factura-b':f.tipo === 'C'?'badge-factura-c':'badge-factura-c';
-    const tipoLabel = f.tipo === 'A'?'Factura A':f.tipo === 'B'?'Factura B':f.tipo === 'C'?'Factura C':'Factura';
-    html+='<div class="list-item"><div class="list-item-left"><div class="list-icon" style="background:rgba(139,92,246,0.12);color:#8B5CF6;"><i class="fa-solid fa-file-invoice-dollar"></i></div><div class="list-item-info"><h4>'+esc(f.numero||'-')+'</h4><p>'+esc(f.cliente_nombre||'-')+' · '+formatMoney(f.total)+' · '+formatDate(f.created_at)+'</p></div></div><div style="display:flex;align-items:center;gap:8px;"><span class="badge '+tipoBadge+'">'+tipoLabel+'</span><button class="btn-sm btn-blue" onclick="verFactura(\''+f.id+'\')"><i class="fa-solid fa-eye"></i></button><button class="btn-sm btn-rose" onclick="eliminarFactura(\''+f.id+'\')"><i class="fa-solid fa-trash"></i></button></div></div>';
-  }
-  el.innerHTML=html;
-  updateFacturaKPIs();
-}
-
 // SELECTORES
 function populateClienteSelects(){
-  const ids=['t_cliente_sel','v_cliente','g_cliente','f_cliente'];
+  const ids=['t_cliente_sel','v_cliente','g_cliente'];
   for(let idx=0;idx<ids.length;idx++){
     const sel=document.getElementById(ids[idx]);
     if(!sel) continue;
@@ -1262,29 +1286,6 @@ function populateGaleriaVehiculoSelects(){
   }
 }
 
-function populateTrabajoSelect(){
-  const sel = document.getElementById('f_trabajo');
-  if(!sel) return;
-  let optHtml='<option value="">-- Sin relacionar --</option>';
-  const grupos = new Map();
-  movimientos.forEach(m => {
-    if(m.grupo_id) {
-      if(!grupos.has(m.grupo_id)) grupos.set(m.grupo_id, []);
-      grupos.get(m.grupo_id).push(m);
-    }
-  });
-  grupos.forEach((items, gid) => {
-    const ingreso = items.find(i => i.tipo === 'ingreso');
-    if(ingreso && !ingreso.facturado) {
-      const v = vehiculos.find(vh => vh.id === ingreso.vehiculo_id);
-      const vehLabel = v ? (v.marca+' '+(v.modelo||'')) : '';
-      const label = (ingreso.concepto||'Trabajo') + (vehLabel?' - '+vehLabel:'') + ' - ' + formatMoney(ingreso.monto);
-      optHtml+='<option value="'+gid+'" data-monto="'+ingreso.monto+'" data-concepto="'+esc(ingreso.concepto||'')+'">'+esc(label)+'</option>';
-    }
-  });
-  sel.innerHTML = optHtml;
-}
-
 function onClienteSelect(){
   const val=document.getElementById('t_cliente_sel').value;
   const nf=document.getElementById('t_nuevo_cliente_fields');
@@ -1316,34 +1317,6 @@ function onGarClienteChange(){
   }
 }
 
-function onFacturaClienteChange(){
-  const cid = document.getElementById('f_cliente').value;
-  const datosBox = document.getElementById('datosClienteFact');
-  if(!cid){ datosBox.style.display='none'; return; }
-  const c = clientes.find(cl => cl.id === cid);
-  if(c){
-    document.getElementById('f_cliente_nombre').textContent = c.nombre||'-';
-    document.getElementById('f_cliente_cuit').textContent = c.cuit||'Sin CUIT';
-    document.getElementById('f_cliente_iva').textContent = c.condicion_iva||'Sin IVA';
-    datosBox.style.display='block';
-    if(c.condicion_iva==='Responsable Inscripto') document.getElementById('f_tipo').value='A';
-    else if(c.condicion_iva==='Monotributista'||c.condicion_iva==='Exento') document.getElementById('f_tipo').value='B';
-    else document.getElementById('f_tipo').value='C';
-    calcularFactura();
-  }
-}
-
-function onTrabajoFacturaSelect(){
-  const val = document.getElementById('f_trabajo').value;
-  if(!val) return;
-  const opt = document.getElementById('f_trabajo').selectedOptions[0];
-  if(opt){
-    document.getElementById('f_neto').value = opt.dataset.monto||'';
-    document.getElementById('f_concepto').value = opt.dataset.concepto||'';
-    calcularFactura();
-  }
-}
-
 function populatePPFSelect(){
   const sel=document.getElementById('g_ppf_marca');
   let optHtml='<option value="">-- Seleccionar marca --</option>';
@@ -1370,21 +1343,13 @@ async function guardarCliente(){
   const editId=document.getElementById('c_edit_id').value;
   const nombre=document.getElementById('c_nombre').value.trim();
   const telefono=document.getElementById('c_tel').value.trim();
-  const cuit=document.getElementById('c_cuit').value.trim();
-  const condicionIva=document.getElementById('c_iva').value;
   if(!nombre){ toast('Ingresa el nombre','error'); return; }
   try{
     let res;
-    if(editId){ 
-      res=await sb.from('clientes').update({nombre:nombre,telefono:telefono,cuit:cuit,condicion_iva:condicionIva}).eq('id',editId); 
-      toast('Cliente actualizado','success'); 
-    }
-    else{ 
-      res=await sb.from('clientes').insert({nombre:nombre,telefono:telefono,cuit:cuit,condicion_iva:condicionIva}); 
-      toast('Cliente creado','success'); 
-    }
-    if(res.error) throw res.error;
-    cancelarEditCliente();
+    if(editId){ res=await sb.from('clientes').update({nombre:nombre,telefono:telefono}).eq('id',editId); if(res.error) throw res.error; toast('Cliente actualizado','success'); }
+    else{ res=await sb.from('clientes').insert({nombre:nombre,telefono:telefono}); if(res.error) throw res.error; toast('Cliente creado','success'); }
+    document.getElementById('c_nombre').value=''; document.getElementById('c_tel').value=''; document.getElementById('c_edit_id').value='';
+    document.getElementById('clienteFormTitle').textContent='Agregar Cliente'; document.getElementById('clienteBtnText').textContent='Guardar'; document.getElementById('btnCancelEdit').style.display='none';
     await loadClientes();
   }catch(e){ toast('Error: '+(e.message||e),'error'); }
 }
@@ -1395,8 +1360,6 @@ function editarCliente(id){
   document.getElementById('c_edit_id').value=c.id;
   document.getElementById('c_nombre').value=c.nombre||'';
   document.getElementById('c_tel').value=c.telefono||'';
-  document.getElementById('c_cuit').value=c.cuit||'';
-  document.getElementById('c_iva').value=c.condicion_iva||'Consumidor Final';
   document.getElementById('clienteFormTitle').textContent='Editar Cliente';
   document.getElementById('clienteBtnText').textContent='Actualizar';
   document.getElementById('btnCancelEdit').style.display='inline-flex';
@@ -1404,14 +1367,8 @@ function editarCliente(id){
 }
 
 function cancelarEditCliente(){
-  document.getElementById('c_edit_id').value=''; 
-  document.getElementById('c_nombre').value=''; 
-  document.getElementById('c_tel').value='';
-  document.getElementById('c_cuit').value='';
-  document.getElementById('c_iva').value='Consumidor Final';
-  document.getElementById('clienteFormTitle').textContent='Agregar Cliente'; 
-  document.getElementById('clienteBtnText').textContent='Guardar'; 
-  document.getElementById('btnCancelEdit').style.display='none';
+  document.getElementById('c_edit_id').value=''; document.getElementById('c_nombre').value=''; document.getElementById('c_tel').value='';
+  document.getElementById('clienteFormTitle').textContent='Agregar Cliente'; document.getElementById('clienteBtnText').textContent='Guardar'; document.getElementById('btnCancelEdit').style.display='none';
 }
 
 async function eliminarCliente(id){
@@ -1423,59 +1380,20 @@ async function eliminarCliente(id){
 }
 
 // CRUD VEHICULOS
-async function guardarVehiculo(){
-  const editId=document.getElementById('v_edit_id').value;
+async function crearVehiculo(){
   const cliente_id=document.getElementById('v_cliente').value;
   const marca=document.getElementById('v_marca').value.trim();
   const modelo=document.getElementById('v_modelo').value.trim();
   const patente=document.getElementById('v_patente').value.trim();
-  const anio=document.getElementById('v_anio').value;
-  const color=document.getElementById('v_color').value.trim();
   if(!cliente_id){ toast('Selecciona un propietario','error'); return; }
   if(!marca){ toast('Ingresa la marca','error'); return; }
-  const payload = {cliente_id:cliente_id,marca:marca,modelo:modelo,patente:patente,anio:anio||null,color:color};
   try{
-    let res;
-    if(editId){
-      res=await sb.from('vehiculos').update(payload).eq('id',editId);
-      toast('Vehiculo actualizado','success');
-    } else {
-      res=await sb.from('vehiculos').insert(payload);
-      toast('Vehiculo registrado','success');
-    }
+    const res=await sb.from('vehiculos').insert({cliente_id:cliente_id,marca:marca,modelo:modelo,patente:patente});
     if(res.error) throw res.error;
-    cancelarEditVehiculo();
+    toast('Vehiculo registrado','success');
+    document.getElementById('v_marca').value=''; document.getElementById('v_modelo').value=''; document.getElementById('v_patente').value='';
     await loadVehiculos();
   }catch(e){ toast('Error: '+(e.message||e),'error'); }
-}
-
-function editarVehiculo(id){
-  const v=vehiculos.find(function(x){ return x.id===id; });
-  if(!v) return;
-  document.getElementById('v_edit_id').value=v.id;
-  document.getElementById('v_cliente').value=v.cliente_id||'';
-  document.getElementById('v_marca').value=v.marca||'';
-  document.getElementById('v_modelo').value=v.modelo||'';
-  document.getElementById('v_patente').value=v.patente||'';
-  document.getElementById('v_anio').value=v.anio||'';
-  document.getElementById('v_color').value=v.color||'';
-  document.getElementById('vehiculoFormTitle').textContent='Editar Vehiculo';
-  document.getElementById('vehiculoBtnText').textContent='Actualizar';
-  document.getElementById('btnCancelEditVeh').style.display='inline-flex';
-  document.getElementById('v_marca').focus();
-}
-
-function cancelarEditVehiculo(){
-  document.getElementById('v_edit_id').value=''; 
-  document.getElementById('v_cliente').value=''; 
-  document.getElementById('v_marca').value=''; 
-  document.getElementById('v_modelo').value=''; 
-  document.getElementById('v_patente').value='';
-  document.getElementById('v_anio').value='';
-  document.getElementById('v_color').value='';
-  document.getElementById('vehiculoFormTitle').textContent='Agregar Vehiculo'; 
-  document.getElementById('vehiculoBtnText').textContent='Guardar'; 
-  document.getElementById('btnCancelEditVeh').style.display='none';
 }
 
 async function eliminarVehiculo(id){
@@ -1602,4 +1520,364 @@ async function crearCaja(){
     try{
       const res=await sb.from('caja').insert(payload); if(res.error) throw res.error;
       toast('Egreso registrado','success');
-      document.getElementById('cx_egreso_concepto').value=''; document.getElementById('cx_egreso_monto').
+      document.getElementById('cx_egreso_concepto').value=''; document.getElementById('cx_egreso_monto').value=''; document.getElementById('cx_egreso_vehiculo').value='';
+      await loadCaja();
+    }catch(e){ toast('Error: '+(e.message||e),'error'); }
+  }
+}
+
+async function eliminarCaja(id){
+  showModal('Eliminar movimiento','Se eliminara este registro.',async function(){
+    try{ const res=await sb.from('caja').delete().eq('id',id); if(res.error) throw res.error; toast('Movimiento eliminado','success'); await loadCaja(); }
+    catch(e){ toast('Error: '+(e.message||e),'error'); }
+  });
+}
+
+async function eliminarCajaGrupo(gid){
+  showModal('Eliminar trabajo','Se eliminara el trabajo completo.',async function(){
+    try{ const res=await sb.from('caja').delete().eq('grupo_id',gid); if(res.error) throw res.error; toast('Trabajo eliminado','success'); await loadCaja(); }
+    catch(e){ toast('Error: '+(e.message||e),'error'); }
+  });
+}
+
+// GARANTIAS
+async function generarCertificado(){
+  const clienteId=document.getElementById('g_cliente').value;
+  const vehiculoId=document.getElementById('g_vehiculo').value;
+  const ppfIdx=document.getElementById('g_ppf_marca').value;
+  const codigo=document.getElementById('g_codigo').value.trim();
+  const fecha=document.getElementById('g_fecha').value;
+  const aniosProdRaw=document.getElementById('g_anios_prod').value;
+  const aniosInstRaw=document.getElementById('g_anios_inst').value;
+  const responsable=document.getElementById('g_responsable').value.trim();
+  if(!clienteId){ toast('Selecciona un cliente','error'); return; }
+  if(!vehiculoId){ toast('Selecciona un vehiculo','error'); return; }
+  if(!ppfIdx&&ppfIdx!=='0'){ toast('Selecciona una marca de PPF','error'); return; }
+  if(!fecha){ toast('Ingresa la fecha de instalacion','error'); return; }
+  if(!responsable){ toast('Ingresa el responsable tecnico','error'); return; }
+  const aniosProd=parseInt(aniosProdRaw)||10;
+  const aniosInst=parseInt(aniosInstRaw)||1;
+  const brand=ppfBrands[parseInt(ppfIdx)];
+  const cli=clientes.find(function(c){ return c.id===clienteId; });
+  const vehOpt=document.getElementById('g_vehiculo').selectedOptions[0];
+  const vehMarca=vehOpt?vehOpt.dataset.marca:'';
+  const vehModelo=vehOpt?vehOpt.dataset.modelo:'';
+  const vehPatente=vehOpt?vehOpt.dataset.patente:'';
+  const vehDesc=(vehMarca+' '+vehModelo).trim();
+  const certNum='MON-GAR-'+Date.now().toString(36).toUpperCase();
+  const payload={numero:certNum,cliente_id:clienteId,cliente_nombre:cli?.nombre||'',cliente_telefono:cli?.telefono||'',vehiculo_id:vehiculoId,vehiculo_desc:vehDesc,vehiculo_patente:vehPatente,ppf_marca:brand.name,ppf_codigo:codigo,fecha_instalacion:fecha,garantia_producto_anios:aniosProd,garantia_instalacion_anios:aniosInst,responsable_tecnico:responsable};
+  try{
+    const res=await sb.from('garantias').insert([payload]);
+    if(res.error){ toast('Error al guardar: '+res.error.message,'error'); }
+    else{ await loadGarantias(); toast('Certificado guardado','success'); }
+  }catch(e){ toast('Error BD','error'); }
+  showCertificado({certNum:certNum,clienteNombre:cli?.nombre||'',clienteTel:cli?.telefono||'',vehDesc:vehDesc,vehPatente:vehPatente,ppfMarca:brand.name,codigo:codigo,fecha:fecha,aniosProd:aniosProd,aniosInst:aniosInst,responsable:responsable});
+}
+
+function showCertificado(d){
+  const prodWord=numToWord(d.aniosProd);
+  const instWord=numToWord(d.aniosInst);
+  const fechaFormatted=formatDateShort(d.fecha);
+  const fInst=new Date(d.fecha);
+  const vencProd=new Date(fInst); vencProd.setFullYear(vencProd.getFullYear()+d.aniosProd);
+  const vencInst=new Date(fInst); vencInst.setFullYear(vencInst.getFullYear()+d.aniosInst);
+  let html='<div class="cert-doc"><div class="cert-header"><div class="cert-logo-box">M</div><div class="cert-header-text"><h1>MONACO DETAILING</h1><p>Certificado de Garantia PPF</p></div><div class="cert-number"><span>Certificado N°</span><strong>'+esc(d.certNum)+'</strong></div></div>';
+  html+='<p style="text-align:justify; line-height:1.7; color:#444;">Por el presente, <strong>MONACO DETAILING</strong>, con domicilio comercial en Antonio Malaver 3545, Munro, Vicente Lopez, Provincia de Buenos Aires, garantiza al cliente abajo detallado la correcta calidad y aplicacion del Film de Proteccion de Pintura (PPF) instalado en el vehiculo indicado.</p>';
+  html+='<h2>DATOS DEL CLIENTE Y DEL VEHICULO</h2><table class="cert-data-table"><tr><td>Nombre completo del cliente</td><td>'+esc(d.clienteNombre)+'</td></tr><tr><td>Telefono</td><td>'+esc(d.clienteTel||'-')+'</td></tr><tr><td>Vehiculo</td><td>'+esc(d.vehDesc)+'</td></tr><tr><td>Patente</td><td>'+esc(d.vehPatente||'-')+'</td></tr><tr><td>Fecha de instalacion</td><td>'+fechaFormatted+'</td></tr><tr><td>Servicio</td><td>PPF - Paint Protection Film</td></tr><tr><td>Marca / Rollo de PPF</td><td>'+esc(d.ppfMarca)+'</td></tr><tr><td>Codigo del producto</td><td>'+esc(d.codigo||'-')+'</td></tr></table>';
+  html+='<h2 style="margin-top:28px; letter-spacing:1px;">ALCANCE DE LA GARANTIA</h2>';
+
+html+='<h3 style="margin-top:20px;">Garantia por fallas del producto - '+prodWord+' ('+d.aniosProd+') años</h3>';
+
+html+='<p style="text-align:justify; line-height:1.9; color:#444;">Se otorga garantia de <strong>'+prodWord+' ('+d.aniosProd+') años</strong> sobre el Film de Proteccion de Pintura (PPF) aplicado al vehiculo detallado en el presente certificado. La misma cubre exclusivamente defectos atribuibles a la fabricacion del material, incluyendo:</p>';
+
+html+='<ul style="line-height:1.9; padding-left:24px; list-style-type:disc; color:#444;">';
+html+='<li>Amarilleo prematuro del film.</li>';
+html+='<li>Agrietamiento, cuarteo o deterioro anormal del material.</li>';
+html+='<li>Deslaminacion o separacion de capas del film.</li>';
+html+='<li>Perdida anormal de propiedades fisicas atribuibles al fabricante.</li>';
+html+='</ul>';
+
+html+='<p style="text-align:justify; line-height:1.9; color:#444;">La presente cobertura se encuentra sujeta al correcto uso, mantenimiento y cuidado del vehiculo, conforme a las recomendaciones indicadas por Monaco Detailing y el fabricante del PPF instalado.</p>';
+
+html+='<p style="font-size:11px; color:#777; margin-top:8px;">Vencimiento de garantia de producto: <strong>'+formatDateShort(vencProd)+'</strong></p>';
+
+html+='<hr style="margin:22px 0; border:none; border-top:1px solid #ddd;">';
+
+html+='<h3>Garantia por falla en la instalacion - '+instWord+' ('+d.aniosInst+') año'+(d.aniosInst!==1 ? 's' : '')+'</h3>';
+
+html+='<p style="text-align:justify; line-height:1.9; color:#444;">Se otorga garantia de <strong>'+instWord+' ('+d.aniosInst+') año'+(d.aniosInst!==1 ? 's' : '')+'</strong> sobre la correcta instalacion del PPF realizada por Monaco Detailing, cubriendo defectos derivados exclusivamente del proceso de aplicacion.</p>';
+
+html+='<ul style="line-height:1.9; padding-left:24px; list-style-type:disc; color:#444;">';
+html+='<li>Despegues del material atribuibles a una incorrecta instalacion.</li>';
+html+='<li>Levantamiento de bordes o formacion de burbujas por falla de aplicacion.</li>';
+html+='<li>Fallas de adherencia no relacionadas con golpes, impactos o uso indebido.</li>';
+html+='</ul>';
+
+html+='<p style="font-size:11px; color:#777; margin-top:8px;">Vencimiento de garantia de instalacion: <strong>'+formatDateShort(vencInst)+'</strong></p>';
+
+html+='<hr style="margin:22px 0; border:none; border-top:1px solid #ddd;">';
+
+html+='<h2 style="margin-top:10px; letter-spacing:1px;">EXCLUSIONES DE LA GARANTIA</h2>';
+
+html+='<p style="text-align:justify; line-height:1.9; color:#444;">La presente garantia no cubre daños o deterioros ocasionados por factores externos, mantenimiento inadecuado, uso indebido del vehiculo o intervenciones ajenas a Monaco Detailing. Se excluyen especificamente los siguientes casos:</p>';
+
+html+='<ul style="line-height:1.95; padding-left:24px; list-style-type:disc; color:#444;">';
+html+='<li>Daños ocasionados por golpes, rayones, impactos, vandalismo, accidentes o agentes externos.</li>';
+html+='<li>Daños provocados por lavado inadecuado o utilizacion de productos abrasivos, corrosivos o no recomendados.</li>';
+html+='<li>Daños derivados de uso indebido del vehiculo o exposicion prolongada a condiciones extremas.</li>';
+html+='<li>Alteraciones, reparaciones o intervenciones sobre el PPF realizadas por terceros ajenos a Monaco Detailing.</li>';
+html+='<li>Contaminacion quimica, manchas producidas por excremento de aves, savia de arboles, insectos o agentes corrosivos no removidos en tiempo y forma.</li>';
+html+='</ul>';
+
+html+='<p style="margin-top:24px; font-size:11px; color:#777; text-align:justify; line-height:1.7;">Monaco Detailing se reserva el derecho de inspeccionar el vehiculo antes de proceder con cualquier reclamo de garantia, a fin de verificar las condiciones de instalacion, uso y mantenimiento del PPF aplicado.</p>';
+  html+='<div class="cert-footer-note">Documento oficial emitido por Monaco Detailing</div>';
+  html+='</div>';
+
+  document.getElementById('certContent').innerHTML=html;
+  document.getElementById('certOverlay').classList.add('show');
+}
+
+function closeCertificado(){ document.getElementById('certOverlay').classList.remove('show'); }
+
+function printCertificado(){
+  const overlay=document.getElementById('certOverlay');
+  const actions=overlay.querySelector('.cert-actions');
+  actions.style.display='none';
+  window.print();
+  setTimeout(function(){ actions.style.display='flex'; },500);
+}
+
+function reimprimirGarantia(id){
+  const g=garantias.find(function(x){ return x.id===id; });
+  if(!g){ toast('Certificado no encontrado','error'); return; }
+  showCertificado({certNum:g.numero||'-',clienteNombre:g.cliente_nombre||'',clienteTel:g.cliente_telefono||'',vehDesc:g.vehiculo_desc||'',vehPatente:g.vehiculo_patente||'',ppfMarca:g.ppf_marca||'',codigo:g.ppf_codigo||'',fecha:g.fecha_instalacion||'',aniosProd:g.garantia_producto_anios||10,aniosInst:g.garantia_instalacion_anios||1,responsable:g.responsable_tecnico||''});
+}
+
+async function eliminarGarantia(id){
+  showModal('Eliminar certificado','Se eliminara este certificado.',async function(){
+    try{ const res=await sb.from('garantias').delete().eq('id',id); if(res.error) throw res.error; toast('Certificado eliminado','success'); await loadGarantias(); }
+    catch(e){ toast('Error: '+(e.message||e),'error'); }
+  });
+}
+
+function buscarGarantia(){
+  const txt=document.getElementById('buscarGarantiaInput').value.trim().toUpperCase();
+  const el=document.getElementById('listaGarantias');
+  if(!txt){ renderGarantias(); return; }
+  const filtradas=garantias.filter(function(g){ return (g.numero||'').toUpperCase().includes(txt); });
+  if(!filtradas.length){ el.innerHTML='<div class="empty-state"><i class="fa-solid fa-magnifying-glass"></i><p>No se encontraron certificados</p></div>'; return; }
+  let html='';
+  for(let i=0;i<filtradas.length;i++){
+    const g=filtradas[i];
+    html+='<div class="gar-list-item"><div class="gar-list-icon"><i class="fa-solid fa-shield-halved"></i></div><div class="gar-list-info"><h4>'+esc(g.numero||'-')+'</h4><p>'+(g.cliente_nombre||'-')+'</p></div><button class="btn-sm btn-gold" onclick="reimprimirGarantia(\''+g.id+'\')"><i class="fa-solid fa-print"></i></button></div>';
+  }
+  el.innerHTML=html;
+}
+
+// GALERIA FUNCTIONS
+function handleFileSelect(e){ pendingFiles=Array.from(e.target.files); renderUploadPreview(); }
+
+function renderUploadPreview(){
+  const el=document.getElementById('uploadPreview');
+  if(!pendingFiles.length){ el.innerHTML=''; return; }
+  let html='<div style="font-size:11px;color:var(--text-secondary);margin-bottom:8px;">'+pendingFiles.length+' archivo(s) seleccionado(s)</div><div style="display:flex;flex-wrap:wrap;gap:8px;">';
+  for(let i=0;i<pendingFiles.length;i++){
+    const f=pendingFiles[i];
+    const isVideo=f.type.startsWith('video/');
+    const size=(f.size/1024/1024).toFixed(1);
+    if(isVideo){
+      html+='<div style="width:70px;height:70px;border-radius:8px;background:rgba(59,130,246,0.1);display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:10px;color:var(--text-secondary);border:1px solid var(--border);"><i class="fa-solid fa-video" style="font-size:18px;color:var(--blue);margin-bottom:4px;"></i><span style="overflow:hidden;text-overflow:ellipsis;max-width:60px;text-align:center;">'+esc(f.name)+'</span><span style="color:var(--text-muted);">'+size+'MB</span></div>';
+    }else{
+      html+='<div style="width:70px;height:70px;border-radius:8px;overflow:hidden;border:1px solid var(--border);position:relative;"><img id="preview-'+i+'" style="width:100%;height:100%;object-fit:cover;"></div>';
+      (function(idx,file){
+        const reader=new FileReader();
+        reader.onload=function(ev){ const img=document.getElementById('preview-'+idx); if(img) img.src=ev.target.result; };
+        reader.readAsDataURL(file);
+      })(i,f);
+    }
+  }
+  html+='</div><button class="btn-ghost" style="margin-top:10px;font-size:11px;" onclick="clearPendingFiles()"><i class="fa-solid fa-xmark"></i> Limpiar</button>';
+  el.innerHTML=html;
+}
+
+function clearPendingFiles(){ pendingFiles=[]; document.getElementById('gal_files').value=''; document.getElementById('uploadPreview').innerHTML=''; }
+
+async function subirArchivos(){
+  const vehiculo_id=document.getElementById('gal_vehiculo').value;
+  const descripcion=document.getElementById('gal_descripcion').value.trim();
+  if(!vehiculo_id){ toast('Selecciona un vehiculo','error'); return; }
+  if(!pendingFiles.length){ toast('Selecciona archivos para subir','error'); return; }
+  if(pendingFiles.length > 10){ toast('Maximo 10 archivos a la vez','error'); return; }
+  let successCount = 0;
+  for(let i = 0; i < pendingFiles.length; i++){
+    const file = pendingFiles[i];
+    const isVideo = file.type.startsWith('video/');
+    if(file.size > 20 * 1024 * 1024){ toast('Archivo muy grande: ' + file.name,'error'); continue; }
+    try{
+      const fileExt = file.name.split('.').pop();
+      const fileName = Date.now() + '_' + Math.random().toString(36).substring(2,9) + '.' + fileExt;
+      const filePath = vehiculo_id + '/' + fileName;
+      const { error: uploadError } = await sb.storage.from('galeria').upload(filePath, file);
+      if(uploadError){ toast('Error subiendo archivo','error'); continue; }
+      const { data: publicData } = sb.storage.from('galeria').getPublicUrl(filePath);
+      const registro = {
+        id: Date.now().toString() + '_' + Math.random().toString(36).substr(2,9),
+        vehiculo_id: vehiculo_id,
+        tipo: isVideo ? 'video' : 'imagen',
+        nombre: file.name,
+        nombre_archivo: fileName,
+        path: filePath,
+        url: publicData.publicUrl,
+        descripcion: descripcion,
+        created_at: new Date().toISOString()
+      };
+      const { error: dbError } = await sb.from('galeria').insert([registro]);
+      if(dbError){ toast('Error guardando registro','error'); continue; }
+      galeria.unshift(registro);
+      successCount++;
+    }catch(err){ console.error('Error subiendo archivo:', err); }
+  }
+  if(successCount > 0){
+    toast(successCount + ' archivo(s) subido(s)','success');
+    document.getElementById('gal_descripcion').value = '';
+    clearPendingFiles();
+    renderGaleria();
+  }
+}
+
+function renderGaleria(){
+  const el=document.getElementById('galeriaGrid');
+  const filtro=document.getElementById('gal_filtro_vehiculo')?document.getElementById('gal_filtro_vehiculo').value:'';
+  let filtered=galeria;
+  if(filtro){ filtered=galeria.filter(function(g){ return g.vehiculo_id===filtro; }); }
+  if(!filtered.length){ el.innerHTML='<div class="empty-state"><i class="fa-solid fa-images"></i><p>'+(filtro?'No hay archivos para este vehiculo':'No hay archivos cargados')+'</p></div>'; return; }
+  let html='<div class="gallery-grid">';
+  for(let i=0;i<filtered.length;i++){
+    const g=filtered[i];
+    const isVideo=g.tipo==='video';
+    html+='<div class="gallery-item" onclick="openLightbox('+i+',\''+filtro+'\')"><span class="gallery-item-type '+g.tipo+'">'+(isVideo?'VIDEO':'IMAGEN')+'</span>';
+    if(isVideo){ html+='<video muted style="width:100%;height:100%;object-fit:cover;"><source src="'+esc(g.url)+'" type="video/mp4"></video>'; }
+    else{ html+='<img src="'+esc(g.url)+'" alt="'+esc(g.nombre||'')+'">'; }
+    html+='<div class="gallery-item-overlay"><div class="gallery-item-actions">';
+    html+='<button class="btn-sm btn-emerald" onclick="event.stopPropagation();descargarArchivo(\''+g.id+'\')"><i class="fa-solid fa-download"></i></button>';
+    html+='<button class="btn-sm btn-rose" onclick="event.stopPropagation();eliminarGaleriaItem(\''+g.id+'\')"><i class="fa-solid fa-trash"></i></button>';
+    html+='</div></div></div>';
+  }
+  html+='</div>';
+  el.innerHTML=html;
+}
+
+function openLightbox(index,filtro){
+  currentLightboxFiltro=filtro;
+  let filtered=galeria;
+  if(filtro){ filtered=galeria.filter(function(g){ return g.vehiculo_id===filtro; }); }
+  currentLightboxItems=filtered;
+  currentLightboxIndex=index;
+  renderLightboxItem();
+  document.getElementById('lightboxOverlay').classList.add('show');
+}
+
+function renderLightboxItem(){
+  const item=currentLightboxItems[currentLightboxIndex];
+  if(!item) return;
+  const el=document.getElementById('lightboxMedia');
+  const v=vehiculos.find(function(vh){ return vh.id===item.vehiculo_id; });
+  const vehLabel=v?(v.marca+' '+(v.modelo||'')):'Vehiculo';
+  let html='';
+  if(item.tipo==='video'){ html+='<video controls autoplay style="max-width:90vw;max-height:80vh;border-radius:8px;"><source src="'+esc(item.url)+'" type="video/mp4"></video>'; }
+  else{ html+='<img src="'+esc(item.url)+'" style="max-width:90vw;max-height:80vh;border-radius:8px;">'; }
+  html+='<div style="text-align:center;margin-top:12px;color:#fff;font-size:12px;">'+esc(vehLabel)+(item.descripcion?' - '+esc(item.descripcion):'')+'<span style="color:rgba(255,255,255,0.5);margin-left:10px;">('+(currentLightboxIndex+1)+'/'+currentLightboxItems.length+')</span></div>';
+  el.innerHTML=html;
+}
+
+function closeLightbox(){
+  document.getElementById('lightboxOverlay').classList.remove('show');
+  const video=document.querySelector('#lightboxMedia video');
+  if(video) video.pause();
+}
+
+function lightboxPrev(){ if(currentLightboxIndex>0){ currentLightboxIndex--; renderLightboxItem(); } }
+function lightboxNext(){ if(currentLightboxIndex<currentLightboxItems.length-1){ currentLightboxIndex++; renderLightboxItem(); } }
+
+function descargarArchivo(id){
+  const item=galeria.find(function(g){ return g.id===id; });
+  if(!item){ toast('Archivo no encontrado','error'); return; }
+  const link=document.createElement('a');
+  link.href=item.url;
+  link.download=item.nombre||('archivo_'+item.id+'.'+(item.tipo==='video'?'mp4':'jpg'));
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  toast('Descargando '+item.nombre,'success');
+}
+
+function descargarArchivoActual(){
+  if(!currentLightboxItems.length || currentLightboxIndex<0) return;
+  const item=currentLightboxItems[currentLightboxIndex];
+  if(!item){ toast('No hay archivo para descargar','error'); return; }
+  const link=document.createElement('a');
+  link.href=item.url;
+  link.download=item.nombre||('archivo_'+item.id+'.'+(item.tipo==='video'?'mp4':'jpg'));
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  toast('Descargando '+item.nombre,'success');
+}
+
+document.addEventListener('keydown',function(e){
+  if(!document.getElementById('lightboxOverlay').classList.contains('show')) return;
+  if(e.key==='Escape') closeLightbox();
+  if(e.key==='ArrowLeft') lightboxPrev();
+  if(e.key==='ArrowRight') lightboxNext();
+});
+
+async function eliminarGaleriaItem(id){
+  showModal('Eliminar archivo','Se eliminara este archivo.',async function(){
+    galeria=galeria.filter(function(g){ return g.id!==id; });
+    localStorage.setItem('monaco_galeria', JSON.stringify(galeria));
+    try{ await sb.from('galeria').delete().eq('id',id); }catch(e){}
+    toast('Archivo eliminado','success');
+    renderGaleria();
+  });
+}
+
+function setupUploadZone(){
+  const uploadZone=document.getElementById('uploadZone');
+  const fileInput=document.getElementById('gal_files');
+  if(!uploadZone||!fileInput) return;
+  uploadZone.addEventListener('click',function(){ fileInput.click(); });
+  uploadZone.addEventListener('dragover',function(e){ e.preventDefault(); uploadZone.classList.add('dragover'); });
+  uploadZone.addEventListener('dragleave',function(e){ e.preventDefault(); uploadZone.classList.remove('dragover'); });
+  uploadZone.addEventListener('drop',function(e){
+    e.preventDefault();
+    uploadZone.classList.remove('dragover');
+    const files=Array.from(e.dataTransfer.files).filter(function(f){ return f.type.startsWith('image/')||f.type.startsWith('video/'); });
+    pendingFiles=files;
+    renderUploadPreview();
+  });
+  fileInput.addEventListener('change',handleFileSelect);
+}
+
+// INICIALIZACION
+(function init(){
+  const now=new Date();
+  const dias=['Domingo','Lunes','Martes','Miercoles','Jueves','Viernes','Sabado'];
+  const meses=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+  document.getElementById('topDate').textContent=dias[now.getDay()]+', '+now.getDate()+' de '+meses[now.getMonth()]+', '+now.getFullYear();
+  document.getElementById('t_fecha').valueAsDate=now;
+  document.getElementById('g_fecha').valueAsDate=now;
+
+  function updateArgentinaClock(){
+    const d=new Date(new Date().toLocaleString('en-US',{timeZone:'America/Argentina/Buenos_Aires'}));
+    document.getElementById('topClock').textContent=d.getHours().toString().padStart(2,'0')+':'+d.getMinutes().toString().padStart(2,'0')+':'+d.getSeconds().toString().padStart(2,'0')+' (AR)';
+  }
+  updateArgentinaClock();
+  setInterval(updateArgentinaClock,1000);
+
+  populatePPFSelect();
+  setupUploadZone();
+  refreshAll();
+})();
+</script>
+
+</body>
