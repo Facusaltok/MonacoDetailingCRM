@@ -4,7 +4,7 @@
 <head>
 <link rel="manifest" href="manifest.json">
 
-<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link class="apple-touch-icon" href="apple-touch-icon.png">
 
 <meta name="theme-color" content="#10B981">
 
@@ -620,11 +620,15 @@ select.form-input {cursor:pointer;appearance:auto;}
       <div class="section-header"><div><h2>Vehiculos</h2><div class="section-header-sub">Registro de vehiculos</div></div></div>
       <div class="two-col" style="display:grid;grid-template-columns:1fr 1.5fr;gap:18px;">
         <div class="card">
-          <div class="card-title"><i class="fa-solid fa-car-side"></i> Agregar Vehiculo</div>
+          <div class="card-title"><i class="fa-solid fa-car-side"></i> <span id="vehiculoFormTitle">Agregar Vehiculo</span></div>
+          <input type="hidden" id="v_edit_id" value="">
           <div class="form-group"><label class="form-label">Propietario</label><select id="v_cliente" class="form-input"><option value="">-- Seleccionar cliente --</option></select></div>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;"><div class="form-group"><label class="form-label">Marca</label><input id="v_marca" class="form-input" placeholder="BMW"></div><div class="form-group"><label class="form-label">Modelo</label><input id="v_modelo" class="form-input" placeholder="M3"></div></div>
           <div class="form-group"><label class="form-label">Patente</label><input id="v_patente" class="form-input" placeholder="AB 123 CD"></div>
-          <button onclick="crearVehiculo()" class="btn-gold" style="width:100%;justify-content:center;"><i class="fa-solid fa-plus"></i> Guardar Vehiculo</button>
+          <div style="display:flex;gap:10px;">
+            <button onclick="guardarVehiculo()" class="btn-gold" style="flex:1;justify-content:center;"><i class="fa-solid fa-check"></i> <span id="vehiculoBtnText">Guardar Vehiculo</span></button>
+            <button onclick="cancelarEditVehiculo()" class="btn-ghost" id="btnCancelEditVeh" style="display:none;">Cancelar</button>
+          </div>
         </div>
         <div class="card">
           <div class="card-title"><i class="fa-solid fa-warehouse"></i> Todos los Vehiculos</div>
@@ -720,7 +724,10 @@ select.form-input {cursor:pointer;appearance:auto;}
       </div>
       <div class="two-col" style="display:grid;grid-template-columns:1fr 1.5fr;gap:18px;">
         <div class="card">
-          <div class="card-title"><i class="fa-solid fa-receipt"></i> Registrar Movimiento</div>
+          <div class="card-title"><i class="fa-solid fa-receipt"></i> <span id="cajaFormTitle">Registrar Movimiento</span></div>
+          <input type="hidden" id="cx_edit_id" value="">
+          <input type="hidden" id="cx_edit_grupo_id" value="">
+          
           <div class="mode-toggle">
             <button id="modeTrabajo" class="mode-btn mode-btn-trabajo active" onclick="setCajaMode('trabajo')"><i class="fa-solid fa-spray-can-sparkles"></i> Trabajo</button>
             <button id="modeEgreso" class="mode-btn mode-btn-egreso" onclick="setCajaMode('egreso')"><i class="fa-solid fa-arrow-down"></i> Egreso</button>
@@ -748,7 +755,10 @@ select.form-input {cursor:pointer;appearance:auto;}
             <div class="form-group"><label class="form-label">Monto ($)</label><input id="cx_egreso_monto" class="form-input" placeholder="50000" inputmode="decimal"></div>
             <div class="form-group"><label class="form-label">Vehiculo (opcional)</label><select id="cx_egreso_vehiculo" class="form-input"><option value="">-- Sin vehiculo --</option></select></div>
           </div>
-          <button onclick="crearCaja()" class="btn-gold" style="width:100%;justify-content:center;"><i class="fa-solid fa-plus"></i> Registrar</button>
+          <div style="display:flex;gap:10px;margin-top:10px;">
+            <button onclick="guardarCaja()" class="btn-gold" style="flex:1;justify-content:center;"><i class="fa-solid fa-check"></i> <span id="cajaBtnText">Registrar</span></button>
+            <button onclick="cancelarEditCaja()" class="btn-ghost" id="btnCancelEditCaja" style="display:none;">Cancelar</button>
+          </div>
         </div>
         <div class="card">
           <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:10px;">
@@ -1021,8 +1031,10 @@ function updateKPIs(){
   document.getElementById('dash_balance').textContent=formatMoney(ing-egr);
   const mx=Math.max(ing,egr,1);
   setTimeout(function(){
-    document.getElementById('bar_ingresos').style.width=(ing/mx*100)+'%';
-    document.getElementById('bar_egresos').style.width=(egr/mx*100)+'%';
+    const bIng = document.getElementById('bar_ingresos');
+    const bEgr = document.getElementById('bar_egresos');
+    if(bIng) bIng.style.width=(ing/mx*100)+'%';
+    if(bEgr) bEgr.style.width=(egr/mx*100)+'%';
   },100);
   const fv=document.getElementById('cx_filtro_vehiculo')?document.getElementById('cx_filtro_vehiculo').value:'';
   const fc=document.getElementById('buscarCajaInput')?document.getElementById('buscarCajaInput').value.trim().toLowerCase():'';
@@ -1035,9 +1047,12 @@ function updateKPIs(){
   }
   const cIng=movSet.filter(function(m){ return m.tipo==='ingreso'; }).reduce(function(a,m){ return a+Number(m.monto||0); },0);
   const cEgr=movSet.filter(function(m){ return m.tipo==='egreso'; }).reduce(function(a,m){ return a+Number(m.monto||0); },0);
-  document.getElementById('caja_ingresos').textContent=formatMoney(cIng);
-  document.getElementById('caja_egresos').textContent=formatMoney(cEgr);
-  document.getElementById('caja_balance').textContent=formatMoney(cIng-cEgr);
+  const cIngEl = document.getElementById('caja_ingresos');
+  const cEgrEl = document.getElementById('caja_egresos');
+  const cBalEl = document.getElementById('caja_balance');
+  if(cIngEl) cIngEl.textContent=formatMoney(cIng);
+  if(cEgrEl) cEgrEl.textContent=formatMoney(cEgr);
+  if(cBalEl) cBalEl.textContent=formatMoney(cIng-cEgr);
 }
 
 // BUSCADOR CLIENTES
@@ -1086,7 +1101,7 @@ function renderVehiculos(filtro){
   let html='';
   for(let i=0;i<lista.length;i++){
     const v=lista[i];
-    html+='<div class="list-item"><div class="list-item-left"><div class="list-icon" style="background:rgba(59,130,246,0.12);color:var(--blue);"><i class="fa-solid fa-car"></i></div><div class="list-item-info"><h4>'+esc(v.marca)+' '+(esc(v.modelo)||'')+'</h4><p><i class="fa-solid fa-user" style="font-size:9px;margin-right:3px;"></i>'+(esc(v.clientes?.nombre)||'-')+(v.patente?' · '+esc(v.patente):'')+'</p></div></div><button class="btn-sm btn-rose" onclick="eliminarVehiculo(\''+v.id+'\')"><i class="fa-solid fa-trash"></i></button></div>';
+    html+='<div class="list-item"><div class="list-item-left"><div class="list-icon" style="background:rgba(59,130,246,0.12);color:var(--blue);"><i class="fa-solid fa-car"></i></div><div class="list-item-info"><h4>'+esc(v.marca)+' '+(esc(v.modelo)||'')+'</h4><p><i class="fa-solid fa-user" style="font-size:9px;margin-right:3px;"></i>'+(esc(v.clientes?.nombre)||'-')+(v.patente?' · '+esc(v.patente):'')+'</p></div></div><div style="display:flex;gap:5px;"><button class="btn-sm btn-amber" onclick="editarVehiculo(\''+v.id+'\')"><i class="fa-solid fa-pen"></i></button><button class="btn-sm btn-rose" onclick="eliminarVehiculo(\''+v.id+'\')"><i class="fa-solid fa-trash"></i></button></div></div>';
   }
   el.innerHTML=html;
 }
@@ -1184,7 +1199,7 @@ function renderCaja(){
     const fd=ingreso?.created_at||items[0]?.created_at;
     const fs=fd?formatDate(fd):'';
     const servicio=ingreso?.servicio||items[0]?.servicio||'';
-    html+='<div class="caja-group-card"><div class="caja-group-header"><div class="list-item-left" style="gap:10px;"><div class="list-icon" style="background:var(--primary-soft);color:var(--primary);width:32px;height:32px;font-size:12px;border-radius:8px;"><i class="fa-solid fa-layer-group"></i></div><div class="list-item-info"><h4 style="font-size:13px;">'+esc(ingreso?.concepto||items[0]?.concepto||'-')+'</h4><p>'+fs+(vehLabel?' · <i class="fa-solid fa-car" style="font-size:9px;"></i> '+esc(vehLabel):'')+(servicio?' · '+esc(servicio):'')+'</p></div></div><div style="display:flex;align-items:center;gap:10px;"><div style="text-align:right;"><div style="font-size:10px;color:var(--text-muted);margin-bottom:1px;">Neto</div><div style="font-size:15px;font-weight:800;color:'+(neto>=0?'var(--primary)':'var(--rose)')+';">'+formatMoney(neto)+'</div></div><button class="btn-sm btn-rose" onclick="eliminarCajaGrupo(\''+esc(gid)+'\')"><i class="fa-solid fa-trash"></i></button></div></div><div class="caja-group-body">';
+    html+='<div class="caja-group-card"><div class="caja-group-header"><div class="list-item-left" style="gap:10px;"><div class="list-icon" style="background:var(--primary-soft);color:var(--primary);width:32px;height:32px;font-size:12px;border-radius:8px;"><i class="fa-solid fa-layer-group"></i></div><div class="list-item-info"><h4 style="font-size:13px;">'+esc(ingreso?.concepto||items[0]?.concepto||'-')+'</h4><p>'+fs+(vehLabel?' · <i class="fa-solid fa-car" style="font-size:9px;"></i> '+esc(vehLabel):'')+(servicio?' · '+esc(servicio):'')+'</p></div></div><div style="display:flex;align-items:center;gap:10px;"><div style="text-align:right;"><div style="font-size:10px;color:var(--text-muted);margin-bottom:1px;">Neto</div><div style="font-size:15px;font-weight:800;color:'+(neto>=0?'var(--primary)':'var(--rose)')+';">'+formatMoney(neto)+'</div></div><div style="display:flex;gap:4px;"><button class="btn-sm btn-amber" onclick="editarCajaGrupo(\''+esc(gid)+'\')"><i class="fa-solid fa-pen"></i></button><button class="btn-sm btn-rose" onclick="eliminarCajaGrupo(\''+esc(gid)+'\')"><i class="fa-solid fa-trash"></i></button></div></div></div><div class="caja-group-body">';
     if(ingreso){ html+='<div class="caja-group-row"><div class="caja-group-row-left"><i class="fa-solid fa-arrow-up" style="color:var(--emerald);"></i><span>Ingreso (cobrado)</span></div><div class="caja-group-row-right" style="color:var(--emerald);">+'+formatMoney(ingreso.monto)+'</div></div>'; }
     for(let ei=0;ei<egresos.length;ei++){
       const e=egresos[ei];
@@ -1202,7 +1217,7 @@ function renderCaja(){
     let tags='';
     if(vehLabel) tags+='<span class="caja-tag caja-tag-veh"><i class="fa-solid fa-car" style="font-size:8px;margin-right:3px;"></i>'+esc(vehLabel)+'</span>';
     if(m.servicio) tags+='<span class="caja-tag caja-tag-serv">'+esc(m.servicio)+'</span>';
-    html+='<div class="list-item" style="flex-wrap:wrap;"><div class="list-item-left" style="flex:1;min-width:0;"><div class="list-icon" style="background:'+(isIn?'rgba(16,185,129,0.12)':'rgba(244,63,94,0.12)')+';color:'+(isIn?'var(--emerald)':'var(--rose)')+';"><i class="fa-solid '+(isIn?'fa-arrow-up':'fa-arrow-down')+'"></i></div><div class="list-item-info" style="flex:1;min-width:0;"><h4>'+esc(m.concepto)+'</h4><p>'+(fs||'Sin fecha')+'</p>'+(tags?'<div class="caja-detail-row">'+tags+'</div>':'')+'</div></div><div style="display:flex;align-items:center;gap:8px;flex-shrink:0;"><span style="font-weight:700;color:'+(isIn?'var(--emerald)':'var(--rose)')+';">'+(isIn?'+':'-')+formatMoney(m.monto)+'</span><button class="btn-sm btn-rose" onclick="eliminarCaja(\''+m.id+'\')"><i class="fa-solid fa-trash"></i></button></div></div>';
+    html+='<div class="list-item" style="flex-wrap:wrap;"><div class="list-item-left" style="flex:1;min-width:0;"><div class="list-icon" style="background:'+(isIn?'rgba(16,185,129,0.12)':'rgba(244,63,94,0.12)')+';color:'+(isIn?'var(--emerald)':'var(--rose)')+';"><i class="fa-solid '+(isIn?'fa-arrow-up':'fa-arrow-down')+'"></i></div><div class="list-item-info" style="flex:1;min-width:0;"><h4>'+esc(m.concepto)+'</h4><p>'+(fs||'Sin fecha')+'</p>'+(tags?'<div class="caja-detail-row">'+tags+'</div>':'')+'</div></div><div style="display:flex;align-items:center;gap:8px;flex-shrink:0;"><span style="font-weight:700;color:'+(isIn?'var(--emerald)':'var(--rose)')+';">'+(isIn?'+':'-')+formatMoney(m.monto)+'</span><div style="display:flex;gap:4px;"><button class="btn-sm btn-amber" onclick="editarCaja(\''+m.id+'\')"><i class="fa-solid fa-pen"></i></button><button class="btn-sm btn-rose" onclick="eliminarCaja(\''+m.id+'\')"><i class="fa-solid fa-trash"></i></button></div></div></div>';
   }
   el.innerHTML=html;
   updateKPIs();
@@ -1379,8 +1394,9 @@ async function eliminarCliente(id){
   });
 }
 
-// CRUD VEHICULOS
-async function crearVehiculo(){
+// CRUD VEHICULOS (MODIFICADO PARA EDITAR)
+async function guardarVehiculo(){
+  const editId=document.getElementById('v_edit_id').value;
   const cliente_id=document.getElementById('v_cliente').value;
   const marca=document.getElementById('v_marca').value.trim();
   const modelo=document.getElementById('v_modelo').value.trim();
@@ -1388,12 +1404,47 @@ async function crearVehiculo(){
   if(!cliente_id){ toast('Selecciona un propietario','error'); return; }
   if(!marca){ toast('Ingresa la marca','error'); return; }
   try{
-    const res=await sb.from('vehiculos').insert({cliente_id:cliente_id,marca:marca,modelo:modelo,patente:patente});
-    if(res.error) throw res.error;
-    toast('Vehiculo registrado','success');
-    document.getElementById('v_marca').value=''; document.getElementById('v_modelo').value=''; document.getElementById('v_patente').value='';
+    let res;
+    if(editId){
+      res=await sb.from('vehiculos').update({cliente_id:cliente_id,marca:marca,modelo:modelo,patente:patente}).eq('id',editId);
+      if(res.error) throw res.error;
+      toast('Vehiculo actualizado','success');
+    }else{
+      res=await sb.from('vehiculos').insert({cliente_id:cliente_id,marca:marca,modelo:modelo,patente:patente});
+      if(res.error) throw res.error;
+      toast('Vehiculo registrado','success');
+    }
+    cancelarEditVehiculo();
     await loadVehiculos();
   }catch(e){ toast('Error: '+(e.message||e),'error'); }
+}
+
+function editarVehiculo(id){
+  const v=vehiculos.find(function(x){ return x.id===id; });
+  if(!v) return;
+  document.getElementById('v_edit_id').value=v.id;
+  document.getElementById('v_cliente').value=v.cliente_id||'';
+  document.getElementById('v_marca').value=v.marca||'';
+  document.getElementById('v_modelo').value=v.modelo||'';
+  document.getElementById('v_patente').value=v.patente||'';
+  
+  document.getElementById('vehiculoFormTitle').textContent='Editar Vehiculo';
+  document.getElementById('vehiculoBtnText').textContent='Actualizar';
+  document.getElementById('btnCancelEditVeh').style.display='inline-flex';
+  
+  // Scrollear al formulario de vehiculos
+  document.getElementById('vehiculoFormTitle').scrollIntoView({ behavior: 'smooth' });
+}
+
+function cancelarEditVehiculo(){
+  document.getElementById('v_edit_id').value='';
+  document.getElementById('v_cliente').value='';
+  document.getElementById('v_marca').value='';
+  document.getElementById('v_modelo').value='';
+  document.getElementById('v_patente').value='';
+  document.getElementById('vehiculoFormTitle').textContent='Agregar Vehiculo';
+  document.getElementById('vehiculoBtnText').textContent='Guardar Vehiculo';
+  document.getElementById('btnCancelEditVeh').style.display='none';
 }
 
 async function eliminarVehiculo(id){
@@ -1477,8 +1528,11 @@ async function eliminarServicio(id){
   });
 }
 
-// CRUD CAJA
-async function crearCaja(){
+// CRUD CAJA (SOPORTE PARA EDICIÓN DE GRUPOS Y REGISTROS INDIVIDUALES)
+async function guardarCaja(){
+  const editId = document.getElementById('cx_edit_id').value;
+  const editGrupoId = document.getElementById('cx_edit_grupo_id').value;
+
   if(cajaMode==='trabajo'){
     const concepto=document.getElementById('cx_concepto').value.trim();
     const montoRaw=document.getElementById('cx_monto').value.trim().replace(',','.');
@@ -1487,43 +1541,182 @@ async function crearCaja(){
     const materialRaw=document.getElementById('cx_material').value.trim().replace(',','.');
     const instaladorRaw=document.getElementById('cx_instalador').value.trim().replace(',','.');
     const descuentoRaw=document.getElementById('cx_descuento').value.trim().replace(',','.');
+    
     if(!concepto){ toast('Ingresa un concepto','error'); return; }
     if(!montoRaw||Number(montoRaw)<=0){ toast('Ingresa el monto cobrado','error'); return; }
+    
     const montoNum=Number(montoRaw);
     const material=materialRaw?Number(materialRaw):0;
     const instalador=instaladorRaw?Number(instaladorRaw):0;
     const descuento=descuentoRaw?Number(descuentoRaw):0;
-    const grupoId='GRP-'+Date.now().toString(36).toUpperCase();
-    const registros=[];
-    const ingP={concepto:concepto,tipo:'ingreso',monto:montoNum,grupo_id:grupoId};
-    if(vehiculo_id) ingP.vehiculo_id=vehiculo_id; if(servicio) ingP.servicio=servicio;
-    registros.push(ingP);
-    if(material>0){ const p={concepto:'Material',tipo:'egreso',monto:material,grupo_id:grupoId}; if(vehiculo_id) p.vehiculo_id=vehiculo_id; if(servicio) p.servicio=servicio; registros.push(p); }
-    if(instalador>0){ const p={concepto:'Instalador',tipo:'egreso',monto:instalador,grupo_id:grupoId}; if(vehiculo_id) p.vehiculo_id=vehiculo_id; if(servicio) p.servicio=servicio; registros.push(p); }
-    if(descuento>0){ const p={concepto:'Descuento 3 CSI',tipo:'egreso',monto:descuento,grupo_id:grupoId}; if(vehiculo_id) p.vehiculo_id=vehiculo_id; if(servicio) p.servicio=servicio; registros.push(p); }
+    
     try{
-      const res=await sb.from('caja').insert(registros);
-      if(res.error) throw res.error;
-      toast('Trabajo registrado','success');
-      document.getElementById('cx_concepto').value=''; document.getElementById('cx_monto').value=''; document.getElementById('cx_vehiculo').value=''; document.getElementById('cx_servicio').value='';
-      document.getElementById('cx_material').value=''; document.getElementById('cx_instalador').value=''; document.getElementById('cx_descuento').value=''; document.getElementById('cajaNetBox').style.display='none';
+      // Determinamos si es o se convertirá en un grupo
+      if (material > 0 || instalador > 0 || descuento > 0 || editGrupoId) {
+        const targetGroupId = editGrupoId || ('GRP-'+Date.now().toString(36).toUpperCase());
+        
+        // Si estamos editando un grupo existente, eliminamos los anteriores de ese grupo antes de re-insertar
+        if(editGrupoId){
+          const delRes = await sb.from('caja').delete().eq('grupo_id', editGrupoId);
+          if (delRes.error) throw delRes.error;
+        } else if (editId) {
+          // Si era individual y ahora tiene materiales (se vuelve grupo), eliminamos el individual previo
+          const delRes = await sb.from('caja').delete().eq('id', editId);
+          if (delRes.error) throw delRes.error;
+        }
+
+        const registros=[];
+        const ingP={concepto:concepto,tipo:'ingreso',monto:montoNum,grupo_id:targetGroupId};
+        if(vehiculo_id) ingP.vehiculo_id=vehiculo_id;
+        if(servicio) ingP.servicio=servicio;
+        registros.push(ingP);
+        
+        if(material>0){ const p={concepto:'Material',tipo:'egreso',monto:material,grupo_id:targetGroupId}; if(vehiculo_id) p.vehiculo_id=vehiculo_id; if(servicio) p.servicio=servicio; registros.push(p); }
+        if(instalador>0){ const p={concepto:'Instalador',tipo:'egreso',monto:instalador,grupo_id:targetGroupId}; if(vehiculo_id) p.vehiculo_id=vehiculo_id; if(servicio) p.servicio=servicio; registros.push(p); }
+        if(descuento>0){ const p={concepto:'Descuento 3 CSI',tipo:'egreso',monto:descuento,grupo_id:targetGroupId}; if(vehiculo_id) p.vehiculo_id=vehiculo_id; if(servicio) p.servicio=servicio; registros.push(p); }
+        
+        const res=await sb.from('caja').insert(registros);
+        if(res.error) throw res.error;
+        toast(editGrupoId ? 'Trabajo actualizado' : 'Trabajo registrado','success');
+      } else {
+        // Es un registro de ingreso individual y simple
+        const payload={concepto:concepto,tipo:'ingreso',monto:montoNum,servicio:servicio,grupo_id:null};
+        if(vehiculo_id) payload.vehiculo_id=vehiculo_id; else payload.vehiculo_id=null;
+        
+        let res;
+        if(editId){
+          res=await sb.from('caja').update(payload).eq('id',editId);
+        } else {
+          // Si era un grupo y se redujo a sólo ingreso, limpiamos el grupo anterior e insertamos el individual
+          if(editGrupoId){
+            await sb.from('caja').delete().eq('grupo_id', editGrupoId);
+          }
+          res=await sb.from('caja').insert(payload);
+        }
+        if(res.error) throw res.error;
+        toast(editId ? 'Ingreso actualizado' : 'Ingreso registrado','success');
+      }
+      cancelarEditCaja();
       await loadCaja();
     }catch(e){ toast('Error: '+(e.message||e),'error'); }
-  }else{
+
+  } else {
+    // MODO EGRESO
     const concepto=document.getElementById('cx_egreso_concepto').value.trim();
     const montoRaw=document.getElementById('cx_egreso_monto').value.trim().replace(',','.');
     const vehiculo_id=document.getElementById('cx_egreso_vehiculo').value;
+    
     if(!concepto){ toast('Ingresa un concepto','error'); return; }
     if(!montoRaw||Number(montoRaw)<=0){ toast('Ingresa un monto','error'); return; }
-    const payload={concepto:concepto,tipo:'egreso',monto:Number(montoRaw)};
-    if(vehiculo_id) payload.vehiculo_id=vehiculo_id;
+    
+    const payload={concepto:concepto,tipo:'egreso',monto:Number(montoRaw),grupo_id:null,servicio:null};
+    if(vehiculo_id) payload.vehiculo_id=vehiculo_id; else payload.vehiculo_id=null;
+    
     try{
-      const res=await sb.from('caja').insert(payload); if(res.error) throw res.error;
-      toast('Egreso registrado','success');
-      document.getElementById('cx_egreso_concepto').value=''; document.getElementById('cx_egreso_monto').value=''; document.getElementById('cx_egreso_vehiculo').value='';
+      let res;
+      if(editId){
+        res=await sb.from('caja').update(payload).eq('id',editId);
+      } else {
+        if(editGrupoId){
+          await sb.from('caja').delete().eq('grupo_id', editGrupoId);
+        }
+        res=await sb.from('caja').insert(payload);
+      }
+      if(res.error) throw res.error;
+      toast(editId ? 'Egreso actualizado' : 'Egreso registrado','success');
+      cancelarEditCaja();
       await loadCaja();
     }catch(e){ toast('Error: '+(e.message||e),'error'); }
   }
+}
+
+function editarCaja(id){
+  const m=movimientos.find(function(x){ return x.id===id; });
+  if(!m) return;
+  
+  // Limpiamos estados de edición anteriores
+  cancelarEditCaja();
+  
+  document.getElementById('cx_edit_id').value=m.id;
+  
+  if(m.tipo==='ingreso'){
+    setCajaMode('trabajo');
+    document.getElementById('cx_concepto').value=m.concepto||'';
+    document.getElementById('cx_monto').value=m.monto||'';
+    document.getElementById('cx_vehiculo').value=m.vehiculo_id||'';
+    document.getElementById('cx_servicio').value=m.servicio||'';
+    document.getElementById('cx_material').value='';
+    document.getElementById('cx_instalador').value='';
+    document.getElementById('cx_descuento').value='';
+  } else {
+    setCajaMode('egreso');
+    document.getElementById('cx_egreso_concepto').value=m.concepto||'';
+    document.getElementById('cx_egreso_monto').value=m.monto||'';
+    document.getElementById('cx_egreso_vehiculo').value=m.vehiculo_id||'';
+  }
+  
+  document.getElementById('cajaFormTitle').textContent='Editar Movimiento';
+  document.getElementById('cajaBtnText').textContent='Actualizar';
+  document.getElementById('btnCancelEditCaja').style.display='inline-flex';
+  
+  calcularNeto();
+  document.getElementById('cajaFormTitle').scrollIntoView({ behavior: 'smooth' });
+}
+
+function editarCajaGrupo(gid){
+  const items=movimientos.filter(function(x){ return x.grupo_id===gid; });
+  if(!items.length) return;
+  
+  cancelarEditCaja();
+  
+  document.getElementById('cx_edit_grupo_id').value=gid;
+  setCajaMode('trabajo');
+  
+  const ingreso=items.find(function(i){ return i.tipo==='ingreso'; });
+  const eMaterial=items.find(function(i){ return i.tipo==='egreso' && i.concepto==='Material'; });
+  const eInstalador=items.find(function(i){ return i.tipo==='egreso' && i.concepto==='Instalador'; });
+  const eDescuento=items.find(function(i){ return i.tipo==='egreso' && i.concepto==='Descuento 3 CSI'; });
+  
+  if(ingreso){
+    document.getElementById('cx_concepto').value=ingreso.concepto||'';
+    document.getElementById('cx_monto').value=ingreso.monto||'';
+    document.getElementById('cx_vehiculo').value=ingreso.vehiculo_id||'';
+    document.getElementById('cx_servicio').value=ingreso.servicio||'';
+  }
+  
+  document.getElementById('cx_material').value=eMaterial?eMaterial.monto:'';
+  document.getElementById('cx_instalador').value=eInstalador?eInstalador.monto:'';
+  document.getElementById('cx_descuento').value=eDescuento?eDescuento.monto:'';
+  
+  document.getElementById('cajaFormTitle').textContent='Editar Trabajo';
+  document.getElementById('cajaBtnText').textContent='Actualizar Trabajo';
+  document.getElementById('btnCancelEditCaja').style.display='inline-flex';
+  
+  calcularNeto();
+  document.getElementById('cajaFormTitle').scrollIntoView({ behavior: 'smooth' });
+}
+
+function cancelarEditCaja(){
+  document.getElementById('cx_edit_id').value='';
+  document.getElementById('cx_edit_grupo_id').value='';
+  
+  document.getElementById('cx_concepto').value='';
+  document.getElementById('cx_monto').value='';
+  document.getElementById('cx_vehiculo').value='';
+  document.getElementById('cx_servicio').value='';
+  document.getElementById('cx_material').value='';
+  document.getElementById('cx_instalador').value='';
+  document.getElementById('cx_descuento').value='';
+  
+  document.getElementById('cx_egreso_concepto').value='';
+  document.getElementById('cx_egreso_monto').value='';
+  document.getElementById('cx_egreso_vehiculo').value='';
+  
+  document.getElementById('cajaFormTitle').textContent='Registrar Movimiento';
+  document.getElementById('cajaBtnText').textContent='Registrar';
+  document.getElementById('btnCancelEditCaja').style.display='none';
+  
+  calcularNeto();
 }
 
 async function eliminarCaja(id){
@@ -1881,3 +2074,4 @@ function setupUploadZone(){
 </script>
 
 </body>
+</html>
