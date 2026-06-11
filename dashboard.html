@@ -621,14 +621,11 @@ select.form-input {cursor:pointer;appearance:auto;}
       <div class="two-col" style="display:grid;grid-template-columns:1fr 1.5fr;gap:18px;">
         <div class="card">
           <div class="card-title"><i class="fa-solid fa-car-side"></i> Agregar Vehiculo</div>
-<input type="hidden" id="v_edit_id" value="">
           <div class="form-group"><label class="form-label">Propietario</label><select id="v_cliente" class="form-input"><option value="">-- Seleccionar cliente --</option></select></div>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;"><div class="form-group"><label class="form-label">Marca</label><input id="v_marca" class="form-input" placeholder="BMW"></div><div class="form-group"><label class="form-label">Modelo</label><input id="v_modelo" class="form-input" placeholder="M3"></div></div>
           <div class="form-group"><label class="form-label">Patente</label><input id="v_patente" class="form-input" placeholder="AB 123 CD"></div>
-    <button onclick="guardarVehiculo()" class="btn-gold" style="width:100%;justify-content:center;">
-    <i class="fa-solid fa-plus"></i>
-    <span id="vehiculoBtnText">Guardar Vehiculo</span>
-</button>
+          <button onclick="crearVehiculo()" class="btn-gold" style="width:100%;justify-content:center;"><i class="fa-solid fa-plus"></i> Guardar Vehiculo</button>
+        </div>
         <div class="card">
           <div class="card-title"><i class="fa-solid fa-warehouse"></i> Todos los Vehiculos</div>
           <div class="search-box">
@@ -1089,19 +1086,7 @@ function renderVehiculos(filtro){
   let html='';
   for(let i=0;i<lista.length;i++){
     const v=lista[i];
-    html+='<div class="list-item"><div class="list-item-left"><div class="list-icon" style="background:rgba(59,130,246,0.12);color:var(--blue);"><i class="fa-solid fa-car"></i></div><div class="list-item-info"><h4>'+esc(v.marca)+' '+(esc(v.modelo)||'')+'</h4><p><i class="fa-solid fa-user" style="font-size:9px;margin-right:3px;"></i>'+(esc(v.clientes?.nombre)||'-')+(v.patente?' · '+esc(v.patente):'')+'</p></div></div><div style="display:flex;gap:5px;">
-
-<button class="btn-sm btn-blue"
-        onclick="editarVehiculo('${v.id}')">
-    <i class="fa-solid fa-pen"></i>
-</button>
-
-<button class="btn-sm btn-rose"
-        onclick="eliminarVehiculo('${v.id}')">
-    <i class="fa-solid fa-trash"></i>
-</button>
-
-</div>;
+    html+='<div class="list-item"><div class="list-item-left"><div class="list-icon" style="background:rgba(59,130,246,0.12);color:var(--blue);"><i class="fa-solid fa-car"></i></div><div class="list-item-info"><h4>'+esc(v.marca)+' '+(esc(v.modelo)||'')+'</h4><p><i class="fa-solid fa-user" style="font-size:9px;margin-right:3px;"></i>'+(esc(v.clientes?.nombre)||'-')+(v.patente?' · '+esc(v.patente):'')+'</p></div></div><button class="btn-sm btn-rose" onclick="eliminarVehiculo(\''+v.id+'\')"><i class="fa-solid fa-trash"></i></button></div>';
   }
   el.innerHTML=html;
 }
@@ -1409,128 +1394,6 @@ async function crearVehiculo(){
     document.getElementById('v_marca').value=''; document.getElementById('v_modelo').value=''; document.getElementById('v_patente').value='';
     await loadVehiculos();
   }catch(e){ toast('Error: '+(e.message||e),'error'); }
-}
-
-async function guardarVehiculo(){
-
-  const editId =
-      document.getElementById('v_edit_id').value;
-
-  const cliente_id =
-      document.getElementById('v_cliente').value;
-
-  const marca =
-      document.getElementById('v_marca').value.trim();
-
-  const modelo =
-      document.getElementById('v_modelo').value.trim();
-
-  const patente =
-      document.getElementById('v_patente').value.trim();
-
-  if(!cliente_id){
-      toast('Selecciona un propietario','error');
-      return;
-  }
-
-  if(!marca){
-      toast('Ingresa la marca','error');
-      return;
-  }
-
-  try{
-
-      let res;
-
-      if(editId){
-
-          res = await sb
-              .from('vehiculos')
-              .update({
-                  cliente_id,
-                  marca,
-                  modelo,
-                  patente
-              })
-              .eq('id', editId);
-
-          if(res.error) throw res.error;
-
-          toast('Vehiculo actualizado','success');
-
-      }else{
-
-          res = await sb
-              .from('vehiculos')
-              .insert({
-                  cliente_id,
-                  marca,
-                  modelo,
-                  patente
-              });
-
-          if(res.error) throw res.error;
-
-          toast('Vehiculo registrado','success');
-      }
-
-      cancelarEditVehiculo();
-
-      await loadVehiculos();
-
-  }catch(e){
-
-      toast(
-          'Error: '+(e.message || e),
-          'error'
-      );
-  }
-}
-
-function editarVehiculo(id){
-
-    const v =
-        vehiculos.find(x => x.id === id);
-
-    if(!v) return;
-
-    document.getElementById('v_edit_id').value =
-        v.id;
-
-    document.getElementById('v_cliente').value =
-        v.cliente_id || '';
-
-    document.getElementById('v_marca').value =
-        v.marca || '';
-
-    document.getElementById('v_modelo').value =
-        v.modelo || '';
-
-    document.getElementById('v_patente').value =
-        v.patente || '';
-
-    document.getElementById('vehiculoBtnText')
-        .textContent = 'Actualizar Vehiculo';
-
-    document
-        .getElementById('v_marca')
-        .focus();
-}
-
-function cancelarEditVehiculo(){
-
-    document.getElementById('v_edit_id').value='';
-
-    document.getElementById('v_cliente').value='';
-
-    document.getElementById('v_marca').value='';
-
-    document.getElementById('v_modelo').value='';
-
-    document.getElementById('v_patente').value='';
-
-    document.getElementById('vehiculoBtnText')
-      .textContent='Guardar Vehiculo';
 }
 
 async function eliminarVehiculo(id){
