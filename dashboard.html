@@ -140,6 +140,29 @@ body::after{
 .tab-section.active {display:block;animation:fadeUp 0.3s ease;}
 @keyframes fadeUp {from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
 
+/* Esta clase transforma las listas en ventanas de chat independientes y deslizables */
+.scrollable-list-container {
+  max-height: 60vh;
+  overflow-y: auto;
+  padding-right: 8px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+/* Estilo moderno y sutil para la barra de desplazamiento interna */
+.scrollable-list-container::-webkit-scrollbar {
+  width: 6px;
+}
+.scrollable-list-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+.scrollable-list-container::-webkit-scrollbar-thumb {
+  background: rgba(16, 185, 129, 0.2); /* Tonalidad verde esmeralda suave */
+  border-radius: 10px;
+}
+.scrollable-list-container::-webkit-scrollbar-thumb:hover {
+  background: rgba(16, 185, 129, 0.45);
+}
+
 .kpi-card {
   background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:20px 22px;
   position:relative;overflow:hidden;transition:all 0.25s;
@@ -550,7 +573,13 @@ select.form-input {cursor:pointer;appearance:auto;}
         <div class="kpi-card kpi-amber"><div class="kpi-icon"><i class="fa-solid fa-users"></i></div><div class="kpi-value" id="kpi_clientes">0</div><div class="kpi-label">Clientes</div></div>
       </div>
       <div class="two-col" style="display:grid;grid-template-columns:2fr 1fr;gap:18px;">
-        <div class="card"><div class="card-title"><i class="fa-solid fa-clock-rotate-left"></i> Servicios Recientes</div><div id="recentServices"><div class="empty-state"><i class="fa-solid fa-inbox"></i><p>Cargando...</p></div></div></div>
+        <div class="card">
+          <div class="card-title"><i class="fa-solid fa-clock-rotate-left"></i> Servicios Recientes</div>
+          <!-- Contenedor independiente deslizable para Servicios Recientes -->
+          <div id="recentServices" class="scrollable-list-container">
+            <div class="empty-state"><i class="fa-solid fa-inbox"></i><p>Cargando...</p></div>
+          </div>
+        </div>
         <div class="card">
           <div class="card-title"><i class="fa-solid fa-chart-line"></i> Resumen Financiero</div>
           <div style="margin-bottom:16px;"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:7px;"><span style="font-size:12px;color:var(--text-secondary);">Ingresos</span><span style="font-size:14px;font-weight:700;color:var(--emerald);" id="dash_ingresos">$0</span></div><div style="height:5px;background:rgba(255,255,255,0.06);border-radius:10px;overflow:hidden;"><div id="bar_ingresos" style="height:100%;background:var(--emerald);border-radius:10px;width:0%;transition:width 0.8s ease;"></div></div></div>
@@ -589,7 +618,13 @@ select.form-input {cursor:pointer;appearance:auto;}
           <div class="form-group"><label class="form-label">Fecha</label><input id="t_fecha" type="date" class="form-input"></div>
           <button onclick="crearTurno()" class="btn-gold" style="width:100%;justify-content:center;margin-top:4px;"><i class="fa-solid fa-calendar-plus"></i> Crear Turno</button>
         </div>
-        <div class="card"><div class="card-title"><i class="fa-solid fa-list-check"></i> Proximos Turnos</div><div id="listaTurnos"><div class="empty-state"><i class="fa-solid fa-calendar-xmark"></i><p>No hay turnos pendientes</p></div></div></div>
+        <div class="card">
+          <div class="card-title"><i class="fa-solid fa-list-check"></i> Proximos Turnos</div>
+          <!-- Contenedor independiente deslizable para Proximos Turnos -->
+          <div id="listaTurnos" class="scrollable-list-container">
+            <div class="empty-state"><i class="fa-solid fa-calendar-xmark"></i><p>No hay turnos pendientes</p></div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -610,7 +645,10 @@ select.form-input {cursor:pointer;appearance:auto;}
             <i class="fa-solid fa-magnifying-glass"></i>
             <input type="text" id="buscarClienteInput" placeholder="Buscar por nombre o telefono..." oninput="buscarClientes()">
           </div>
-          <div id="listaClientes"><div class="empty-state"><i class="fa-solid fa-user-slash"></i><p>No hay clientes</p></div></div>
+          <!-- Contenedor independiente deslizable para Todos los Clientes -->
+          <div id="listaClientes" class="scrollable-list-container">
+            <div class="empty-state"><i class="fa-solid fa-user-slash"></i><p>No hay clientes</p></div>
+          </div>
         </div>
       </div>
     </div>
@@ -636,7 +674,10 @@ select.form-input {cursor:pointer;appearance:auto;}
             <i class="fa-solid fa-magnifying-glass"></i>
             <input type="text" id="buscarVehiculoInput" placeholder="Buscar por marca, modelo, patente o propietario..." oninput="buscarVehiculos()">
           </div>
-          <div id="listaVehiculos"><div class="empty-state"><i class="fa-solid fa-car-burst"></i><p>No hay vehiculos</p></div></div>
+          <!-- Contenedor independiente deslizable para Todos los Vehiculos -->
+          <div id="listaVehiculos" class="scrollable-list-container">
+            <div class="empty-state"><i class="fa-solid fa-car-burst"></i><p>No hay vehiculos</p></div>
+          </div>
         </div>
       </div>
     </div>
@@ -673,7 +714,10 @@ select.form-input {cursor:pointer;appearance:auto;}
               <option value="">Todos los vehiculos</option>
             </select>
           </div>
-          <div id="galeriaGrid"><div class="empty-state"><i class="fa-solid fa-images"></i><p>No hay archivos cargados</p></div></div>
+          <!-- Contenedor independiente deslizable para Galeria de Fotos -->
+          <div id="galeriaGrid" class="scrollable-list-container">
+            <div class="empty-state"><i class="fa-solid fa-images"></i><p>No hay archivos cargados</p></div>
+          </div>
         </div>
       </div>
     </div>
@@ -709,7 +753,10 @@ select.form-input {cursor:pointer;appearance:auto;}
               <button class="btn-gold" onclick="buscarGarantia()"><i class="fa-solid fa-magnifying-glass"></i></button>
             </div>
           </div>
-          <div id="listaGarantias"><div class="empty-state"><i class="fa-solid fa-shield-halved"></i><p>No hay certificados generados</p></div></div>
+          <!-- Contenedor independiente deslizable para Certificados de Garantia -->
+          <div id="listaGarantias" class="scrollable-list-container">
+            <div class="empty-state"><i class="fa-solid fa-shield-halved"></i><p>No hay certificados generados</p></div>
+          </div>
         </div>
       </div>
     </div>
@@ -723,7 +770,8 @@ select.form-input {cursor:pointer;appearance:auto;}
         <div class="kpi-card kpi-primary"><div class="kpi-icon"><i class="fa-solid fa-scale-balanced"></i></div><div class="kpi-value" id="caja_balance">$0</div><div class="kpi-label">Balance Neto</div></div>
       </div>
       <div class="two-col" style="display:grid;grid-template-columns:1fr 1.5fr;gap:18px;">
-        <div class="card">
+        <div class="card" style="height:fit-content; position:sticky; top:110px;">
+          <!-- El formulario de la izquierda se mantiene fijo en pantalla al hacer scroll sobre pantallas grandes -->
           <div class="card-title"><i class="fa-solid fa-receipt"></i> <span id="cajaFormTitle">Registrar Movimiento</span></div>
           <input type="hidden" id="cx_edit_id" value="">
           <input type="hidden" id="cx_edit_grupo_id" value="">
@@ -771,7 +819,10 @@ select.form-input {cursor:pointer;appearance:auto;}
               <select id="cx_filtro_vehiculo" class="form-input" style="width:auto;min-width:150px;padding:7px 10px;font-size:11px;" onchange="renderCaja()"><option value="">Todos los vehiculos</option></select>
             </div>
           </div>
-          <div id="listaCaja"><div class="empty-state"><i class="fa-solid fa-receipt"></i><p>No hay movimientos</p></div></div>
+          <!-- Contenedor independiente deslizable para Historial de Caja de forma limpia -->
+          <div id="listaCaja" class="scrollable-list-container">
+            <div class="empty-state"><i class="fa-solid fa-receipt"></i><p>No hay movimientos</p></div>
+          </div>
         </div>
       </div>
     </div>
@@ -1432,7 +1483,6 @@ function editarVehiculo(id){
   document.getElementById('vehiculoBtnText').textContent='Actualizar';
   document.getElementById('btnCancelEditVeh').style.display='inline-flex';
   
-  // Scrollear al formulario de vehiculos
   document.getElementById('vehiculoFormTitle').scrollIntoView({ behavior: 'smooth' });
 }
 
@@ -1551,16 +1601,13 @@ async function guardarCaja(){
     const descuento=descuentoRaw?Number(descuentoRaw):0;
     
     try{
-      // Determinamos si es o se convertirá en un grupo
       if (material > 0 || instalador > 0 || descuento > 0 || editGrupoId) {
         const targetGroupId = editGrupoId || ('GRP-'+Date.now().toString(36).toUpperCase());
         
-        // Si estamos editando un grupo existente, eliminamos los anteriores de ese grupo antes de re-insertar
         if(editGrupoId){
           const delRes = await sb.from('caja').delete().eq('grupo_id', editGrupoId);
           if (delRes.error) throw delRes.error;
         } else if (editId) {
-          // Si era individual y ahora tiene materiales (se vuelve grupo), eliminamos el individual previo
           const delRes = await sb.from('caja').delete().eq('id', editId);
           if (delRes.error) throw delRes.error;
         }
@@ -1579,7 +1626,6 @@ async function guardarCaja(){
         if(res.error) throw res.error;
         toast(editGrupoId ? 'Trabajo actualizado' : 'Trabajo registrado','success');
       } else {
-        // Es un registro de ingreso individual y simple
         const payload={concepto:concepto,tipo:'ingreso',monto:montoNum,servicio:servicio,grupo_id:null};
         if(vehiculo_id) payload.vehiculo_id=vehiculo_id; else payload.vehiculo_id=null;
         
@@ -1587,7 +1633,6 @@ async function guardarCaja(){
         if(editId){
           res=await sb.from('caja').update(payload).eq('id',editId);
         } else {
-          // Si era un grupo y se redujo a sólo ingreso, limpiamos el grupo anterior e insertamos el individual
           if(editGrupoId){
             await sb.from('caja').delete().eq('grupo_id', editGrupoId);
           }
@@ -1601,7 +1646,6 @@ async function guardarCaja(){
     }catch(e){ toast('Error: '+(e.message||e),'error'); }
 
   } else {
-    // MODO EGRESO
     const concepto=document.getElementById('cx_egreso_concepto').value.trim();
     const montoRaw=document.getElementById('cx_egreso_monto').value.trim().replace(',','.');
     const vehiculo_id=document.getElementById('cx_egreso_vehiculo').value;
@@ -1634,7 +1678,6 @@ function editarCaja(id){
   const m=movimientos.find(function(x){ return x.id===id; });
   if(!m) return;
   
-  // Limpiamos estados de edición anteriores
   cancelarEditCaja();
   
   document.getElementById('cx_edit_id').value=m.id;
